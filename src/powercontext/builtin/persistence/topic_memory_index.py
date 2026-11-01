@@ -19,7 +19,7 @@ from __future__ import annotations
 import hashlib
 from typing import Protocol
 
-from sqlalchemy import Table, and_, or_, select, true
+from sqlalchemy import BigInteger, Table, and_, cast, func, or_, select, true
 from sqlalchemy.ext.asyncio import AsyncConnection
 from sqlalchemy.sql import ColumnElement
 
@@ -33,7 +33,31 @@ from powercontext.builtin.artifacts.topic_memory import (
     TopicMemorySearchRequest,
     TopicMemoryStorageInvariantError,
 )
-from powercontext.builtin.persistence.tables import TOPIC_MEMORY_ACTIVE_CHUNKS_TABLE, TOPIC_MEMORY_ACTIVE_TOPICS_TABLE
+from powercontext.builtin.persistence.tables import (
+    SOURCE_LIFECYCLE_NODES_TABLE,
+    TOPIC_MEMORY_ACTIVE_CHUNKS_TABLE,
+    TOPIC_MEMORY_ACTIVE_TOPICS_TABLE,
+)
+
+
+def topic_memory_lifecycle_eligible(candidate: Table) -> ColumnElement[bool]:
+    """Unbound revisions are unaffected; any supported exact alias keeps a body eligible.
+
+    Revision comes from the already persisted reference payload, so existing
+    databases require no column migration. Correlation is explicit for callers
+    that join active topics to their detail chunks before ranking.
+    """
+    bindings = SOURCE_LIFECYCLE_NODES_TABLE
+    bound = (
+        select(bindings.c.node_key)
+        .where(
+            bindings.c.scope_id == candidate.c.scope_id,
+            bindings.c.topic_artifact_id == candidate.c.artifact_id,
+            cast(func.json_extract(bindings.c.payload, "$.reference.revision"), BigInteger) == candidate.c.revision,
+        )
+        .correlate(candidate)
+    )
+    return ~bound.exists() | bound.where(bindings.c.available.is_(True)).exists()
 
 
 class TopicMemoryIndex(Protocol):

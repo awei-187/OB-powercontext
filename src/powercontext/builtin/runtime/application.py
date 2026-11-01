@@ -249,6 +249,7 @@ from powercontext.builtin.runtime.recall_sufficiency import (
     build_recall_candidates,
     recall_effort,
 )
+from powercontext.builtin.runtime.source_lifecycle import SourceLifecycleApplication
 from powercontext.builtin.runtime.statistics import RelationalScopedStatistics, overview_selection
 from powercontext.builtin.scope import ScopeApplication, ScopeDescriptor, ScopeSelection
 from powercontext.builtin.scope.subject_sources import SubjectSourceService
@@ -2992,6 +2993,13 @@ def _log_scheduled_processing(
 class BuiltinRuntime:
     """Add business-specific operations over composed built-in contexts."""
 
+    @property
+    def lifecycle(self) -> SourceLifecycleApplication:
+        """Access durable Source lifecycle management when composed by the built-in opener."""
+        if self._source_lifecycle is None:
+            raise RuntimeError("Source lifecycle persistence is not configured")  # noqa: TRY003
+        return self._source_lifecycle
+
     def __init__(
         self,
         *,
@@ -3128,6 +3136,7 @@ class BuiltinRuntime:
         self.external_skills = ExternalSkillApplication(self)
         self.handoff = HandoffApplication(self)
         self.work = WorkApplication(self)
+        self._source_lifecycle: SourceLifecycleApplication | None = None
         self.memory = MemoryApplication(self)
         self.topic_memory = TopicMemoryApplication(self)
         self.records = RecordApplication(self)

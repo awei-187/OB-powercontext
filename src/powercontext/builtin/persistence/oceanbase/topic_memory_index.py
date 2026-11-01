@@ -60,6 +60,7 @@ from powercontext.builtin.persistence.tables import (
 )
 from powercontext.builtin.persistence.topic_memory_index import (
     topic_memory_embedding_profile_fingerprint,
+    topic_memory_lifecycle_eligible,
     validate_current_topic_vectors,
 )
 from powercontext.limits import MAX_ARTIFACT_ID_LENGTH, MAX_SCOPE_ID_LENGTH
@@ -93,6 +94,20 @@ WITH candidates AS (
     FROM pc_topic_memory_vector_topics AS v
     WHERE v.scope_id = :scope_id
       AND v.profile_fingerprint = :profile_fingerprint
+      AND (
+            NOT EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = v.scope_id
+                AND lifecycle.topic_artifact_id = v.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS SIGNED) = v.revision
+            ) OR EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = v.scope_id
+                AND lifecycle.topic_artifact_id = v.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS SIGNED) = v.revision
+                AND lifecycle.available = 1
+            )
+          )
     ORDER BY l2_distance(v.embedding, :query_vector) APPROXIMATE
     LIMIT :candidate_limit
 )
@@ -109,6 +124,20 @@ WITH neighbors AS (
     FROM pc_topic_memory_vector_chunks AS v
     WHERE v.scope_id = :scope_id
       AND v.profile_fingerprint = :profile_fingerprint
+      AND (
+            NOT EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = v.scope_id
+                AND lifecycle.topic_artifact_id = v.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS SIGNED) = v.revision
+            ) OR EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = v.scope_id
+                AND lifecycle.topic_artifact_id = v.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS SIGNED) = v.revision
+                AND lifecycle.available = 1
+            )
+          )
     ORDER BY l2_distance(v.embedding, :query_vector) APPROXIMATE
     LIMIT :neighbor_limit
 ), ranked AS (
@@ -185,6 +214,7 @@ class OceanBaseTopicMemoryFTSIndex:
             .select_from(TOPIC_MEMORY_ACTIVE_TOPICS_TABLE)
             .where(
                 TOPIC_MEMORY_ACTIVE_TOPICS_TABLE.c.scope_id == scope_id,
+                topic_memory_lifecycle_eligible(TOPIC_MEMORY_ACTIVE_TOPICS_TABLE),
                 topic_score,
             )
         )
@@ -193,6 +223,7 @@ class OceanBaseTopicMemoryFTSIndex:
             .select_from(TOPIC_MEMORY_ACTIVE_TOPICS_TABLE)
             .where(
                 TOPIC_MEMORY_ACTIVE_TOPICS_TABLE.c.scope_id == scope_id,
+                topic_memory_lifecycle_eligible(TOPIC_MEMORY_ACTIVE_TOPICS_TABLE),
                 topic_score,
                 topic_coverage,
             )
@@ -207,6 +238,7 @@ class OceanBaseTopicMemoryFTSIndex:
                 )
                 .where(
                     TOPIC_MEMORY_ACTIVE_TOPICS_TABLE.c.scope_id == scope_id,
+                    topic_memory_lifecycle_eligible(TOPIC_MEMORY_ACTIVE_TOPICS_TABLE),
                     topic_score,
                     topic_coverage,
                 )
@@ -258,6 +290,7 @@ class OceanBaseTopicMemoryFTSIndex:
             )
             .where(
                 TOPIC_MEMORY_ACTIVE_CHUNKS_TABLE.c.scope_id == scope_id,
+                topic_memory_lifecycle_eligible(TOPIC_MEMORY_ACTIVE_CHUNKS_TABLE),
                 chunk_score,
             )
             .subquery()

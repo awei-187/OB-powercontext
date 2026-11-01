@@ -153,6 +153,22 @@ _SEARCH_TOPIC_FTS_SQL = """
                bm25(pc_topic_memory_topic_fts) AS score, ({coverage}) AS coverage
         FROM pc_topic_memory_topic_fts
         WHERE pc_topic_memory_topic_fts MATCH :query AND scope_id = :scope_id
+          AND (
+            NOT EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = pc_topic_memory_topic_fts.scope_id
+                AND lifecycle.topic_artifact_id = pc_topic_memory_topic_fts.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS INTEGER)
+                    = pc_topic_memory_topic_fts.revision
+            ) OR EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = pc_topic_memory_topic_fts.scope_id
+                AND lifecycle.topic_artifact_id = pc_topic_memory_topic_fts.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS INTEGER)
+                    = pc_topic_memory_topic_fts.revision
+                AND lifecycle.available = 1
+            )
+          )
     )
     SELECT artifact_id, revision, title, summary
     FROM scored
@@ -164,12 +180,44 @@ _COUNT_TOPIC_FTS_SQL = """
     SELECT count(*)
     FROM pc_topic_memory_topic_fts
     WHERE pc_topic_memory_topic_fts MATCH :query AND scope_id = :scope_id
+          AND (
+            NOT EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = pc_topic_memory_topic_fts.scope_id
+                AND lifecycle.topic_artifact_id = pc_topic_memory_topic_fts.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS INTEGER)
+                    = pc_topic_memory_topic_fts.revision
+            ) OR EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = pc_topic_memory_topic_fts.scope_id
+                AND lifecycle.topic_artifact_id = pc_topic_memory_topic_fts.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS INTEGER)
+                    = pc_topic_memory_topic_fts.revision
+                AND lifecycle.available = 1
+            )
+          )
     """
 _COUNT_TOPIC_FTS_ELIGIBLE_SQL = """
     WITH scored AS (
         SELECT ({coverage}) AS coverage
         FROM pc_topic_memory_topic_fts
         WHERE pc_topic_memory_topic_fts MATCH :query AND scope_id = :scope_id
+          AND (
+            NOT EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = pc_topic_memory_topic_fts.scope_id
+                AND lifecycle.topic_artifact_id = pc_topic_memory_topic_fts.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS INTEGER)
+                    = pc_topic_memory_topic_fts.revision
+            ) OR EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = pc_topic_memory_topic_fts.scope_id
+                AND lifecycle.topic_artifact_id = pc_topic_memory_topic_fts.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS INTEGER)
+                    = pc_topic_memory_topic_fts.revision
+                AND lifecycle.available = 1
+            )
+          )
     )
     SELECT count(*)
     FROM scored
@@ -181,6 +229,22 @@ _SEARCH_CHUNK_FTS_SQL = """
                bm25(pc_topic_memory_chunk_fts) AS score, ({coverage}) AS coverage
         FROM pc_topic_memory_chunk_fts
         WHERE pc_topic_memory_chunk_fts MATCH :query AND scope_id = :scope_id
+          AND (
+            NOT EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = pc_topic_memory_chunk_fts.scope_id
+                AND lifecycle.topic_artifact_id = pc_topic_memory_chunk_fts.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS INTEGER)
+                    = pc_topic_memory_chunk_fts.revision
+            ) OR EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = pc_topic_memory_chunk_fts.scope_id
+                AND lifecycle.topic_artifact_id = pc_topic_memory_chunk_fts.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS INTEGER)
+                    = pc_topic_memory_chunk_fts.revision
+                AND lifecycle.available = 1
+            )
+          )
     ), ranked AS (
         SELECT scored.*,
                row_number() OVER (
@@ -201,6 +265,22 @@ _COUNT_CHUNK_FTS_SQL = """
                bm25(pc_topic_memory_chunk_fts) AS score, ({coverage}) AS coverage
         FROM pc_topic_memory_chunk_fts
         WHERE pc_topic_memory_chunk_fts MATCH :query AND scope_id = :scope_id
+          AND (
+            NOT EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = pc_topic_memory_chunk_fts.scope_id
+                AND lifecycle.topic_artifact_id = pc_topic_memory_chunk_fts.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS INTEGER)
+                    = pc_topic_memory_chunk_fts.revision
+            ) OR EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = pc_topic_memory_chunk_fts.scope_id
+                AND lifecycle.topic_artifact_id = pc_topic_memory_chunk_fts.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS INTEGER)
+                    = pc_topic_memory_chunk_fts.revision
+                AND lifecycle.available = 1
+            )
+          )
     ), ranked AS (
         SELECT scored.*,
                row_number() OVER (
@@ -219,6 +299,22 @@ _COUNT_CHUNK_FTS_ELIGIBLE_SQL = """
                bm25(pc_topic_memory_chunk_fts) AS score, ({coverage}) AS coverage
         FROM pc_topic_memory_chunk_fts
         WHERE pc_topic_memory_chunk_fts MATCH :query AND scope_id = :scope_id
+          AND (
+            NOT EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = pc_topic_memory_chunk_fts.scope_id
+                AND lifecycle.topic_artifact_id = pc_topic_memory_chunk_fts.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS INTEGER)
+                    = pc_topic_memory_chunk_fts.revision
+            ) OR EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = pc_topic_memory_chunk_fts.scope_id
+                AND lifecycle.topic_artifact_id = pc_topic_memory_chunk_fts.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS INTEGER)
+                    = pc_topic_memory_chunk_fts.revision
+                AND lifecycle.available = 1
+            )
+          )
     ), ranked AS (
         SELECT scored.*,
                row_number() OVER (
@@ -254,6 +350,22 @@ _TOPIC_VECTOR_SEARCH_SQL = text(
           AND rowid IN (
               SELECT vector_id FROM pc_topic_memory_vector_topics
               WHERE scope_id = :scope_id AND profile_fingerprint = :profile_fingerprint
+                AND (
+            NOT EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = pc_topic_memory_vector_topics.scope_id
+                AND lifecycle.topic_artifact_id = pc_topic_memory_vector_topics.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS INTEGER)
+                    = pc_topic_memory_vector_topics.revision
+            ) OR EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = pc_topic_memory_vector_topics.scope_id
+                AND lifecycle.topic_artifact_id = pc_topic_memory_vector_topics.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS INTEGER)
+                    = pc_topic_memory_vector_topics.revision
+                AND lifecycle.available = 1
+            )
+          )
           )
     )
     SELECT a.artifact_id, a.revision, a.title, a.summary, nearest.distance
@@ -274,6 +386,22 @@ _CHUNK_VECTOR_SEARCH_SQL = text(
           AND rowid IN (
               SELECT vector_id FROM pc_topic_memory_vector_chunks
               WHERE scope_id = :scope_id AND profile_fingerprint = :profile_fingerprint
+                AND (
+            NOT EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = pc_topic_memory_vector_chunks.scope_id
+                AND lifecycle.topic_artifact_id = pc_topic_memory_vector_chunks.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS INTEGER)
+                    = pc_topic_memory_vector_chunks.revision
+            ) OR EXISTS (
+                SELECT 1 FROM pc_source_lifecycle_nodes AS lifecycle
+                WHERE lifecycle.scope_id = pc_topic_memory_vector_chunks.scope_id
+                AND lifecycle.topic_artifact_id = pc_topic_memory_vector_chunks.artifact_id
+                AND CAST(JSON_EXTRACT(lifecycle.payload, '$.reference.revision') AS INTEGER)
+                    = pc_topic_memory_vector_chunks.revision
+                AND lifecycle.available = 1
+            )
+          )
           )
     ), ranked AS (
         SELECT a.artifact_id, a.revision, a.title, a.summary,
