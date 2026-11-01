@@ -4,7 +4,10 @@ from __future__ import annotations
 
 import asyncio
 import gc
+import math
+import runpy
 from collections import Counter
+from pathlib import Path
 
 import pytest
 
@@ -168,7 +171,7 @@ def test_bad_cardinality_rejects_entire_batch_and_can_retry(count) -> None:
     ids=["short", "long", "nan", "infinity", "negative-infinity", "zero", "signed-zero"],
 )
 @pytest.mark.parametrize("query", [False, True], ids=["document", "query"])
-def test_invalid_vector_rejects_whole_shared_batch_and_allows_retry(bad_vector, query) -> None:
+def test_profile_incompatible_vector_preserves_results_and_only_bypasses_its_cache(bad_vector, query) -> None:
     class InvalidOnce(OfflineEmbedding):
         def __init__(self) -> None:
             super().__init__()
@@ -182,7 +185,10 @@ def test_invalid_vector_rejects_whole_shared_batch_and_allows_retry(bad_vector, 
                 self.calls.append(texts)
                 self.started.set()
                 await self.release.wait()
-                return EmbeddingResult(vectors=tuple(bad_vector if text == "bad" else (4.0, 425.0) for text in texts))
+                return EmbeddingResult(
+                    vectors=tuple(bad_vector if text == "bad" else (4.0, 425.0) for text in texts),
+                    usage=InferenceUsage(requests=3, input_tokens=17, output_tokens=5),
+                )
             return await super().embed(texts)
 
         async def embed_query(self, texts: tuple[str, ...], /) -> EmbeddingResult:
@@ -195,21 +201,27 @@ def test_invalid_vector_rejects_whole_shared_batch_and_allows_retry(bad_vector, 
         first = asyncio.create_task(embed(("good", "bad")))
         await base.started.wait()
         late = asyncio.create_task(embed(("bad",)))
-        # The independent batch must succeed even while the invalid batch waits.
+        # The independent batch must succeed even while another batch waits.
         assert (await embed(("independent",))).vectors[0][0] == 11
         base.release.set()
-        results = await asyncio.gather(first, late, return_exceptions=True)
-        assert all(isinstance(result, ValueError) for result in results)
+        results = await asyncio.gather(first, late)
+        assert results[0].vectors[0] == (4.0, 425.0)
+        for result in results:
+            returned = result.vectors[-1]
+            assert len(returned) == len(bad_vector)
+            for actual, expected in zip(returned, bad_vector, strict=True):
+                assert math.isnan(actual) if math.isnan(expected) else actual == expected
+            assert result.usage == InferenceUsage(requests=3, input_tokens=17, output_tokens=5)
         assert base.calls.count(("good", "bad")) == 1
-        retried = await embed(("good", "bad"))
-        assert retried.vectors == ((4.0, 425.0), (3.0, 295.0))
-        assert retried.usage.requests == 2
-        # The valid prefix from the failed response must also be recomputed.
-        assert base.calls.count(("good", "bad")) == 2
-        cached = await embed(("good", "bad"))
+        assert (await embed(("good",))).usage.requests == 0
+        retried = await embed(("bad", "good", "bad"))
+        assert retried.vectors == ((3.0, 295.0), (4.0, 425.0), (3.0, 295.0))
+        assert retried.usage == InferenceUsage(requests=2, input_tokens=3, output_tokens=0)
+        assert base.calls == [("good", "bad"), ("independent",), ("bad",)]
+        cached = await embed(("bad", "good", "bad"))
         assert cached.vectors == retried.vectors
         assert cached.usage.requests == 0
-        assert base.calls.count(("good", "bad")) == 2
+        assert base.calls == [("good", "bad"), ("independent",), ("bad",)]
 
     run(scenario())
 
@@ -253,17 +265,62 @@ def test_valid_profile_vectors_are_cached_without_modification(normalization, ve
 
 
 @pytest.mark.parametrize("dimension", [-1, 0])
-def test_nonpositive_profile_dimension_is_rejected(dimension) -> None:
+def test_nonpositive_profile_dimension_bypasses_cache(dimension) -> None:
     class InvalidProfile(OfflineEmbedding):
         async def embed(self, texts: tuple[str, ...], /) -> EmbeddingResult:
+            self.calls.append(texts)
             return EmbeddingResult(vectors=tuple(() for _ in texts))
 
     async def scenario() -> None:
         base = InvalidProfile()
         base.profile = base.profile.model_copy(update={"dimension": dimension})
         model = CoalescingEmbeddingModel(base, coalesce_ms=0)
-        with pytest.raises(ValueError):
-            await model.embed(("value",))
+        for _ in range(2):
+            assert (await model.embed(("value",))).vectors == ((),)
+        assert base.calls == [("value",), ("value",)]
+
+    run(scenario())
+
+
+@pytest.mark.parametrize("cache_size", [0, 8])
+@pytest.mark.parametrize("normalization", ["unit", "none"])
+@pytest.mark.parametrize("separate_callers", [False, True])
+def test_official_provider_empty_text_result_and_neighbor_cache(cache_size, normalization, separate_callers) -> None:
+    official = Path(__file__).resolve().parents[3] / (
+        "competition/challenges/memory-02-embedding-batches/acceptance/test_coalescing.py"
+    )
+    provider_class = runpy.run_path(str(official))["Embedding"]
+
+    async def scenario() -> None:
+        provider = provider_class()
+        provider.profile = provider.profile.model_copy(update={"normalization": normalization})
+        texts = ("", "alpha", "")
+        direct = await provider.embed(texts)
+        model = CoalescingEmbeddingModel(provider, coalesce_ms=0, cache_size=cache_size)
+        if separate_callers:
+            zero, alpha = await asyncio.gather(model.embed(("", "")), model.embed(("alpha",)))
+            assert zero.vectors == ((0.0,), (0.0,))
+            assert alpha.vectors == ((5.0,),)
+            assert zero.usage.requests == alpha.usage.requests == 1
+        else:
+            result = await model.embed(texts)
+            assert result.vectors == direct.vectors == ((0.0,), (5.0,), (0.0,))
+            assert result.usage.requests == 1
+        again = await model.embed(texts)
+        assert again.vectors == direct.vectors
+        expected_calls = [texts, ("", "alpha")]
+        if not cache_size:
+            expected_calls.append(("", "alpha"))
+        elif normalization == "unit":
+            expected_calls.append(("",))
+        assert again.usage.requests == int(not cache_size or normalization == "unit")
+        assert provider.calls == expected_calls
+        cached_alpha = await model.embed(("alpha",))
+        assert cached_alpha.vectors == ((5.0,),)
+        assert cached_alpha.usage.requests == int(not cache_size)
+        if not cache_size:
+            expected_calls.append(("alpha",))
+        assert provider.calls == expected_calls
 
     run(scenario())
 

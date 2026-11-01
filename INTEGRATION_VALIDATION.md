@@ -1,4 +1,8 @@
+Historical checkpoint: current PDF + embedding candidate validation is in [PDF_EMBEDDING_VALIDATION.md](PDF_EMBEDDING_VALIDATION.md). The results and pending items below describe the earlier checkpoint only.
+
 # Reviewed PowerContext integration
+
+> Historical validation for published commit `764028023ef6e1713b93f2370c6c8d04d739ef0e`. The subsequent uncommitted embedding contract correction and current validation are documented in [EMBEDDING_CONTRACT_VALIDATION.md](EMBEDDING_CONTRACT_VALIDATION.md); its per-vector cache admission supersedes the earlier whole-batch profile validation described below.
 
 Eight accepted features are integrated on `dab240063bfcfa7917898dc44da4baadb3747bd0`. Frozen v1.2.0 ancestor `9db1753434162c0aa7c9f1189a1722e617880a52` remains reachable. This branch contains CSV evidence, Pi sessions, HTTP reranking, incremental context packs, source-count triggers, query/budget evidence selection, coalesced embeddings and source withdrawal/restoration. Gaode is excluded. The seven-feature checkpoint remains in history as `85d39fe7f4edacd6a8e829b9597fab5ca681f876`.
 

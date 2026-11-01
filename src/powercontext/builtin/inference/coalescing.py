@@ -44,20 +44,23 @@ class _Completed:
     batch: _BatchUsage
 
 
-def _batch_usage(result: EmbeddingResult, expected: int, *, profile: EmbeddingProfile) -> _BatchUsage:
+def _batch_usage(result: EmbeddingResult, expected: int) -> _BatchUsage:
     if len(result.vectors) != expected:
         msg = "Embedding vector count does not match the request text count"
         raise ValueError(msg)
-    # Validate the complete response before publishing any shared result or
-    # caching its prefix. Native Memory rejects these values too; caching them
-    # first would keep serving an error even after the provider recovers.
-    for vector in result.vectors:
-        # Reuse Memory's profile rules, including positive dimensions and a
-        # non-zero norm for unit profiles. Discard the normalized copy: this
-        # wrapper must return and cache the provider's original valid vector.
-        canonical_embedding(vector, dimension=profile.dimension, normalization=profile.normalization)
     usage = result.usage
     return _BatchUsage(usage.requests, usage.input_tokens, usage.output_tokens)
+
+
+def _cacheable(vector: EmbeddingVector, profile: EmbeddingProfile) -> bool:
+    # Cache admission is stricter than the generic provider-result contract.
+    # Do not turn a successful provider response into a downstream Memory
+    # validation error, or keep replaying a response that Memory cannot use.
+    try:
+        canonical_embedding(vector, dimension=profile.dimension, normalization=profile.normalization)
+    except ValueError:
+        return False
+    return True
 
 
 def _observe_failure(future: asyncio.Future[_Completed]) -> None:
@@ -90,7 +93,9 @@ class CoalescingEmbeddingModel:
     of a caller leaves shared provider work running. Cache entries are derived,
     process-local values; a new wrapper starts cold and does not alter durable
     Memory indexes. Query embeddings use a separate key space for asymmetric
-    providers, and share document work for symmetric providers.
+    providers, and share document work for symmetric providers. Provider results
+    retain their values; vectors incompatible with the profile bypass the cache
+    so downstream validation failures can recover on a later provider request.
     """
 
     def __init__(
@@ -189,7 +194,7 @@ class CoalescingEmbeddingModel:
         texts = tuple(key[1] for key, _ in items)
         try:
             result = await embed_query(self._model, texts) if query else await self._model.embed(texts)
-            batch = _batch_usage(result, len(texts), profile=self.profile)
+            batch = _batch_usage(result, len(texts))
         except asyncio.CancelledError:
             for _, future in items:
                 future.cancel()
@@ -199,7 +204,7 @@ class CoalescingEmbeddingModel:
                 future.set_exception(error)
         else:
             for (key, future), vector in zip(items, result.vectors, strict=True):
-                if self._cache_size:
+                if self._cache_size > 0 and _cacheable(vector, self.profile):
                     self._cache[key] = vector
                     self._cache.move_to_end(key)
                     if len(self._cache) > self._cache_size:
