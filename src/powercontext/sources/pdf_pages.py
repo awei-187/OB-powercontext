@@ -190,6 +190,14 @@ PDF_PAGE_SOURCE_DEFINITION: SourceDefinition[PDFPageInput, PDFPageSource, PDFPag
 # Query-only financial vocabulary, independent of any document or question set.
 # Original evidence is never rewritten. Groups are searched separately so the
 # Memory admission floor cannot discard a page for missing unrelated synonyms.
+_CASH_PAYOUT = (
+    r"\b(?:pay|paid|payments?|payouts?|return(?:ed)?|distributions?)\b.{0,100}\b(?:shareholders?|stockholders?)\b|"
+    r"\b(?:shareholders?|stockholders?)\b.{0,100}\b(?:payments?|payouts?|distributions?)\b"
+)
+_FREE_CASH = (
+    r"\b(?:free|discretionary)\s+cash\b|"
+    r"\bcash\b.{0,100}\b(?:after|less|net\s+of)\b.{0,60}\b(?:capital|fixed\s+assets|investment|capex)\b"
+)
 _CONCEPTS: tuple[tuple[str, str], ...] = (
     (r"\b(?:geograph\w*|countries|regions|operates)\b", "geographic geographical countries regions segments divisions"),
     (r"\b(?:legal|litigation|lawsuits?|battles|proceedings)\b", "legal proceedings litigation contingencies lawsuits"),
@@ -201,6 +209,8 @@ _CONCEPTS: tuple[tuple[str, str], ...] = (
     (r"\bbalance sheets?\b", "consolidated balance sheets assets liabilities equity"),
     (r"\b(?:revenue|sales)\b", "revenue revenues sales"),
     (r"\b(?:dividend|dividends)\b", "dividends distributions shareholders"),
+    (_CASH_PAYOUT, "dividends repurchases common stock financing cash flows"),
+    (_FREE_CASH, "free cash flow operating capital spending expenditures"),
     (r"\b(?:inventory|inventories)\b", "inventory inventories"),
     (r"\b(?:lifo|fifo)\b", "lifo fifo inventory cost"),
     (
@@ -242,6 +252,11 @@ _QUERY_NOISE = frozenset([
     "shown",
     "within",
     "give",
+    "find",
+    "show",
+    "provide",
+    "compare",
+    "including",
     "response",
     "relying",
     "calculate",
@@ -306,15 +321,20 @@ def _queries(question: str) -> tuple[list[str], list[list[str]]]:
     return primary, concepts
 
 
-_STATEMENT_PREFIX = r"(?:condensed\s+)?(?:consolidated\s+)?statements?\s+(?:of\s+)?"
+_STATEMENT_MODIFIERS = r"(?:condensed\s+)?(?:consolidated\s+)?"
+_STATEMENT_PREFIX = _STATEMENT_MODIFIERS + r"statements?\s+(?:of\s+)?"
 _HEADINGS: tuple[tuple[str, str], ...] = (
+    (_FREE_CASH, r"free\s+cash\s+flows?\b"),
     (
         r"\b(?:ebitda|income|earnings|profit|cogs)\b|\bp\s*&\s*l\b|\bcost of (?:goods sold|sales)\b",
-        _STATEMENT_PREFIX + r"(?:income|earnings|operations|profit\s+and\s+loss)\b",
+        _STATEMENT_PREFIX
+        + r"(?:income|earnings|operations|profit\s+and\s+loss)\b|"
+        + _STATEMENT_MODIFIERS
+        + r"(?:income|earnings|operations|profit\s+and\s+loss)\s+statements?\b",
     ),
     (
         r"\b(?:ebitda|cash flows?|capex|depreciation|amortization)\b|\bd\s*&\s*a\b",
-        _STATEMENT_PREFIX + r"cash\s+flows?\b",
+        _STATEMENT_PREFIX + r"cash\s+flows?\b|" + _STATEMENT_MODIFIERS + r"cash\s+flows?\s+statements?\b",
     ),
     (
         r"\b(?:balance sheets?|assets|liabilities|equity)\b",
@@ -328,22 +348,54 @@ _HEADINGS: tuple[tuple[str, str], ...] = (
 )
 
 
+def _heading_position(text: str, heading: str) -> int | None:
+    pattern = r"(?:" + heading + r")[ \t]*(?:\(continued\))?[ \t]*[.:]?"
+    lines = (line.strip() for line in text.partition("\n")[2].splitlines() if line.strip())
+    return next((index for index, line in enumerate(lines) if re.fullmatch(pattern, line, re.IGNORECASE)), None)
+
+
 def _heading_score(question: str, text: str) -> float:
     # Financial questions often require a statement even when the requested
     # metric is absent (for example EBITDA). Reward an actual page heading, not
     # repeated mentions of the statement in narrative disclosures or exhibits.
-    opening = text.partition("\n")[2]
     return 8.0 * sum(
-        bool(re.search(query, question, re.IGNORECASE))
-        and bool(
-            re.search(
-                r"^[ \t]*(?:" + heading + r")[ \t]*(?:\(continued\))?[ \t]*[.:]?[ \t]*$",
-                opening,
-                re.IGNORECASE | re.MULTILINE,
-            )
-        )
+        bool(re.search(query, question, re.IGNORECASE)) and _heading_position(text, heading) is not None
         for query, heading in _HEADINGS
     )
+
+
+def _printed_page(question: str) -> str | None:
+    match = re.search(r"\bprinted\s+page\s+(\d+|[ivxlcdm]+)\b", question, re.IGNORECASE)
+    return match[1].casefold() if match else None
+
+
+def _matches_printed_page(text: str, number: str) -> bool:
+    # Use a number printed in the captured page itself. A numeric table cell or
+    # a mention in prose is not a page locator; never infer a physical offset.
+    lines = [line.strip() for line in text.partition("\n")[2].splitlines() if line.strip()]
+    return bool(lines) and bool(
+        re.fullmatch(
+            r"(?:page\s+)?[-\u2013\u2014]?\s*" + re.escape(number) + r"\s*[-\u2013\u2014]?", lines[-1], re.IGNORECASE
+        )
+    )
+
+
+def _heading_representatives(hits: list[MemoryHit], question: str, totals: list[float]) -> list[int]:
+    representatives: list[int] = []
+    for query, heading in _HEADINGS:
+        if not re.search(query, question, re.IGNORECASE):
+            continue
+        matches = [
+            (position, -totals[index], index)
+            for index, hit in enumerate(hits)
+            if (position := _heading_position(hit.text, heading)) is not None
+        ]
+        if matches:
+            # Keep a representative of each requested statement. Its title near
+            # the start of a page is stronger than the same words nested inside
+            # a note's table, even when that note repeats more question terms.
+            representatives.append(min(matches)[2])
+    return representatives
 
 
 def _rank_pages(hits: list[MemoryHit], primary: list[str], concepts: list[list[str]], question: str) -> list[MemoryHit]:
@@ -384,7 +436,7 @@ def _rank_pages(hits: list[MemoryHit], primary: list[str], concepts: list[list[s
     # for topic representatives before filling with the joint ranking. A long
     # multipart question must not let one rare term suppress every other topic.
     # This operates only on real native candidates, never inferred adjacent pages.
-    representatives: list[int] = []
+    representatives = _heading_representatives(hits, question, totals)
     for concept in concepts:
         topic_terms = set(concept)
         eligible = [
@@ -412,8 +464,179 @@ def _rank_pages(hits: list[MemoryHit], primary: list[str], concepts: list[list[s
                 score(index, topic_weights) + 3 * heading + _heading_score(" ".join(concept), hits[index].text)
             )
         representatives.append(max(eligible, key=topic_scores.__getitem__))
-    order = list(dict.fromkeys([*ranked[:4], *representatives[:6], *ranked[4:]]))
+    number = _printed_page(question)
+    located = [index for index in ranked if number is not None and _matches_printed_page(hits[index].text, number)]
+    representatives = list(dict.fromkeys(representatives))
+    order = list(dict.fromkeys([*located, *ranked[:4], *representatives[:6], *ranked[4:]]))
     return [hits[index] for index in order]
+
+
+_DOCUMENT_NOISE = frozenset([
+    "annual",
+    "report",
+    "reports",
+    "financial",
+    "statements",
+    "public",
+    "quality",
+    "form",
+    "inc",
+    "incorporated",
+    "corp",
+    "corporation",
+    "company",
+    "co",
+    "plc",
+    "ltd",
+    "limited",
+    "holdings",
+    "the",
+])
+_DOCUMENT_TOPICS = frozenset(term for _pattern, expansion in _CONCEPTS for term in expansion.split()) | _FORMS.keys()
+
+
+def _requested_documents(hits: list[MemoryHit], question: str) -> dict[str, set[str]]:
+    """Find label hints for additional native searches, never exclusive filters.
+
+    Callers have already checked PDF provenance. Labels remain arbitrary user
+    input: a matching prefix suggests a recovery query but cannot establish that
+    other documents are irrelevant. Different years remain useful search hints.
+    """
+    words = " " + " ".join(_raw_terms(question)) + " "
+    documents: dict[str, set[str]] = {}
+    for hit in hits:
+        label = hit.text.partition("\n")[0]
+        prefix = re.split(r"(?<!\d)(?:19|20|21)\d{2}(?!\d)", label, maxsplit=1)[0]
+        terms = [
+            term
+            for term in _raw_terms(prefix)
+            if len(term) > 1 and not term.isdecimal() and term not in _DOCUMENT_NOISE and term not in _QUERY_NOISE
+        ]
+        name = " ".join(terms)
+        # Avoid spending recovery calls on labels made only of financial topics.
+        # This is a query-expansion heuristic, not proof of document identity.
+        identity_terms = set(analyze_fts_query(name).split()) - _DOCUMENT_TOPICS
+        if identity_terms and f" {name} " in words:
+            documents.setdefault(name, set()).add(label)
+    return documents
+
+
+def _document_recovery_queries(hits: list[MemoryHit], requested: dict[str, set[str]]) -> list[str]:
+    labels = {hit.text.partition("\n")[0] for hit in hits}
+    frequencies = Counter(term for label in labels for term in set(analyze_fts_query(label).split()))
+    queries: list[str] = []
+    for name, documents in requested.items():
+        for label in sorted(documents):
+            # Native analysis preserves underscores. An issuer word misses pages
+            # whose only issuer occurrence is the complete document ID. Recover
+            # with a token from that label, preferring one that separates reports.
+            anchors = [
+                term for term in analyze_fts_query(label).split() if set(_raw_terms(term)).intersection(name.split())
+            ]
+            if anchors:
+                queries.append(min(anchors, key=lambda term: (frequencies[term], -len(term), term)))
+    return list(dict.fromkeys(queries))
+
+
+async def _pdf_hits(
+    memory: ScopedMemoryApplication, hits: list[MemoryHit], eligibility: dict[tuple[str, str, str], bool]
+) -> list[MemoryHit]:
+    from powercontext.builtin.runtime import GetMemoryEntryRequest
+
+    result: list[MemoryHit] = []
+    for hit in hits:
+        key = (hit.memory_ref.artifact_id, hit.entry_id, hit.entry_version_id)
+        if key not in eligibility:
+            citation = MemoryCitation(
+                memory_ref=hit.memory_ref, entry_id=hit.entry_id, entry_version_id=hit.entry_version_id
+            )
+            entry = (await memory.get(GetMemoryEntryRequest(citation=citation))).entry
+            eligibility[key] = len(entry.sources) == 1 and entry.sources[0].source_type == "pdf-page"
+        if eligibility[key]:
+            result.append(hit)
+    return result
+
+
+def _rank_documents(
+    hits: list[MemoryHit], primary: list[str], concepts: list[list[str]], question: str
+) -> list[MemoryHit]:
+    # The projection's first line is only a grouping hint. Source identity comes
+    # from Memory readback; labels do not prove which issuers a question requests.
+    documents: dict[str, list[MemoryHit]] = {}
+    coverage: dict[str, set[str]] = {}
+    query_terms = set(_terms(" ".join(primary)))
+    for hit in hits:
+        label = hit.text.partition("\n")[0]
+        documents.setdefault(label, []).append(hit)
+        coverage.setdefault(label, set()).update(query_terms.intersection(_terms(hit.text)))
+
+    # Words shared by most reports identify the topic, not a comparison subject.
+    # Keep them in page scoring, but do not let a minor wording variation such
+    # as "category" compete with the question's distinguishing document terms.
+    frequency = Counter(term for terms in coverage.values() for term in terms)
+    distinguishing = {term for term, count in frequency.items() if count <= max(1, len(documents) // 2)}
+    coverage = {label: terms.intersection(distinguishing) for label, terms in coverage.items()}
+
+    # Prefer documents whose query coverage is not a strict subset of another's.
+    # Body matches count as well as labels, so an opaque ID can contribute a
+    # comparison subject. Equal or complementary coverage shares result slots;
+    # a generic title cannot erase a table covering the remaining query terms.
+    preferred = {label for label, terms in coverage.items() if not any(terms < other for other in coverage.values())}
+    groups = [
+        _rank_pages(pages, primary, concepts, question) for label, pages in documents.items() if label in preferred
+    ]
+    ranked = [
+        group[index] for index in range(max(map(len, groups), default=0)) for group in groups if index < len(group)
+    ]
+    remaining = [hit for hit in hits if hit.text.partition("\n")[0] not in preferred]
+    # Keep all eligible evidence. Coverage controls ordering, never admission.
+    return [*ranked, *_rank_pages(remaining, primary, concepts, question)]
+
+
+async def _search_candidates(
+    memory: ScopedMemoryApplication, queries: list[str], question: str, limit: int
+) -> list[MemoryHit]:
+    from powercontext.builtin.runtime import SearchMemoryRequest
+
+    candidates: dict[tuple[str, str, str], MemoryHit] = {}
+    eligibility: dict[tuple[str, str, str], bool] = {}
+    candidate_limit = min(512, max(80, limit * 4))
+    remaining = 24 * candidate_limit
+    calls = 0
+
+    async def collect(query: str, count: int) -> int:
+        nonlocal remaining, calls
+        page = await memory.search(SearchMemoryRequest(query=query, mode="fts", limit=count))
+        remaining -= count
+        calls += 1
+        for hit in page.hits:
+            candidates.setdefault((hit.memory_ref.artifact_id, hit.entry_id, hit.entry_version_id), hit)
+        return len(page.hits)
+
+    # Reserve room for issuer recovery before global topic queries consume the
+    # budget. Topic-dense competing reports can otherwise fill every top-80 pool;
+    # a late label boost cannot recover evidence that never entered that pool.
+    initial = min(len(queries), 11)
+    for query in queries[:initial]:
+        await collect(query, candidate_limit)
+    initial_hits = await _pdf_hits(memory, list(candidates.values()), eligibility)
+    requested = _requested_documents(initial_hits, question)
+    recovery = _document_recovery_queries(initial_hits, requested)
+    saturated: list[str] = []
+    for query in recovery[: min(24 - calls, remaining // candidate_limit)]:
+        if await collect(query, candidate_limit) == candidate_limit:
+            saturated.append(query)
+    allocation = min(512, remaining // max(1, len(saturated)))
+    for query in saturated:
+        if calls == 24 or allocation <= candidate_limit:
+            break
+        await collect(query, allocation)
+    for query in queries[initial:]:
+        if calls == 24 or remaining < candidate_limit:
+            break
+        await collect(query, candidate_limit)
+
+    return await _pdf_hits(memory, list(candidates.values()), eligibility)
 
 
 async def search_pdf_pages(
@@ -426,7 +649,7 @@ async def search_pdf_pages(
     survives a call; reopening a Runtime or switching scopes cannot reuse evidence.
     Zero limit and empty/nonlexical questions return an empty tuple.
     """
-    from powercontext.builtin.runtime import GetMemoryEntryRequest, SearchMemoryRequest
+    from powercontext.builtin.runtime import GetMemoryEntryRequest
 
     if isinstance(limit, bool) or not isinstance(limit, int) or limit < 0:
         raise ValueError("limit must be a nonnegative integer")  # noqa: TRY003
@@ -438,21 +661,19 @@ async def search_pdf_pages(
     if not primary:
         return ()
     queries = [" ".join(primary), *(" ".join(group) for group in concepts)]
+    if (number := _printed_page(question)) is not None:
+        queries.insert(1, number)
     # Pair forms in one native query: its two-term admission rule accepts either
     # form. Separate groups avoid requiring a page to contain several synonyms.
     queries.extend(" ".join(_FORMS[term]) for term in primary if term in _FORMS)
     # Individual topical terms recover candidates excluded by multi-term coverage
     # gates. Bounded fanout keeps long natural-language instructions inexpensive.
     queries.extend(term for term in primary if not term.isdecimal())
-    queries = list(dict.fromkeys(queries))[:24]
-    candidates: dict[tuple[str, str, str], MemoryHit] = {}
-    for query in queries:
-        page = await memory.search(SearchMemoryRequest(query=query, mode="fts", limit=min(512, max(80, limit * 4))))
-        for hit in page.hits:
-            candidates.setdefault((hit.memory_ref.artifact_id, hit.entry_id, hit.entry_version_id), hit)
+    pool = await _search_candidates(memory, list(dict.fromkeys(queries))[:24], question, limit)
+    ranked = _rank_documents(pool, primary, concepts, question)
     result: list[MemoryCitation] = []
     seen: set[str] = set()
-    for hit in _rank_pages(list(candidates.values()), primary, concepts, question):
+    for hit in ranked:
         citation = MemoryCitation(
             memory_ref=hit.memory_ref, entry_id=hit.entry_id, entry_version_id=hit.entry_version_id
         )
