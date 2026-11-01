@@ -30,6 +30,7 @@ from powercontext.errors import (
 from powercontext.limits import MAX_SOURCE_TYPE_LENGTH
 from powercontext.sources.definitions import SourceDefinition, SourceDefinitionRegistry
 from powercontext.sources.models import Source, SourceMaterialization, SourceProjectionKey
+from powercontext.sources.projections import TEXT_EVIDENCE_PROJECTION_KEY, _restore_csv_row_order
 
 _JSON_VALUE = TypeAdapter(JsonValue)
 
@@ -156,6 +157,12 @@ class SourceObservation(Source):
     def projection(self, key: SourceProjectionKey, /) -> JsonValue:
         for projection in self.projections:
             if projection.key == key:
+                if (
+                    self.source_type == "csv-row"
+                    and self.definition_version == "1"
+                    and key == TEXT_EVIDENCE_PROJECTION_KEY
+                ):
+                    return _restore_csv_row_order(projection.value)
                 return projection.value
         raise InvalidSourceProjectionError(key.name, "key", "was not supplied by the worker")
 

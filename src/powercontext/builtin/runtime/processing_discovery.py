@@ -16,14 +16,58 @@
 
 from __future__ import annotations
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncConnection
 
 from powercontext.builtin.persistence.cursors import SourceCursorRepository
 from powercontext.builtin.persistence.database import AsyncDatabase
 from powercontext.builtin.persistence.processing_intents import ArtifactProcessingIntentRepository
 from powercontext.builtin.persistence.supervision import ArtifactProcessingFence, ArtifactProcessingLeaseRepository
-from powercontext.builtin.persistence.tables import PROFILE_POLICIES_TABLE, SOURCE_JOURNAL_HEADS_TABLE
+from powercontext.builtin.persistence.tables import PROFILE_POLICIES_TABLE, SOURCE_JOURNAL_HEADS_TABLE, SOURCES_TABLE
+
+
+async def source_count_scopes(
+    connection: AsyncConnection, scope_ids: tuple[str, ...], *, binding_name: str, threshold: int
+) -> frozenset[str]:
+    """Count persisted identities after this Family's successful Source cursor.
+
+    Include lineage-only rows and ignore payload size, trust updates and dirty
+    generations. The scope/position index bounds each read to unconsumed rows;
+    the capped count never examines more than the admission threshold.
+    """
+
+    if not scope_ids:
+        return frozenset()
+    eligible: set[str] = set()
+    cursors = await SourceCursorRepository().load_many(connection, scope_ids, binding_name)
+    heads = dict(
+        (
+            await connection.execute(
+                select(SOURCE_JOURNAL_HEADS_TABLE.c.scope_id, SOURCE_JOURNAL_HEADS_TABLE.c.position).where(
+                    SOURCE_JOURNAL_HEADS_TABLE.c.scope_id.in_(scope_ids)
+                )
+            )
+        )
+        .tuples()
+        .all()
+    )
+    for scope in scope_ids:
+        cursor = cursors.get(scope)
+        after = 0 if cursor is None else cursor.cursor.sequence
+        high = heads.get(scope)
+        # Also keeps arbitrarily large valid Python thresholds out of SQL LIMIT.
+        if high is None or int(high) - after < threshold:
+            continue
+        pending = (
+            select(SOURCES_TABLE.c.journal_position)
+            .where(SOURCES_TABLE.c.scope_id == scope, SOURCES_TABLE.c.journal_position > after)
+            .limit(threshold)
+            .subquery()
+        )
+        count = await connection.scalar(select(func.count()).select_from(pending))
+        if count is not None and count >= threshold:
+            eligible.add(scope)
+    return frozenset(eligible)
 
 
 async def enabled_profile_scopes(connection: AsyncConnection, scope_ids: tuple[str, ...]) -> frozenset[str]:
