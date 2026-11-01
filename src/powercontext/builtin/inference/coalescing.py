@@ -20,14 +20,9 @@ import asyncio
 import math
 from collections import OrderedDict
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
 
-from powercontext.builtin.artifacts.memory.canonical import canonical_embedding
 from powercontext.builtin.inference.models import EmbeddingResult, EmbeddingVector, InferenceUsage
 from powercontext.builtin.inference.protocols import EmbeddingModel, QueryEmbeddingModel, embed_query
-
-if TYPE_CHECKING:
-    from powercontext.builtin.artifacts.memory.models import EmbeddingProfile
 
 
 @dataclass(frozen=True, eq=False)
@@ -44,18 +39,10 @@ class _Completed:
     batch: _BatchUsage
 
 
-def _batch_usage(result: EmbeddingResult, expected: int, *, profile: EmbeddingProfile) -> _BatchUsage:
+def _batch_usage(result: EmbeddingResult, expected: int) -> _BatchUsage:
     if len(result.vectors) != expected:
         msg = "Embedding vector count does not match the request text count"
         raise ValueError(msg)
-    # Validate the complete response before publishing any shared result or
-    # caching its prefix. Native Memory rejects these values too; caching them
-    # first would keep serving an error even after the provider recovers.
-    for vector in result.vectors:
-        # Reuse Memory's profile rules, including positive dimensions and a
-        # non-zero norm for unit profiles. Discard the normalized copy: this
-        # wrapper must return and cache the provider's original valid vector.
-        canonical_embedding(vector, dimension=profile.dimension, normalization=profile.normalization)
     usage = result.usage
     return _BatchUsage(usage.requests, usage.input_tokens, usage.output_tokens)
 
@@ -90,7 +77,9 @@ class CoalescingEmbeddingModel:
     of a caller leaves shared provider work running. Cache entries are derived,
     process-local values; a new wrapper starts cold and does not alter durable
     Memory indexes. Query embeddings use a separate key space for asymmetric
-    providers, and share document work for symmetric providers.
+    providers, and share document work for symmetric providers. Successful
+    provider vectors are cached unchanged; downstream consumers enforce their
+    own profile requirements.
     """
 
     def __init__(
@@ -189,7 +178,7 @@ class CoalescingEmbeddingModel:
         texts = tuple(key[1] for key, _ in items)
         try:
             result = await embed_query(self._model, texts) if query else await self._model.embed(texts)
-            batch = _batch_usage(result, len(texts), profile=self.profile)
+            batch = _batch_usage(result, len(texts))
         except asyncio.CancelledError:
             for _, future in items:
                 future.cancel()
