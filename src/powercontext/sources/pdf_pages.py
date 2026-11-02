@@ -141,7 +141,9 @@ def _extract_page_text(page: PageObject) -> str:
             for stream in streams:
                 if not isinstance(stream.get_object(), StreamObject):
                     raise TypeError("PDF page Contents must contain only streams")  # noqa: TRY003
-    return page.extract_text() or ""
+    from powercontext.sources._pdf_actual_text import extract_actual_text
+
+    return extract_actual_text(page)
 
 
 class _PDFPageTextEvidence:
