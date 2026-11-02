@@ -52,6 +52,28 @@ def _resolve(value: PdfObject) -> PdfObject:
     return resolved
 
 
+def _decode_null_parameters(stream: StreamObject) -> None:
+    """Decode a reader-local stream with null dictionary entries treated as absent."""
+    if stream.get("/Subtype") == "/Image":
+        # Text extraction must not introduce image codecs or their dependencies.
+        return
+    parameters = stream.get("/DecodeParms")
+    if parameters is None or not isinstance(_resolve(parameters), NullObject):
+        return
+    filters = _resolve(stream.get("/Filter", NullObject()))
+    if not isinstance(filters, ArrayObject) or len(filters) < 2:
+        return
+    # pypdf 6.19 pairs multiple filters with only one explicit null parameter,
+    # silently leaving later filters unapplied. Prime its normal decoded cache
+    # using PDF's equivalent omitted-entry form, before any text/CMap extraction.
+    # Keep the original metadata object (including indirect nulls) and raw bytes.
+    del stream["/DecodeParms"]
+    try:
+        stream.get_data()
+    finally:
+        stream[NameObject("/DecodeParms")] = parameters
+
+
 def _validate_flate_stream(stream: StreamObject) -> None:
     filters = _resolve(stream.get("/Filter", ArrayObject()))
     filters = filters if isinstance(filters, ArrayObject) else ArrayObject([filters])
@@ -208,11 +230,13 @@ def validate_page_objects(pages: tuple[PdfObject, ...]) -> None:
         visited.add(id(value))
         if isinstance(value, StreamObject):
             _validate_flate_stream(value)
+            _decode_null_parameters(value)
         if isinstance(value, DictionaryObject):
             if "/ToUnicode" in value:
                 cmap = value["/ToUnicode"]
                 if isinstance(cmap, StreamObject) and id(cmap) not in cmaps:
                     _validate_flate_stream(cmap)
+                    _decode_null_parameters(cmap)
                     _validate_cmap(cmap.get_data())
                     cmaps.add(id(cmap))
             pending.extend(item for key, item in value.items() if key != "/Parent")
