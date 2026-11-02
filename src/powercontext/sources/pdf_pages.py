@@ -27,7 +27,7 @@ from typing import TYPE_CHECKING, Self
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from powercontext.artifacts import MemoryCitation
-from powercontext.builtin.artifacts.search import analyze_fts_query
+from powercontext.builtin.artifacts.search import analyze_fts_query, analyze_text
 from powercontext.sources.definitions import SourceDefinition, SourceProjection
 from powercontext.sources.models import Source, SourceMaterialization
 from powercontext.sources.projections import TEXT_EVIDENCE_PROJECTION_KEY, TextEvidence
@@ -35,6 +35,7 @@ from powercontext.sources.projections import TEXT_EVIDENCE_PROJECTION_KEY, TextE
 if TYPE_CHECKING:
     from pypdf import PageObject
 
+    from powercontext.artifacts import ArtifactRef
     from powercontext.builtin.artifacts.memory.models import MemoryHit
     from powercontext.builtin.runtime import ScopedMemoryApplication
 
@@ -557,8 +558,8 @@ async def _prefetch_pdf_eligibility(
     if observed.manifest_entry_count > 4 * len(pending):
         return
     # Bulk reads retain the same immutable entry/version identities and Source
-    # references as individual get calls. Only use them for provenance checks;
-    # candidate admission and ordering still come from the native search results.
+    # references as individual get calls. This helper only checks provenance;
+    # candidate recovery separately verifies the complete snapshot revision.
     snapshot = await list_entries()
     for record in snapshot.entries:
         entry = record.entry
@@ -617,9 +618,57 @@ def _rank_documents(
     ranked = [
         group[index] for index in range(max(map(len, groups), default=0)) for group in groups if index < len(group)
     ]
-    remaining = [hit for hit in hits if hit.text.partition("\n")[0] not in preferred]
-    # Keep all eligible evidence. Coverage controls ordering, never admission.
-    return [*ranked, *_rank_pages(remaining, primary, concepts, question)]
+    remaining = _rank_pages(
+        [hit for hit in hits if hit.text.partition("\n")[0] not in preferred], primary, concepts, question
+    )
+    requested = {label for labels in _requested_documents(hits, question).values() for label in labels}
+    if preferred.intersection(requested):
+        # Keep explicit issuer queries focused on the named reports. Complementary
+        # reports already in the preferred group still share its result slots.
+        return [*ranked, *remaining]
+    # Coverage is only a document preference: a minor wording difference can
+    # otherwise put every page of a repeated narrative before a real statement.
+    # Preserve strong preferred hits while admitting complementary evidence
+    # before the caller's top-k cut, just as page-level topic selection does.
+    return [*ranked[:4], *remaining[:6], *ranked[4:], *remaining[6:]]
+
+
+async def _complete_pdf_pool(
+    memory: ScopedMemoryApplication, hits: list[MemoryHit], queries: list[str], memory_ref: ArtifactRef
+) -> list[MemoryHit]:
+    """Recover truncated lexical candidates from the same public Memory snapshot."""
+    from powercontext.builtin.artifacts.memory.models import MemoryHit
+
+    list_entries = getattr(memory, "list", None)
+    if not callable(list_entries):
+        return hits
+    snapshot = await list_entries()
+    # A concurrent write must not change the identity or state of the search
+    # snapshot. Preserve its exact native citations if the head has advanced.
+    if snapshot.memory_ref != memory_ref:
+        return hits
+    query_terms = set(analyze_fts_query(" ".join(queries)).split())
+    candidates = {(hit.memory_ref.artifact_id, hit.entry_id, hit.entry_version_id): hit for hit in hits}
+    for record in snapshot.entries:
+        entry = record.entry
+        key = (record.memory_ref.artifact_id, entry.entry_id, entry.entry_version_id)
+        if (
+            key in candidates
+            or record.state != "active"
+            or len(entry.sources) != 1
+            or entry.sources[0].source_type != "pdf-page"
+            or not query_terms.intersection(analyze_text(entry.text).split())
+        ):
+            continue
+        candidates[key] = MemoryHit(
+            memory_ref=record.memory_ref,
+            entry_id=entry.entry_id,
+            entry_version_id=entry.entry_version_id,
+            text=entry.text,
+            score=0.0,
+            matched_by=(),
+        )
+    return list(candidates.values())
 
 
 async def _search_candidates(
@@ -632,12 +681,14 @@ async def _search_candidates(
     candidate_limit = min(512, max(80, limit * 4))
     remaining = 24 * candidate_limit
     calls = 0
+    truncated = False
 
     async def collect(query: str, count: int) -> int:
-        nonlocal remaining, calls
+        nonlocal remaining, calls, truncated
         page = await memory.search(SearchMemoryRequest(query=query, mode="fts", limit=count))
         remaining -= count
         calls += 1
+        truncated |= len(page.hits) == count
         for hit in page.hits:
             candidates.setdefault((hit.memory_ref.artifact_id, hit.entry_id, hit.entry_version_id), hit)
         return len(page.hits)
@@ -665,15 +716,21 @@ async def _search_candidates(
             break
         await collect(query, candidate_limit)
 
-    return await _pdf_hits(memory, list(candidates.values()), eligibility)
+    hits = await _pdf_hits(memory, list(candidates.values()), eligibility)
+    return (
+        await _complete_pdf_pool(memory, hits, queries, next(iter(candidates.values())).memory_ref)
+        if truncated
+        else hits
+    )
 
 
 async def search_pdf_pages(
     memory: ScopedMemoryApplication, question: str, limit: int = 10
 ) -> tuple[MemoryCitation, ...]:
-    """Find distinct captured pages through scoped, public Memory search/get APIs.
+    """Find distinct captured pages through scoped, public Memory APIs.
 
     Search is offline FTS with bounded query expansion and local lexical reranking.
+    Saturated searches can recover pages from the same current Memory snapshot.
     Only exact identities returned by Memory are eligible. No side index or cache
     survives a call; reopening a Runtime or switching scopes cannot reuse evidence.
     Zero limit and empty/nonlexical questions return an empty tuple.
