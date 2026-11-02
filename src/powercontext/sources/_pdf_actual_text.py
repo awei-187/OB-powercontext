@@ -184,8 +184,8 @@ class MarkedText:
                 self.modified.append((values, index, value))
                 values[index] = NumberObject(0)
             elif isinstance(value, (bytes, TextStringObject)):
-                if not value:
-                    continue
+                # An empty string still anchors the replacement at this show.
+                # Its original glyph advance remains zero; EMC adds no fallback.
                 glyphs = str(value) if isinstance(value, str) else value.decode("latin-1")
                 if isinstance(self.font, DictionaryObject):
                     font = self.font_cache.get(id(self.font))
