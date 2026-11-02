@@ -87,6 +87,23 @@ def normalize_text(value: str) -> str:
     return normalized
 
 
+def normalize_entry_text(value: str, *, kind: str, source_refs: Sequence[object]) -> str:
+    """Canonicalize captured PDF entries without truncating immutable bodies.
+
+    MemoryService checks newly written oversized bodies against the authoritative
+    full-page projection. This pure rule also reconstructs accepted immutable
+    hashes after restart, without requiring another Source read.
+    """
+
+    if kind == "source-evidence" and len(source_refs) == 1:
+        reference = source_refs[0]
+        if isinstance(reference, Mapping) and reference.get("source_type") == "pdf-page":
+            source_id = reference.get("source_id")
+            if isinstance(source_id, str) and source_id.strip():
+                return _normalize_non_empty_string(value, "memory entry text")
+    return normalize_text(value)
+
+
 def normalize_query(value: str) -> str:
     """Normalize one transient retrieval query.
 
@@ -158,10 +175,12 @@ def entry_content_bytes(
 ) -> bytes:
     """Return canonical content bytes for an immutable entry version."""
 
+    normalized_kind = normalize_kind(kind)
+    normalized_sources = normalize_refs(source_refs)
     return canonical_json({
-        "kind": normalize_kind(kind),
-        "text": normalize_text(text),
-        "source_refs": normalize_refs(source_refs),
+        "kind": normalized_kind,
+        "text": normalize_entry_text(text, kind=normalized_kind, source_refs=normalized_sources),
+        "source_refs": normalized_sources,
         "artifact_refs": normalize_refs(artifact_refs),
     })
 

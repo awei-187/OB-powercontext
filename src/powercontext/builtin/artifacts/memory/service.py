@@ -37,6 +37,7 @@ from powercontext.builtin.artifacts.memory.canonical import (
     entry_content_bytes,
     entry_content_hash,
     memory_content_bytes,
+    normalize_entry_text,
     normalize_kind,
     normalize_query,
     normalize_reason,
@@ -1654,18 +1655,43 @@ class MemoryService:
             sources = (*previous.sources, *candidate_source_refs)
             artifacts = (*previous.artifacts, *candidate_artifacts)
         try:
-            return self._entry_material(
+            material = self._entry_material(
                 kind=candidate.kind,
                 text=candidate.text,
                 sources=sources,
                 artifacts=artifacts,
             )
+            unchanged = previous is not None and (
+                material.kind == previous.kind
+                and material.text == previous.text
+                and material.sources == previous.sources
+                and material.artifacts == previous.artifacts
+            )
+            if len(material.text.encode("utf-8")) > 8192 and not unchanged:
+                # Source ownership was resolved above. Read its in-memory public
+                # projection, without fetching entries or changing historical hashes.
+                content = next(
+                    (
+                        _source_gate_content(source, self._source_resolver)
+                        for source in candidate_sources or allowed_sources
+                        if self._source_refs((source,)) == material.sources
+                    ),
+                    None,
+                )
+                refs = tuple(source.model_dump(mode="json") for source in material.sources)
+                if (
+                    content is None
+                    or normalize_entry_text(content, kind=material.kind, source_refs=refs) != material.text
+                ):
+                    # Derived or unrelated text keeps the ordinary size bound.
+                    normalize_text(material.text)
         except (TypeError, ValueError) as error:
             raise InvalidMemoryCandidateError(
                 "canonical",
                 str(error),
                 canonical_code=canonical_error_code(error),
             ) from error
+        return material
 
     async def _canonical_candidate_sources(
         self,
@@ -1717,11 +1743,11 @@ class MemoryService:
         artifacts: Sequence[ArtifactRef],
     ) -> _EntryMaterial:
         normalized_kind = normalize_kind(kind)
-        normalized_text = normalize_text(text)
         canonical_sources = _canonical_source_refs(sources)
         canonical_artifacts = _canonical_artifact_refs(artifacts)
         source_refs = tuple(source.model_dump(mode="json") for source in canonical_sources)
         artifact_refs = tuple(artifact.model_dump(mode="json") for artifact in canonical_artifacts)
+        normalized_text = normalize_entry_text(text, kind=normalized_kind, source_refs=source_refs)
         content_bytes = entry_content_bytes(
             kind=normalized_kind,
             text=normalized_text,

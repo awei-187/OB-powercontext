@@ -314,7 +314,10 @@ def _terms(text: str) -> list[str]:
 
 
 def _queries(question: str) -> tuple[list[str], list[list[str]]]:
-    primary = list(dict.fromkeys(t for t in _raw_terms(analyze_fts_query(question)) if t not in _QUERY_NOISE))
+    # Native terms include underscore identifiers and encoded CJK tokens. Keep
+    # those units intact for admission, while retaining the fiscal-year rewrite.
+    native = re.sub(r"\bfy\s*(\d{4})\b", r"\1", analyze_fts_query(question))
+    primary = list(dict.fromkeys(t for t in native.split() if t not in _QUERY_NOISE))
     concepts: list[list[str]] = [
         terms.split() for pattern, terms in _CONCEPTS if re.search(pattern, question, re.IGNORECASE)
     ]
@@ -538,11 +541,37 @@ def _document_recovery_queries(hits: list[MemoryHit], requested: dict[str, set[s
     return list(dict.fromkeys(queries))
 
 
+async def _prefetch_pdf_eligibility(
+    memory: ScopedMemoryApplication, hits: list[MemoryHit], eligibility: dict[tuple[str, str, str], bool]
+) -> None:
+    pending = [
+        hit for hit in hits if (hit.memory_ref.artifact_id, hit.entry_id, hit.entry_version_id) not in eligibility
+    ]
+    # Some public adapters expose only search/get. Keep their exact read path,
+    # and avoid loading a whole large scope for a small selective search.
+    list_entries = getattr(memory, "list", None)
+    capacity = getattr(memory, "capacity", None)
+    if len(pending) < 32 or not callable(list_entries) or not callable(capacity):
+        return
+    observed = await capacity()
+    if observed.manifest_entry_count > 4 * len(pending):
+        return
+    # Bulk reads retain the same immutable entry/version identities and Source
+    # references as individual get calls. Only use them for provenance checks;
+    # candidate admission and ordering still come from the native search results.
+    snapshot = await list_entries()
+    for record in snapshot.entries:
+        entry = record.entry
+        key = (record.memory_ref.artifact_id, entry.entry_id, entry.entry_version_id)
+        eligibility[key] = len(entry.sources) == 1 and entry.sources[0].source_type == "pdf-page"
+
+
 async def _pdf_hits(
     memory: ScopedMemoryApplication, hits: list[MemoryHit], eligibility: dict[tuple[str, str, str], bool]
 ) -> list[MemoryHit]:
     from powercontext.builtin.runtime import GetMemoryEntryRequest
 
+    await _prefetch_pdf_eligibility(memory, hits, eligibility)
     result: list[MemoryHit] = []
     for hit in hits:
         key = (hit.memory_ref.artifact_id, hit.entry_id, hit.entry_version_id)
