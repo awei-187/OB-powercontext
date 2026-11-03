@@ -332,24 +332,27 @@ _STATEMENT_PREFIX = _STATEMENT_MODIFIERS + r"statements?\s+(?:of\s+)?"
 _HEADINGS: tuple[tuple[str, str], ...] = (
     (_FREE_CASH, r"free\s+cash\s+flows?\b"),
     (
-        r"\b(?:ebitda|income|earnings|profit|cogs)\b|\bp\s*&\s*l\b|\bcost of (?:goods sold|sales)\b",
+        r"\b(?:ebitda|income|earnings|profit|cogs)\b|\bp\s*&\s*l\b|\bcost of (?:goods sold|sales)\b|"
+        r"\b(?:inventory|asset) turnover\b|\b(?:gross|operating|net) margin\b|\bcapital intens\w*\b",
         _STATEMENT_PREFIX
         + r"(?:income|earnings|operations|profit\s+and\s+loss)\b|"
         + _STATEMENT_MODIFIERS
         + r"(?:income|earnings|operations|profit\s+and\s+loss)\s+statements?\b",
     ),
     (
-        r"\b(?:ebitda|cash flows?|capex|depreciation|amortization)\b|\bd\s*&\s*a\b",
+        r"\b(?:ebitda|cash flows?|capex|depreciation|amortization)\b|\bd\s*&\s*a\b|\bcapital intens\w*\b",
         _STATEMENT_PREFIX + r"cash\s+flows?\b|" + _STATEMENT_MODIFIERS + r"cash\s+flows?\s+statements?\b",
     ),
     (
-        r"\b(?:balance sheets?|assets|liabilities|equity)\b",
+        r"\b(?:balance sheets?|assets|liabilities|equity)\b|\b(?:inventory|asset) turnover\b|"
+        r"\b(?:quick|current|cash) ratio\b|\b(?:liquidity|capital intens\w*)\b",
         r"(?:condensed\s+)?(?:consolidated\s+)?balance\s+sheets?\b|" + _STATEMENT_PREFIX + r"financial\s+position\b",
     ),
     (r"\b(?:legal|litigation|lawsuits?|battles|proceedings)\b", r"(?:item\s+3[.\s]+)?legal\s+proceedings\b"),
     (
-        r"\b(?:geograph\w*|countries|regions|operates)\b",
-        r"(?:our\s+)?(?:divisions|reportable\s+segments|business\s+segments)\b",
+        r"\b(?:geograph\w*|countries|regions|operates|segments?|divisions?|categor(?:y|ies))\b",
+        r"(?:our\s+)?(?:divisions|reportable\s+segments|business\s+segments)\b|"
+        r"(?:summary\s+of\s+)?(?:business\s+|reportable\s+)?segments?(?:\s+information|\s+data)?\b",
     ),
 )
 
@@ -404,9 +407,69 @@ def _heading_representatives(hits: list[MemoryHit], question: str, totals: list[
     return representatives
 
 
+_RANKING_NOISE = frozenset([
+    "if",
+    "not",
+    "useful",
+    "relevant",
+    "meaningful",
+    "conventional",
+    "company",
+    "explain",
+    "roughly",
+    "many",
+    "times",
+    "reasonably",
+    "healthy",
+    "profile",
+    "primary",
+    "based",
+    "data",
+])
+
+
+# Financial ratios describe relationships whose names may never appear in the
+# underlying tables. These components affect local ranking only, not admission.
+_FINANCIAL_COMPONENTS: tuple[tuple[str, str], ...] = (
+    (r"\b(?:gross margin|inventory turnover|cost of goods sold|cogs)\b", "cost products goods sold sales gross profit"),
+    (r"\b(?:inventory turnover|days (?:of )?inventory)\b", "inventory inventories assets balance sheets"),
+    (
+        r"\b(?:quick|current|cash) ratio\b|\bliquidity\b",
+        "current assets liabilities cash equivalents marketable securities receivables",
+    ),
+    (r"\bcapital intens\w*\b|\basset turnover\b", "property plant equipment assets sales depreciation"),
+    (r"\bcapital intens\w*\b", "capital expenditures spending revenue revenues sales"),
+    (r"\b(?:debt|borrowings)\b", "debt borrowings obligations loans current long term"),
+    (
+        r"\b(?:segments?|divisions?|categor(?:y|ies))\b",
+        "segment segments products services revenue revenues disaggregated sales",
+    ),
+    (r"\b(?:customers?|clients?)\b", "customer customers client clients buyers"),
+    (r"\b(?:customers?|clients?)\b", "contract contracts counterparties procurement"),
+    (r"\b(?:cyclicality|cyclical|cycles)\b", "cyclicality cyclical cycles demand economic conditions"),
+)
+
+
+def _section_terms(line: str) -> set[str]:
+    # A numbered note label is a heading; a numeric table row is not. Longer
+    # labels need an explicit colon so wrapped narrative does not gain a bonus.
+    label = re.sub(r"^\s*note\s+\d+[.:]?\s*", "", line, flags=re.IGNORECASE).strip()
+    terms = _terms(label)
+    maximum = 16 if label.endswith(":") else 6
+    if not 0 < len(terms) <= maximum or any(term.isdecimal() for term in terms):
+        return set()
+    return set(terms)
+
+
 def _rank_pages(hits: list[MemoryHit], primary: list[str], concepts: list[list[str]], question: str) -> list[MemoryHit]:
     """BM25 with bounded complementary evidence for separately recognized topics."""
-    primary = list(dict.fromkeys(_LEMMA.get(term, term) for term in primary))
+    question = re.sub(r"(?<=\w)[-\u2010-\u2014](?=\w)", " ", question)
+    question = re.sub(r"\bcashflow(s?)\b", r"cash flow\1", question, flags=re.IGNORECASE)
+    primary = list(dict.fromkeys(_LEMMA.get(term, term) for term in primary if term not in _RANKING_NOISE))
+    concepts = [
+        *concepts,
+        *(terms.split() for pattern, terms in _FINANCIAL_COMPONENTS if re.search(pattern, question, re.IGNORECASE)),
+    ]
     concepts = [list(dict.fromkeys(_LEMMA.get(term, term) for term in group)) for group in concepts]
     texts = [Counter(_terms(hit.text.partition("\n")[2])) for hit in hits]
     lengths = [sum(terms.values()) for terms in texts]
@@ -415,10 +478,7 @@ def _rank_pages(hits: list[MemoryHit], primary: list[str], concepts: list[list[s
     for terms in texts:
         frequencies.update(terms.keys())
     labels = [set(_terms(hit.text.partition("\n")[0])) for hit in hits]
-    headings = [
-        [set(_terms(line)) for line in hit.text.partition("\n")[2].splitlines() if 0 < len(_terms(line)) <= 6]
-        for hit in hits
-    ]
+    headings = [[_section_terms(line) for line in hit.text.partition("\n")[2].splitlines()] for hit in hits]
 
     def score(index: int, weights: dict[str, float]) -> float:
         counts = texts[index]
@@ -435,7 +495,12 @@ def _rank_pages(hits: list[MemoryHit], primary: list[str], concepts: list[list[s
     for concept in concepts:
         for term in concept:
             weights.setdefault(term, 0.7)
-    totals = [score(index, weights) + _heading_score(question, hit.text) for index, hit in enumerate(hits)]
+    totals = [
+        score(index, weights)
+        + _heading_score(question, hit.text)
+        + 2.0 * min(4.0, max((sum(weights.get(term, 0.0) for term in line) for line in headings[index]), default=0.0))
+        for index, hit in enumerate(hits)
+    ]
     ranked = sorted(range(len(hits)), key=lambda index: (-totals[index], index))
 
     # Keep the strongest joint matches first, then reserve at most six positions
