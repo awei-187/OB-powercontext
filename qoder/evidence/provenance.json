@@ -51,12 +51,12 @@
   ],
   "qoder_uid": "01a17306-8a15-783a-ad49-cdb181a86716",
   "site_url": "https://yanxu-research-022wcl7311d.qoder.zone",
-  "submission_status": "not submitted",
+  "submission_status": "Submitted successfully; evaluation pending; see submission.json",
   "repository_checkpoint": {
     "url": "https://github.com/awei-187/OB-powercontext/tree/competition/qoder-yanxu/qoder",
-    "commit": "c222c27fd1c6392d66e5416ddcecea13f51aea3c",
+    "commit": "7cabd5e7e5352bbe35de2e248a7c50eff4ca7a07",
     "verification": "git ls-remote origin refs/heads/competition/qoder-yanxu matches local HEAD",
-    "stage": "M2 baseline, not final submission"
+    "stage": "Final submitted implementation"
   },
   "qoder_uid_source": "Provided by account holder in this competition conversation on 2026-11-02"
 }

@@ -339,7 +339,7 @@ qoder/
 | **M1** | PROJECT.md 基线；真实 PowerContext 持久化 smoke test（跨进程）；可启动纵向功能（建项目 → 录入 → 保存交接 → 恢复 → 出报告）；验证结果写入 DEVELOPMENT.md | **已完成**（界面可用性部分被 M2 独立验收打回，见 DEVELOPMENT §6 更正） |
 | **M2** | 修复独立验收发现的 P0 与 8 项后端问题；界面精修（首屏信息层级、易懂按钮、loading/错误/空状态、窄屏、技术详情折叠）；补 21 个回归与契约测试；修订文档；准备展示页源码 | **已完成**（协调人独立复验：43 tests passed、四个边界探针修复正确、可见 Edge 真实点击走完全流程，见 evidence/independent-m2-*.json） |
 | **M3** | 通过 Qoder Sites 发布展示网站 | **已完成**：<https://yanxu-research-022wcl7311d.qoder.zone>（public；发布事实见 evidence/publication.json） |
-| M4 | 证据包整理（可见浏览器截图 / 日志 / Qoder 开发过程记录），提交材料 | 待做 |
+| M4 | 证据包整理（可见浏览器截图 / 日志 / Qoder 开发过程记录），提交材料 | 已完成；正式提测成功，评分待执行，见 evidence/submission.json |
 
 ---
 

@@ -1,0 +1,19 @@
+{
+  "submitted_at_displayed": "2026-11-03 01:05",
+  "timezone": "America/Phoenix",
+  "competition": "Qoder × OceanBase",
+  "question_id": "600078",
+  "repository": "https://github.com/awei-187/OB-powercontext",
+  "branch": "competition/qoder-yanxu",
+  "submitted_commit": "7cabd5e7e5352bbe35de2e248a7c50eff4ca7a07",
+  "website": "https://yanxu-research-022wcl7311d.qoder.zone",
+  "qoder_uid": "01a17306-8a15-783a-ad49-cdb181a86716",
+  "result": "提测成功",
+  "record_status": "待执行",
+  "score": null,
+  "submission_count": 1,
+  "record_url": "https://open.oceanbase.com/train/TestRecord?questionId=600078",
+  "evidence": ["ui/submission-success.png", "ui/submission-record.png", "submission-record.txt"],
+  "materials": "The platform form exposes repository, commit, branch and website fields only. UID, development screenshots, runbook and verification examples are included under qoder/ in the submitted commit, indexed by SUBMISSION.md and README.md.",
+  "scope": "Development, public Qoder Sites publication and formal submission completed. Evaluation has not completed and no score is claimed. Subsequent commits only archive the receipt and update delivery status; the submitted implementation commit remains fixed above."
+}

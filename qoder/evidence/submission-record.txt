@@ -1,0 +1,23 @@
+提测时间
+
+代码仓库地址
+
+Branch
+
+Commit id
+
+任务状态
+
+成绩
+
+结果
+
+2026-11-03 01:05
+
+https://github.com/awei-187/OB-powercontext
+
+	competition/qoder-yanxu
+
+7cabd5e7e5352bbe35de2e248a7c50eff4ca7a07
+
+	待执行	-	-

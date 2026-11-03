@@ -1,5 +1,5 @@
 {
-  "status": "M3 independent backend, seeded persistence and desktop workflow verified; final repository delivery, Qoder UID and competition submission pending",
+  "status": "Required implementation, evidence, public Qoder Sites and formal submission complete; evaluation pending",
   "core_scenarios": [
     {
       "id": "persist-resume",

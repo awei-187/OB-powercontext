@@ -1,13 +1,13 @@
 {
   "audit_date": "2026-11-03",
-  "overall": "Application, reproduction, Qoder development evidence and public Qoder Sites verified; final push and formal submission pending",
+  "overall": "Required delivery complete and formally submitted; evaluation pending, no score claimed",
   "scope": "Qoder development, genuine PowerContext integration, Qoder Sites public website, accessible repository, reproducible example and submission materials",
   "requirements": [
     {
       "requirement": "Official competition repository ancestry and qoder directory",
       "status": "verified",
       "evidence": "M2 commit c222c27fd1c6392d66e5416ddcecea13f51aea3c descends from d647275c308e09b7b623f322a26f5c4e85734fb0; all project changes under qoder/",
-      "remaining": "Verify ancestry of final submitted commit"
+      "remaining": "None; final submitted commit ancestry verified"
     },
     {
       "requirement": "Primary development performed in Qoder",
@@ -56,14 +56,19 @@
     },
     {
       "requirement": "Evaluator-accessible repository",
-      "status": "public repository verified through GitHub API; M2 baseline pushed",
-      "evidence": "origin https://github.com/awei-187/OB-powercontext.git; remote branch matched c222c27fd1c6392d66e5416ddcecea13f51aea3c",
-      "remaining": "Commit and push final reviewed delivery"
+      "status": "verified public and pushed",
+      "evidence": "Remote branch independently matched submitted commit 7cabd5e7e5352bbe35de2e248a7c50eff4ca7a07",
+      "remaining": "None"
     },
     {
       "requirement": "Competition submission",
-      "status": "not submitted",
-      "remaining": "Supply verified website URL, repository commit, Qoder UID, reproduction instructions and development evidence through actual competition entry"
+      "status": "submitted successfully; evaluation pending",
+      "remaining": "External evaluator result only; no further delivery work required",
+      "evidence": [
+        "submission.json",
+        "ui/submission-success.png",
+        "ui/submission-record.png"
+      ]
     }
   ],
   "data_exclusion": {

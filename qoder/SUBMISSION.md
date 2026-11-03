@@ -45,4 +45,8 @@
 
 ## 提交状态
 
-材料已就绪，网站第二次发布及复现说明已独立核对。平台提测使用本目录所在的最终 Git Commit ID、上述分支和网站网址；Qoder UID 与其余材料均包含在本目录。正式回执另存 `evidence/submission.json`，没有回执前不宣称已提交或已得分。
+已于 2026-11-03 01:05（America/Phoenix）正式提测，平台显示「提测成功」；记录状态为「待执行」，尚无成绩。
+
+提交的固定版本为 `7cabd5e7e5352bbe35de2e248a7c50eff4ca7a07`。平台表单只有仓库、Commit、Branch 和作品链接字段；Qoder UID、运行说明、验证样例及开发截图均随该版本包含在 `qoder/` 下。
+
+[正式回执](evidence/submission.json) · [提测记录](https://open.oceanbase.com/train/TestRecord?questionId=600078)。后续归档回执的提交不改变上述已提测版本。
