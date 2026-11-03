@@ -1,0 +1,61 @@
+{
+  "status": "M1 independently reviewed: existing 15 tests pass; visible UI and boundary failures require M2 fixes; final acceptance pending",
+  "core_scenarios": [
+    {
+      "id": "persist-resume",
+      "requirement": "Save project decisions and next actions through real PowerContext, restart services, resume in a fresh browser session, and verify exact content and references."
+    },
+    {
+      "id": "project-isolation",
+      "requirement": "Create two projects with conflicting decisions; recovery, search and reports must only use the selected project's context."
+    },
+    {
+      "id": "revision-history",
+      "requirement": "Revise a decision; current recovery uses the new revision while the previous revision remains traceable."
+    },
+    {
+      "id": "source-traceability",
+      "requirement": "Every reported decision or progress item links to a readable original record; user-provided URLs are not treated as independently verified sources."
+    },
+    {
+      "id": "handoff-roundtrip",
+      "requirement": "Save a handoff, open a new session, recover unfinished work and mark an action complete; a subsequent handoff reflects that state."
+    },
+    {
+      "id": "service-failure",
+      "requirement": "When PowerContext is unavailable, the UI reports failure and does not claim that unsaved data is persisted."
+    },
+    {
+      "id": "report-export",
+      "requirement": "Export readable Markdown with project scope, reporting period, completed work, pending work, decisions and source references."
+    },
+    {
+      "id": "clean-reproduction",
+      "requirement": "Document and exercise installation/startup and a complete seeded scenario from an empty application data directory."
+    }
+  ],
+  "delivery_gates": [
+    "Code descends from official 2026-competition-ecosystem and project assets live under qoder/.",
+    "Primary implementation and fixes are performed in Qoder with retained visible development records and account UID.",
+    "Qoder Sites project website is published and accessible without login.",
+    "Website includes problem, functions, actual demo images or video, repository link and reproduction instructions.",
+    "Repository and fixed commit are accessible to the evaluator.",
+    "Competition submission includes website, repository, Qoder UID, runbook, verification fixtures and development evidence."
+  ],
+  "measurement_policy": "Synthetic example data is labeled as such. Measured timings describe the actual measured task and machine. No invented user counts, feedback or productivity claims.",
+  "independent_review": {
+    "date": "2026-11-02",
+    "test_command": "D:\\conda\\envs\\oceanbase\\python.exe -m pytest -q",
+    "existing_tests": "15 passed, process exit 0",
+    "boundary_results": "independent-review-m1.json",
+    "visible_ui": "ui/m1-ledger.png",
+    "blocking_findings": [
+      "Hidden dialogs and drawer render over the initial page",
+      "Acknowledgement silently accepts an unseen latest handoff revision",
+      "Resolved/done/dropped items appear actionable during restore",
+      "Exact revision route ignores revision",
+      "Report accepts reversed dates"
+    ],
+    "disposition": "M2 corrective task sent to Qoder; no final acceptance or publication claimed"
+  }
+}

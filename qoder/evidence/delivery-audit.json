@@ -1,0 +1,53 @@
+{
+  "audit_date": "2026-11-02",
+  "overall": "incomplete; M2 implementation outcome and visible UI acceptance pending",
+  "scope": "Qoder development, genuine PowerContext integration, Qoder Sites public website, accessible repository, reproducible example and submission materials",
+  "requirements": [
+    {
+      "requirement": "Official competition repository ancestry and qoder directory",
+      "status": "verified for current checkout; delivery commit pending",
+      "evidence": "HEAD is d647275c308e09b7b623f322a26f5c4e85734fb0 on competition/qoder-yanxu; git status reports new project files only under qoder/",
+      "remaining": "Commit final reviewed project and verify published commit ancestry"
+    },
+    {
+      "requirement": "Primary development performed in Qoder",
+      "status": "development evidence captured",
+      "evidence": ["qoder/01-task-start.png", "qoder/01-task-start.txt", "qoder/02-m2-task-start.png", "qoder/02-m2-task-start.txt"],
+      "remaining": "Capture completed M2 development record and required Qoder UID"
+    },
+    {
+      "requirement": "PowerContext participates in core functionality",
+      "status": "integration verified; application correctness incomplete",
+      "evidence": ["powercontext/smoke-persistence.md", "independent-review-m1.json", "../app/memory.py", "../tests/test_api_e2e.py"],
+      "remaining": "Revalidate handoff revisions, actionable state, report semantics and full visible workflow after M2"
+    },
+    {
+      "requirement": "Reproducible install, run and example",
+      "status": "draft available; clean final reproduction pending",
+      "evidence": ["../README.md", "../scripts/seed_demo.py", "dependencies/pip-freeze-after.txt"],
+      "remaining": "Validate corrected Windows instructions, dependency versions, seeded inputs, expected outputs and exported report"
+    },
+    {
+      "requirement": "Qoder Sites website accessible without login",
+      "status": "not published",
+      "remaining": "Prepare and review showcase, publish via Qoder Sites, verify public access and real screenshots"
+    },
+    {
+      "requirement": "Evaluator-accessible repository",
+      "status": "remote configured; project not committed or pushed",
+      "evidence": "origin https://github.com/awei-187/OB-powercontext.git; HEAD remains skeleton commit",
+      "remaining": "Review exact publication contents, push final project branch to origin and verify evaluator access"
+    },
+    {
+      "requirement": "Competition submission",
+      "status": "not submitted",
+      "remaining": "Supply verified website URL, repository commit, Qoder UID, reproduction instructions and development evidence through actual competition entry"
+    }
+  ],
+  "data_exclusion": {
+    "verified": ["qoder/data/demo/registry.db", "qoder/.tmp/ui-server.log"],
+    "method": "git check-ignore returned both paths",
+    "limitation": "This is not a complete publication-content or credential audit"
+  },
+  "ui_control": "Stopped after user Escape; no resumed UI observation or M2 completion claimed"
+}

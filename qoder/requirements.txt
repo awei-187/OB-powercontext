@@ -1,0 +1,13 @@
+# 研续 Yanxu · 运行依赖
+#
+# 已验证环境：Windows 11 / Python 3.11.17（D:\conda\envs\oceanbase）
+# 安装：python -m pip install -r requirements.txt
+#
+# powercontext[client] 提供 PowerContextClient 与 httpx；
+# powercontext[server] 提供 create_server_app、fastapi、uvicorn，
+# 以及 SQLite 持久化所需的 sqlalchemy[asyncio] / aiosqlite / sqlite-vec。
+# 研续把 PowerContext Server 内嵌在同一进程里，因此两个 extra 都要。
+powercontext[client,server]==1.2.0
+
+# 测试（tests/ 全部打真实的内嵌 PowerContext Server，不做任何 mock）
+pytest==9.2.0

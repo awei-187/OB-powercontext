@@ -1,0 +1,42 @@
+{
+  "resolved_state": {
+    "draft_disposition": "blocked",
+    "draft_omissions": [],
+    "restore_open_questions": [
+      "resolved"
+    ],
+    "restore_next_steps": [
+      "done",
+      "dropped"
+    ]
+  },
+  "ack_revision": {
+    "viewed": {
+      "family": "handoff",
+      "artifact_id": "handoff",
+      "revision": 1
+    },
+    "latest": {
+      "family": "handoff",
+      "artifact_id": "handoff",
+      "revision": 2
+    },
+    "http_status": 200,
+    "acknowledged": {
+      "family": "handoff",
+      "artifact_id": "handoff",
+      "revision": 2
+    }
+  },
+  "exact_handoff_read": {
+    "http_status": 400,
+    "response": {
+      "error": {
+        "code": "handoff_revision_required",
+        "status": 400,
+        "message": "selection=exact 需要指定 revision。"
+      }
+    }
+  },
+  "reversed_report_range_status": 200
+}

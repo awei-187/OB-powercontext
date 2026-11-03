@@ -1,0 +1,6 @@
+# 运行时数据与临时产物
+data/
+.pytest-tmp/
+.tmp/
+__pycache__/
+*.pyc

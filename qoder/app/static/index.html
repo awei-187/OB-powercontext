@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>研续 Yanxu · 科研与项目工作连续性助手</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">研</span>
+    <span class="brand-text">
+      <strong>研续 <em>Yanxu</em></strong>
+      <small>科研与项目工作连续性助手</small>
+    </span>
+  </div>
+  <div class="statusbar" id="statusbar">
+    <span class="dot dot-unknown" id="status-dot"></span>
+    <span id="status-text">正在连接…</span>
+    <button class="linklike" id="status-detail" type="button">技术详情</button>
+  </div>
+</header>
+
+<div id="error-banner" class="banner banner-error" hidden>
+  <div class="banner-head">
+    <strong id="error-title">调用失败</strong>
+    <span class="banner-head-actions">
+      <button class="btn btn-ghost btn-sm" id="error-retry" type="button" hidden>重试</button>
+      <button class="banner-close" id="error-close" type="button" aria-label="关闭">×</button>
+    </span>
+  </div>
+  <p id="error-message"></p>
+  <p class="banner-hint" id="error-hint" hidden></p>
+  <dl class="banner-meta" id="error-meta"></dl>
+</div>
+
+<main class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <h2>研究项目</h2>
+      <button class="btn btn-primary btn-sm" id="new-project" type="button">新建项目</button>
+    </div>
+    <ul class="project-list" id="project-list"></ul>
+    <p class="sidebar-foot">
+      每个项目的记忆各自独立保存，互不串味；全部内容落在本机，不需要任何模型密钥。
+    </p>
+  </aside>
+
+  <section class="workspace" id="workspace">
+
+    <div class="empty-state" id="empty-state">
+      <div class="empty-glyph">續</div>
+      <h2>把工作接上，而不是重来一遍</h2>
+      <p>
+        创建一个研究项目，录入实验记录、已确认决策、待办与资料出处；
+        结束工作时保存交接，下次坐下时一屏恢复目标、决策、未解决问题与下一步，
+        并导出带来源的组会 / 周报。
+      </p>
+      <p class="empty-note">
+        全部记忆写入本机 PowerContext（SQLite），不使用浏览器本地存储承载数据。
+      </p>
+      <button class="btn btn-primary" id="empty-new-project" type="button">创建第一个研究项目</button>
+    </div>
+
+    <div class="project-view" id="project-view" hidden>
+
+      <div class="continue-hero" id="continue-hero" hidden>
+        <div class="continue-hero-main">
+          <h2>继续工作</h2>
+          <p class="continue-objective" id="continue-objective"></p>
+          <p class="continue-next" id="continue-next" hidden></p>
+        </div>
+        <div class="continue-hero-side">
+          <span class="pill" id="continue-disposition"></span>
+          <button class="btn btn-ghost btn-sm" id="continue-open" type="button">查看恢复简报</button>
+        </div>
+      </div>
+
+      <div id="demo-banner" class="banner banner-demo" hidden>
+        <strong>合成演示数据</strong>
+        <span>
+          本项目由 seed 脚本生成，标题带【示例】前缀；其中的延迟、命中率等数字均为虚构，
+          不是实测结果，请勿当作真实性能数据引用。
+        </span>
+      </div>
+
+      <div class="project-head">
+        <div>
+          <h1 id="project-name"></h1>
+          <p class="project-summary" id="project-summary"></p>
+          <details class="tech-details">
+            <summary>技术详情</summary>
+            <table class="status-table"><tbody id="project-tech-body"></tbody></table>
+          </details>
+        </div>
+        <div class="project-actions">
+          <button class="btn btn-ghost btn-sm" id="archive-project" type="button">归档</button>
+        </div>
+      </div>
+
+      <nav class="tabs" id="tabs">
+        <button class="tab is-active" data-tab="ledger" type="button">工作台账</button>
+        <button class="tab" data-tab="restore" type="button">恢复工作</button>
+        <button class="tab" data-tab="handoff" type="button">保存交接</button>
+        <button class="tab" data-tab="report" type="button">组会 / 周报</button>
+      </nav>
+
+      <!-- 工作台账 -->
+      <div class="panel is-active" data-panel="ledger">
+        <div class="ledger-grid">
+          <form class="card composer" id="entry-form">
+            <h3 id="composer-title">录入一条记忆</h3>
+            <div class="field">
+              <label for="entry-kind">类型</label>
+              <div class="kind-picker" id="kind-picker"></div>
+            </div>
+            <div class="field">
+              <label for="entry-title">标题</label>
+              <input id="entry-title" name="title" type="text" maxlength="300" placeholder="一句话说清这条记录">
+            </div>
+            <div class="field">
+              <label for="entry-body">正文</label>
+              <textarea id="entry-body" name="body" rows="5" placeholder="实验条件、观察、结论、上下文……"></textarea>
+              <div class="field-foot">
+                <span id="byte-counter" class="byte-counter">0 / 8192 字节</span>
+                <span class="field-tip">单条记忆上限 8192 字节</span>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="entry-date">日期</label>
+                <input id="entry-date" name="date" type="date">
+              </div>
+              <div class="field">
+                <label for="entry-status">状态</label>
+                <select id="entry-status" name="status"></select>
+              </div>
+            </div>
+            <div class="field" id="field-url">
+              <label for="entry-url">链接 / DOI</label>
+              <input id="entry-url" name="url" type="text" maxlength="2000" placeholder="https:// 或 10.xxxx/xxxx">
+              <p class="field-tip">只有 http / https 会显示为可点击链接，其余（如 DOI）按纯文本保存。</p>
+            </div>
+            <div class="field">
+              <label for="entry-tags">标签</label>
+              <input id="entry-tags" name="tags" type="text" placeholder="用逗号分隔，例如：实验,基线">
+            </div>
+            <div class="field">
+              <label for="entry-reason">依据 / 原因</label>
+              <input id="entry-reason" name="reason" type="text" maxlength="500"
+                     placeholder="写入变更历史，日后回溯用">
+            </div>
+            <div class="composer-actions">
+              <button class="btn btn-ghost btn-sm" id="entry-reset" type="button">清空</button>
+              <button class="btn btn-primary" id="entry-submit" type="submit">保存记录</button>
+            </div>
+          </form>
+
+          <div class="ledger-main">
+            <div class="card toolbar">
+              <input id="search-input" type="search" placeholder="检索本项目记忆">
+              <button class="btn btn-ghost btn-sm" id="search-button" type="button">检索</button>
+              <button class="btn btn-ghost btn-sm" id="search-clear" type="button" hidden>清除</button>
+              <label class="checkbox">
+                <input type="checkbox" id="include-inactive"> 显示已退役
+              </label>
+            </div>
+            <div id="search-summary" class="search-summary" hidden></div>
+            <div class="entries" id="entry-groups"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 恢复工作 -->
+      <div class="panel" data-panel="restore">
+        <div class="panel-head">
+          <div>
+            <h3>新会话恢复</h3>
+            <p class="panel-sub">一次性取回上次交接、目标、已确认决策、未解决问题、下一步，以及打包好的上下文。</p>
+          </div>
+          <button class="btn btn-primary btn-sm" id="restore-refresh" type="button">重新读取</button>
+        </div>
+        <div id="restore-body" class="restore-body"></div>
+      </div>
+
+      <!-- 保存交接 -->
+      <div class="panel" data-panel="handoff">
+        <div class="panel-head">
+          <div>
+            <h3>结束工作 · 保存交接</h3>
+            <p class="panel-sub">
+              内容由你本人撰写，保存为不可变的交接版本；全过程不需要任何生成模型。
+            </p>
+            <details class="tech-details">
+              <summary>技术详情</summary>
+              <p>
+                保存路径为 PowerContext 的 <code>handoff_current_work</code> → <code>commit_handoff</code>；
+                接手为 <code>acknowledge_handoff</code>，并落一份 receipt Source。
+              </p>
+            </details>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="handoff-refill" type="button">按当前记忆重新预填</button>
+        </div>
+
+        <div class="handoff-grid">
+          <form class="card" id="handoff-form">
+            <div class="field">
+              <label for="handoff-objective">交接目标</label>
+              <textarea id="handoff-objective" rows="2" maxlength="4000"></textarea>
+            </div>
+            <div class="field">
+              <label for="handoff-disposition">交接判定</label>
+              <select id="handoff-disposition"></select>
+            </div>
+            <div class="field">
+              <label>已确认状态 <span class="label-note">至少一条；勾选左侧可对真实记忆做 verified 引用</span></label>
+              <div class="claim-list" id="handoff-state"></div>
+              <button class="btn btn-ghost btn-sm" id="handoff-add-state" type="button">＋ 添加一条状态</button>
+            </div>
+            <div class="field">
+              <label for="handoff-next">下一步</label>
+              <div class="claim-row">
+                <input type="text" id="handoff-next" maxlength="4000" placeholder="下次坐下时第一件事">
+              </div>
+            </div>
+            <div class="field">
+              <label>明确未覆盖 / 未解决</label>
+              <div class="omission-list" id="handoff-omissions"></div>
+              <button class="btn btn-ghost btn-sm" id="handoff-add-omission" type="button">＋ 添加一条</button>
+            </div>
+            <div class="composer-actions">
+              <button class="btn btn-primary" id="handoff-submit" type="submit">保存交接</button>
+            </div>
+          </form>
+
+          <div class="card" id="handoff-current">
+            <h4>当前交接状态</h4>
+            <div id="handoff-current-body" class="muted">尚未读取。</div>
+          </div>
+        </div>
+
+        <div class="card acknowledge" id="acknowledge-card">
+          <h4>新会话接手</h4>
+          <p class="ack-version" id="ack-version">尚未读取交接版本。</p>
+          <p class="panel-sub">
+            以下三项核对会原样写进 PowerContext 的 receiver_checks；
+            选择「接受交接」时三项都必须勾选，否则服务端会拒绝。
+          </p>
+          <div class="ack-checks">
+            <label class="checkbox">
+              <input type="checkbox" id="ack-live-state"> 我已逐条核对交接中的状态与当前实际情况一致
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" id="ack-capability"> 我具备继续这项工作所需的环境与工具
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" id="ack-authorization"> 我有权接手并继续这项工作
+            </label>
+          </div>
+          <div class="ack-actions">
+            <select id="ack-status">
+              <option value="accepted">接受交接</option>
+              <option value="needs_clarification">需要澄清</option>
+              <option value="declined">拒绝</option>
+            </select>
+            <input type="text" id="ack-message" placeholder="备注（可选）" maxlength="1000">
+            <button class="btn btn-primary btn-sm" id="ack-submit" type="button">确认接手</button>
+          </div>
+          <div id="ack-result" class="ack-result" hidden></div>
+        </div>
+      </div>
+
+      <!-- 报告 -->
+      <div class="panel" data-panel="report">
+        <div class="panel-head">
+          <div>
+            <h3>组会 / 周报</h3>
+            <p class="panel-sub">确定性拼装，每条要点都带真实引用，可回溯到具体记忆条目与版本。</p>
+          </div>
+        </div>
+        <form class="card report-controls" id="report-form">
+          <div class="field">
+            <label for="report-type">类型</label>
+            <select id="report-type">
+              <option value="weekly">周报</option>
+              <option value="group">组会汇报</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="report-from">起始日期</label>
+            <input id="report-from" type="date">
+          </div>
+          <div class="field">
+            <label for="report-to">结束日期</label>
+            <input id="report-to" type="date">
+          </div>
+          <label class="checkbox">
+            <input type="checkbox" id="report-include-done" checked> 包含已完成待办
+          </label>
+          <button class="btn btn-primary" id="report-submit" type="submit">生成 Markdown</button>
+        </form>
+        <p class="group-empty" id="report-empty">选择区间后点击「生成 Markdown」；报告只引用真正出现在正文里的记忆。</p>
+        <div class="report-output" id="report-output" hidden>
+          <div class="report-bar">
+            <span id="report-summary" class="muted"></span>
+            <span class="spacer"></span>
+            <button class="btn btn-ghost btn-sm" id="report-copy" type="button">复制</button>
+            <button class="btn btn-ghost btn-sm" id="report-download" type="button">下载 .md</button>
+          </div>
+          <pre class="markdown" id="report-markdown"></pre>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<!-- 修订历史抽屉 -->
+<div class="drawer-backdrop" id="history-backdrop" hidden></div>
+<aside class="drawer" id="history-drawer" hidden role="dialog" aria-modal="true" aria-label="记忆修订历史">
+  <div class="drawer-head">
+    <h3>记忆修订历史</h3>
+    <button class="banner-close" id="history-close" type="button" aria-label="关闭">×</button>
+  </div>
+  <div class="drawer-body" id="history-body"></div>
+</aside>
+
+<!-- 技术详情弹窗 -->
+<div class="modal-backdrop" id="status-modal" hidden role="dialog" aria-modal="true" aria-label="技术详情">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>技术详情 · PowerContext 运行状态</h3>
+      <button class="banner-close" id="status-modal-close" type="button" aria-label="关闭">×</button>
+    </div>
+    <div class="modal-body" id="status-modal-body"></div>
+  </div>
+</div>
+
+<!-- 新建项目弹窗 -->
+<div class="modal-backdrop" id="project-modal" hidden role="dialog" aria-modal="true" aria-label="新建研究项目">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>新建研究项目</h3>
+      <button class="banner-close" id="project-modal-close" type="button" aria-label="关闭">×</button>
+    </div>
+    <form class="modal-body" id="project-form">
+      <div class="field">
+        <label for="project-name-input">项目名称</label>
+        <input id="project-name-input" type="text" maxlength="200" required placeholder="例如：跨模态检索的召回优化">
+      </div>
+      <div class="field">
+        <label for="project-summary-input">一句话简介</label>
+        <input id="project-summary-input" type="text" maxlength="1000" placeholder="可选">
+      </div>
+      <div class="field">
+        <label for="project-goal-input">研究目标</label>
+        <textarea id="project-goal-input" rows="4" maxlength="4000"
+                  placeholder="这个项目最终要回答什么问题？会作为第一条记忆保存。"></textarea>
+        <div class="field-foot">
+          <span id="project-goal-bytes" class="byte-counter">0 字节</span>
+          <span class="field-tip">单条记忆上限 8192 字节（含约 50 字节头部）；中文每字约 3 字节，超限会在创建前被拒。</span>
+        </div>
+      </div>
+      <div class="composer-actions">
+        <button class="btn btn-ghost" id="project-cancel" type="button">取消</button>
+        <button class="btn btn-primary" id="project-submit" type="submit">创建项目</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>

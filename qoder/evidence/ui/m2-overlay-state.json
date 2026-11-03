@@ -1,0 +1,91 @@
+{
+  "captured_at": "2026-11-02T11:33-07:00",
+  "captured_by": "Qoder agent (browser-use MCP, evaluate_script)",
+  "target": "http://127.0.0.1:8123/",
+  "server": {
+    "command": "YANXU_PORT=8123 YANXU_DATA_DIR=<repo>/qoder/.tmp/m2-verify python -m app.main",
+    "python": "D:\\conda\\envs\\oceanbase\\python.exe (3.11.17)",
+    "pid": 73848,
+    "powercontext_version": "1.2.0",
+    "powercontext_base_url": "http://127.0.0.1:63493",
+    "powercontext_running": true,
+    "storage_backend": "sqlite",
+    "data_dir": "E:\\Ocean Base\\qoder-competition\\qoder\\.tmp\\m2-verify",
+    "note": "协调人的 8124 验收进程未被触碰，netstat 确认其仍在 LISTENING（PID 25296）。"
+  },
+  "browser_surface": {
+    "innerWidth": 530,
+    "innerHeight": 554,
+    "outerWidth": 0,
+    "outerHeight": 0,
+    "devicePixelRatio": 2,
+    "visibilityState": "hidden",
+    "documentHasFocus": false,
+    "conclusion": "browser-use MCP 控制的页面没有真实 OS 窗口（outerWidth/outerHeight 为 0，visibilityState=hidden）。这不是可供人工目视验收的可见浏览器。"
+  },
+  "p0_initial_load": {
+    "description": "页面刚加载完（reload 之后，未做任何交互）时四个覆盖层的真实计算样式与盒尺寸。",
+    "body_class": "",
+    "body_has_overlay_class": false,
+    "overlays": {
+      "history-backdrop": { "class": "drawer-backdrop", "hidden": true, "computed_display": "none", "width": 0, "height": 0 },
+      "history-drawer": { "class": "drawer", "hidden": true, "computed_display": "none", "width": 0, "height": 0 },
+      "project-modal": { "class": "modal-backdrop", "hidden": true, "computed_display": "none", "width": 0, "height": 0 },
+      "status-modal": { "class": "modal-backdrop", "hidden": true, "computed_display": "none", "width": 0, "height": 0 }
+    },
+    "accessibility_tree_dialogs": 0,
+    "m1_comparison": "M1 时同样这一屏里 .drawer 计算为 display:flex、.modal-backdrop 计算为 display:grid，两者都盖掉了 [hidden]，因此历史抽屉与新建弹窗一进页面就同时可见（evidence/ui/m1-ledger.png）。本轮两者计算为 none，盒尺寸为 0，可访问性树里没有任何 dialog/drawer 节点。"
+  },
+  "p0_cascade_proof": {
+    "description": "同一个节点上切换 hidden 属性，对比计算样式。证明 [hidden]{display:none !important} 确实压过作者样式的 display，而作者样式本身没有被删掉。",
+    "results": {
+      "history-backdrop": { "class": "drawer-backdrop", "display_when_hidden": "none", "display_when_shown": "block", "box_when_shown": "515x554", "display_after_restore": "none" },
+      "history-drawer": { "class": "drawer", "display_when_hidden": "none", "display_when_shown": "flex", "box_when_shown": "530x554", "display_after_restore": "none" },
+      "project-modal": { "class": "modal-backdrop", "display_when_hidden": "none", "display_when_shown": "grid", "box_when_shown": "515x554", "display_after_restore": "none" },
+      "status-modal": { "class": "modal-backdrop", "display_when_hidden": "none", "display_when_shown": "grid", "box_when_shown": "515x554", "display_after_restore": "none" }
+    },
+    "conclusion": "hidden 现在是唯一显隐开关：置 hidden 时四个节点计算为 none，去掉 hidden 时恢复作者样式（flex/grid/block）并拿到真实非零盒尺寸。M1 的层叠冲突已消除。"
+  },
+  "what_could_not_be_verified": {
+    "screenshot": {
+      "attempted": "browser-use take_screenshot(fullPage=true)",
+      "result": "NATIVE_BROWSER_VIEWPORT_UNAVAILABLE: In-app Browser did not provide a visible surface with a positive viewport within 1000ms (operation=screenshot, viewport=530x554, visible=false, attached=true, cdpAttached=true, visibilityState=hidden). Open the in-app Browser before retrying this visual action. take_snapshot remains available for structural inspection.",
+      "meaning": "工具自身拒绝截图，因为没有可见表面。本轮没有产出任何页面像素证据。"
+    },
+    "mouse_interaction": {
+      "attempted": [
+        "click uid=1_77（第一条记忆的「历史」按钮，页面下部）",
+        "click uid=1_7（顶栏「技术详情」按钮，首屏可见位置）"
+      ],
+      "reported_by_tool": "两次都返回 'Successfully clicked on the element'",
+      "actual_effect": "两次点击后重新测量：四个覆盖层仍然 hidden=true / display:none，body 没有 has-overlay，document.activeElement 始终是 BODY，技术详情弹窗正文为空。",
+      "meaning": "工具的成功回执不代表事件真的落到页面上。在这个不可见视口里 CDP 鼠标输入是空操作，因此连『脚本点击验证打开/关闭/焦点陷阱』都不成立，更不用说人工鼠标可用性验收。"
+    }
+  },
+  "handoff": {
+    "visible_window_opened": {
+      "executable": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+      "args": "--new-window --window-size=1440,980 --window-position=60,40 http://127.0.0.1:8123/",
+      "result": "已启动一个真实可见的 Edge 窗口，netstat 显示 8123 上有多条 ESTABLISHED 连接。",
+      "reason": "按协调人指示「无法可视操作就交协调人」：可见窗口与仍在运行的服务留给协调人做真实鼠标验收，本 agent 不代其宣称通过。"
+    },
+    "server_left_running": true,
+    "how_to_stop": "任务管理器结束 PID 73848，或对该后台任务执行停止；数据目录 qoder/.tmp/m2-verify 已被 .gitignore 忽略。",
+    "how_to_reproduce": [
+      "cd \"E:\\Ocean Base\\qoder-competition\\qoder\"",
+      "D:\\conda\\envs\\oceanbase\\python.exe scripts\\seed_demo.py --data-dir .tmp\\m2-verify --force",
+      "$env:YANXU_PORT=\"8123\"; $env:YANXU_DATA_DIR=\"E:\\Ocean Base\\qoder-competition\\qoder\\.tmp\\m2-verify\"; D:\\conda\\envs\\oceanbase\\python.exe -m app.main",
+      "Start-Process \"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\" -ArgumentList \"--new-window\",\"--window-size=1440,980\",\"http://127.0.0.1:8123/\""
+    ],
+    "acceptance_checklist_for_coordinator": [
+      "首屏是否只有主界面，没有历史抽屉 / 新建项目弹窗 / 技术详情弹窗叠加",
+      "点顶栏「技术详情」是否只弹出那一个弹窗，Esc 是否只关掉最上层",
+      "点侧栏「新建项目」是否弹出项目弹窗；在弹窗里按 Tab 焦点是否被限制在弹窗内；关闭后焦点是否回到「新建项目」按钮",
+      "点任一条记忆的「历史」是否只滑出历史抽屉；点遮罩或 Esc 是否关闭并恢复焦点",
+      "打开抽屉后再点「新建项目」，两层是否按栈叠加、Esc 是否逐层关闭",
+      "覆盖层打开时背景是否禁止滚动（body.has-overlay）",
+      "把窗口拖窄到 ~520px，首屏、按钮、抽屉是否仍可用",
+      "「保存记录」「创建项目」等按钮是否有可见 loading 与失败后的可重试提示"
+    ]
+  }
+}

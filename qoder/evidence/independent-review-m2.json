@@ -1,0 +1,66 @@
+{
+  "resolved_state": {
+    "draft_disposition": "complete",
+    "draft_omissions": [],
+    "restore_open_questions": [],
+    "restore_next_steps": []
+  },
+  "ack_revision": {
+    "viewed": {
+      "family": "handoff",
+      "artifact_id": "handoff",
+      "revision": 1
+    },
+    "latest": {
+      "family": "handoff",
+      "artifact_id": "handoff",
+      "revision": 2
+    },
+    "http_status": 409,
+    "acknowledged": null
+  },
+  "exact_handoff_read": {
+    "http_status": 200,
+    "response": {
+      "status": "resolved",
+      "trust": "untrusted_history",
+      "disposition": "continuable",
+      "disposition_label": "可继续",
+      "objective": "浏览器已查看的旧交接",
+      "state": [
+        {
+          "text": "旧状态",
+          "citations": [
+            {
+              "kind": "source",
+              "summary": "来源 yanxu-handoff-20261102-204722-556a4e"
+            }
+          ]
+        }
+      ],
+      "next_action": null,
+      "omissions": [],
+      "evidence_checks": [
+        {
+          "claim": "state",
+          "state_index": 0,
+          "status": "available",
+          "unavailable_evidence": []
+        }
+      ],
+      "selected_revision": {
+        "family": "handoff",
+        "artifact_id": "handoff",
+        "revision": 1
+      },
+      "current_revision": {
+        "family": "handoff",
+        "artifact_id": "handoff",
+        "revision": 2
+      },
+      "boundary_source_id": "",
+      "receipt_source_id": ""
+    }
+  },
+  "reversed_report_range_status": 422
+}

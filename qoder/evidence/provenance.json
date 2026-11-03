@@ -1,0 +1,27 @@
+{
+  "project": "研续 Yanxu",
+  "competition": "Qoder × OceanBase",
+  "requirements_url": "https://oceanbase.yuque.com/org-wiki-obtech-vh7w9r/hc3pio/uygu3273xzlrcmrm",
+  "upstream": "https://github.com/oceanbase/powercontext.git",
+  "base_branch": "2026-competition-ecosystem",
+  "base_commit": "d647275c308e09b7b623f322a26f5c4e85734fb0",
+  "implementation_branch": "competition/qoder-yanxu",
+  "development_tool": "Qoder CN 0.4.11 desktop",
+  "development_workspace": "E:\\Ocean Base\\qoder-competition",
+  "roles": {
+    "Qoder": "Primary implementation, debugging, tests and project documentation",
+    "coordinator": "Requirements, Qoder UI operation, independent verification, evidence capture and delivery coordination"
+  },
+  "records": [
+    {
+      "stage": "01",
+      "description": "Initial task submitted to Qoder; observed active execution and official API investigation",
+      "screenshot": "qoder/01-task-start.png",
+      "visible_ui_transcript": "qoder/01-task-start.txt",
+      "status": "started; implementation results not yet verified"
+    }
+  ],
+  "qoder_uid": null,
+  "site_url": null,
+  "submission_status": "not submitted"
+}

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>研续 Yanxu · 科研与项目工作连续性助手</title>
+<meta name="description" content="研续 Yanxu：把「上次做到哪儿了」交给 PowerContext 记住。创建研究项目、录入记录与决策、保存交接、新会话一屏恢复、导出带来源追溯的组会周报。零模型密钥，数据全在本机。">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到正文</a>
+
+<div class="statusbar">
+  <div class="wrap">
+    <strong>本页是参赛展示页的源码预览，尚未发布，没有线上地址。</strong>
+    <span>OceanBase 2026 生态赛 · Qoder 赛题 · 分支 <code>competition/qoder-yanxu</code> · 所有资产位于仓库 <code>qoder/</code></span>
+  </div>
+</div>
+
+<main id="main">
+
+<div class="wrap hero">
+  <div class="hero-eyebrow">科研与项目工作连续性助手</div>
+  <h1>研续</h1>
+  <div class="latin">Yanxu</div>
+  <p class="hero-lede">
+    把「上次做到哪儿了」这件事交给 <strong>PowerContext</strong> 记住，而不是靠翻聊天记录和自己的脑子。
+    创建研究项目 → 录入实验记录 / 决策 / 待办 / 资料出处 → 结束工作时保存交接 →
+    新会话一屏恢复目标、已确认决策、未解决问题和下一步 → 导出<strong>带来源追溯</strong>的组会 / 周报 Markdown。
+  </p>
+  <div class="chips">
+    <span class="chip is-jade">零模型密钥即可跑完核心流程</span>
+    <span class="chip is-indigo">真实 PowerContext 1.2.0 SDK</span>
+    <span class="chip">Python 3.11 · FastAPI · 原生 JS 单页</span>
+    <span class="chip">数据全在本机 SQLite</span>
+    <span class="chip">只监听 127.0.0.1</span>
+  </div>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="#reproduce">安装与复现</a>
+    <a class="btn" href="#integration">PowerContext 集成</a>
+    <a class="btn" href="#status">已验证 / 未验证</a>
+    <a class="btn" href="#evidence">证据清单</a>
+  </div>
+</div>
+
+<section id="pain">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">痛点</div>
+      <h2>科研工作最大的隐性成本是「断点」</h2>
+      <p>一次实验做到一半、一个会话结束、一周过去，下一次坐下来时要重新拼凑：我到底在做什么、已经确认了什么、什么还没解决、下一步是什么。</p>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="mark">状态散落</span>
+        <h3>结论散在四处</h3>
+        <p>目标在开题文档里，决策在群聊里，失败原因在脑子里，数据在某个过期表格中。重建一次很花时间，且经常重建错。</p>
+      </div>
+      <div class="pain-card">
+        <span class="mark">已解决 ≠ 不再出现</span>
+        <h3>假待办反复出现</h3>
+        <p>三个月前已经解决的问题、已经放弃的方向，因为没人更新文档，每次汇报都被重新列成「待办」，评审时又要解释一遍。</p>
+      </div>
+      <div class="pain-card">
+        <span class="mark">出处丢失</span>
+        <h3>结论说不清依据</h3>
+        <p>「我们当时测过，写放大是 9.8」——哪一次实验、哪一版数据、谁做的判断？没有可回溯的引用，汇报就只剩断言。</p>
+      </div>
+      <div class="pain-card">
+        <span class="mark">交接靠口述</span>
+        <h3>换人 / 换会话即断档</h3>
+        <p>交接内容口头说完就散，接手的人无法核对「我看到的是不是最新状态」，也无从判断哪些是已验证事实、哪些只是前任的说法。</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>关于量化收益：</strong>本页与全部项目文档<strong>不主张任何量化的时间节省</strong>。
+      项目基线初稿曾给出一个「重建状态需要多少分钟」的区间，那个数字<strong>没有任何测量或调研支撑</strong>，
+      是写文档时凭印象填的，已删除并标注为未验证假设（更正记录见 <code>PROJECT.md</code> 与 <code>DEVELOPMENT.md</code>）。
+      研续本轮没有做用户研究，也没有对自己的恢复流程计时。若将来要给出量化收益，
+      须先做可复核的测量并公开样本与步骤。
+    </div>
+  </div>
+</section>
+
+<section id="flow">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">产品流程</div>
+      <h2>五步闭环，每一步都落在真实 PowerContext 调用上</h2>
+      <p>下面每格底部的等宽字体是该步骤实际调用的 PowerContext 官方 SDK / HTTP 接口，不是示意。</p>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="num" aria-hidden="true"></div>
+        <div>
+          <h3>创建研究项目</h3>
+          <p>一个项目 = 一个 PowerContext Scope，<code>scope_id</code> 就是隔离键。研究目标作为第一条记忆写入。
+             目标过长会在创建 Scope <strong>之前</strong>被拒，不会留下半成品项目。</p>
+          <span class="api">POST /v1/scopes → remember_memory</span>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="num" aria-hidden="true"></div>
+        <div>
+          <h3>录入记录 / 决策 / 待办 / 资料出处</h3>
+          <p>七种类型：研究目标、工作记录、已确认决策、未解决问题、下一步、待办、资料出处。
+             「依据 / 原因」映射到 PowerContext 的 <code>reason</code>，因此进入官方变更历史，是审计价值最高的一列。</p>
+          <span class="api">remember_memory · revise_memory · retire_memory · list_memory_changes</span>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="num" aria-hidden="true"></div>
+        <div>
+          <h3>结束工作 · 保存交接</h3>
+          <p>交接内容<strong>由本人撰写</strong>，每条已确认状态尽量绑定真实 <code>MemoryCitation</code>（<code>basis=verified</code>）；
+             正文一旦被改得与所引记忆不一致，标记当场降级为 <code>declared</code> 并说明原因，不假装仍是已验证。
+             每次提交追加一个不可变 Revision，从不覆盖历史。</p>
+          <span class="api">handoff_current_work → commit_handoff</span>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="num" aria-hidden="true"></div>
+        <div>
+          <h3>新会话 · 恢复工作</h3>
+          <p>一屏返回：上次交接与 <code>evidence_checks</code>、目标、已确认决策、<strong>未解决</strong>问题、
+             <strong>仍可行动</strong>的下一步、未完成待办、最近记录、资料出处，外加 PowerContext 自己打包的上下文。
+             已解决的问题与已关闭的下一步单列，不混进待办语义。</p>
+          <span class="api">continue_handoff(selection=latest | exact) · list_memory_entries · prepare_context</span>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="num" aria-hidden="true"></div>
+        <div>
+          <h3>正式接手</h3>
+          <p>请求必须带上你<strong>实际核对过</strong>的那个 Revision。它已不是最新版时返回 409 并要求刷新，
+             <strong>绝不悄悄换成最新版</strong>；成功后回执里的 Revision 与你的核对版本当场比对。
+             三项接收方核对与官方 <code>ReceiverChecks</code> 一一对应，<code>accepted</code> 时缺一不可。</p>
+          <span class="api">acknowledge_handoff(selection=exact, revision=N, receiver_checks)</span>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="num" aria-hidden="true"></div>
+        <div>
+          <h3>输出带来源的组会 / 周报</h3>
+          <p>服务端<strong>确定性拼装，不依赖任何模型</strong>。每条要点后带真实短引用 <code>mem_xxxxxxxx@vN</code>，
+             附录展开成完整追溯表（entry_id / entry_version_id / 条目版本 / 记忆工件版本 / 状态 / 变更序列）。
+             附录与引用计数<strong>只统计真正出现在正文里的条目</strong>。</p>
+          <span class="api">GET 记忆 + 引用 → 服务端拼装 Markdown</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="integration">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">真实集成</div>
+      <h2>PowerContext 是唯一数据真源</h2>
+      <p>不复制、不改写、不重实现 PowerContext；只通过官方 PyPI 包 <code>powercontext==1.2.0</code> 的公开 SDK / HTTP API 调用。
+         不使用 localStorage 承载业务数据，不 mock，不做本地兜底。</p>
+    </div>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>能力</th><th>实际用法</th><th>无模型密钥时</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>项目隔离</td>
+            <td>一个项目一个 Scope；检索、恢复、报告都只在当前 Scope 内</td>
+            <td><span class="pill pill-ok">可用</span> <span class="note">实测跨项目检索命中 0 条；跨项目读交接 Revision 返回 404</span></td>
+          </tr>
+          <tr>
+            <td>持久化</td>
+            <td>内嵌 PowerContext Server + SQLite（<code>sqlite+aiosqlite</code>）</td>
+            <td><span class="pill pill-ok">可用</span> <span class="note">两个独立 OS 进程共用同一 db 文件，写→退出→重开→读回一致</span></td>
+          </tr>
+          <tr>
+            <td>修订与历史</td>
+            <td><code>revise_memory</code> 保持 <code>entry_id</code> 不变、推进版本；<code>list_memory_changes</code> 给出 <code>add / revise / deactivate</code> 与 reason</td>
+            <td><span class="pill pill-ok">可用</span> <span class="note">旧版本仍可读回；无物理删除，退役后 <code>state=inactive</code></span></td>
+          </tr>
+          <tr>
+            <td>陈旧引用冲突</td>
+            <td>拿过期 citation 再 revise</td>
+            <td><span class="pill pill-ok">真实 409</span> <span class="note">服务端码 <code>revision_conflict</code>，原样透传 <code>request_id</code></span></td>
+          </tr>
+          <tr>
+            <td>来源回溯</td>
+            <td><code>MemoryCitation</code>（memory_ref + entry_id + entry_version_id）；交接的 <code>evidence_checks</code> 由 PowerContext 自己校验</td>
+            <td><span class="pill pill-ok">可用</span> <span class="note">实测 3/3 条引用仍可回溯</span></td>
+          </tr>
+          <tr>
+            <td>交接（本人撰写）</td>
+            <td><code>handoff_current_work</code> → <code>commit_handoff</code> → <code>continue_handoff</code> → <code>acknowledge_handoff</code></td>
+            <td><span class="pill pill-ok">可用</span> <span class="note">这条路径不调用生成模型</span></td>
+          </tr>
+          <tr>
+            <td>交接精确版本读取</td>
+            <td><code>selection=exact</code> + <code>revision=N</code></td>
+            <td><span class="pill pill-ok">可用</span> <span class="note">不存在的版本由服务端返回 404 <code>artifact_not_found</code>，原样透传</span></td>
+          </tr>
+          <tr>
+            <td>检索</td>
+            <td><code>search_memory(mode="fts")</code></td>
+            <td><span class="pill pill-wait">仅关键词</span> <span class="note">无 embedding 模型 ⇒ 没有语义召回。<code>search_modes=[auto, fts]</code></span></td>
+          </tr>
+          <tr>
+            <td>自动记忆提取</td>
+            <td><code>capabilities.memory_extraction</code></td>
+            <td><span class="pill pill-no">关闭</span> <span class="note">实测 <code>False</code>；所有记忆由用户显式录入</span></td>
+          </tr>
+          <tr>
+            <td>交接自动生成</td>
+            <td><code>/v1/handoff/prepare</code>、<code>/v1/handoff/activate</code></td>
+            <td><span class="pill pill-no">503</span> <span class="note">需要 generation model。<code>handoff_generation_unavailable</code> —— 研续不使用这两个端点，并把该 503 作为可展示的真实错误</span></td>
+          </tr>
+          <tr>
+            <td>打包上下文</td>
+            <td><code>prepare_context</code></td>
+            <td><span class="pill pill-ok">可用</span> <span class="note">实测 <code>ready</code>，带 <code>trust: untrusted_history</code> 前导语</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout is-jade">
+      <strong>为什么无密钥也能跑完核心闭环：</strong>研续只用 PowerContext 的<strong>显式记忆</strong>（explicit memory）
+      + SQLite 持久化 + FTS 检索 + 本人撰写的 Work Handoff。<code>InferenceConfig()</code> 全字段为 None，
+      实测 12 个 prompt 能力全部 <code>status: "disabled"</code> / <code>reason: "provider_not_configured"</code>。
+      这是<strong>设计前提</strong>而不是故障，所以界面首屏不按警告呈现：
+      顶栏只写「记忆已连接 · 数据全在本机」，版本、存储后端、检索方式、能力边界与 Scope / 项目标识符
+      都收进默认折叠的「技术详情」。
+    </div>
+
+    <div class="callout is-amber">
+      <strong>本地项目索引为什么存在：</strong>PowerContext 的 OpenAPI 提供
+      <code>POST /v1/scopes</code>、<code>GET /v1/scopes/{id}</code>、<code>POST /v1/scopes/default</code>，
+      <strong>没有「列出全部 Scope」接口</strong>。因此本地保留一份极薄的项目名册
+      （<code>project_id / name / summary / scope_id / 时间戳 / archived</code>），仅用于列表、排序与 scope 解析。
+      所有<strong>实质内容只存在于 PowerContext</strong>，本地库里不复制任何记忆正文。
+    </div>
+  </div>
+</section>
+
+<section id="honesty">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">设计取舍</div>
+      <h2>五条诚实性不变量</h2>
+      <p>独立验收暴露的问题有一个共同形状：<strong>数据是对的，呈现方式在撒谎</strong>。这五条因此升级为架构级不变量，各自有回归测试锁定。</p>
+    </div>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>不变量</th><th>规则</th><th>反例（修复前的真实行为）</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>有效状态语义</td>
+            <td><code>kind</code> 是分类，<code>status</code> 才是状态，两者不能互相冒充。没有状态标注的问题按未解决处理。</td>
+            <td>问题全 <code>resolved</code>、步骤全 <code>done</code>/<code>dropped</code> 时，草稿判定仍写 <code>blocked</code>；恢复简报把它们塞回「未解决问题」和「下一步」</td>
+          </tr>
+          <tr>
+            <td>时间口径写进产物</td>
+            <td><code>EntryChange</code> 只有 revision / op / reason / entry_version_id，<strong>没有时间戳</strong>。条目的 <code>date</code> 是记录日期，绝不可冒称解决时间。</td>
+            <td>报告里出现「本期已解决」小节，挂在统计区间之下，读者会理解成本区间内解决</td>
+          </tr>
+          <tr>
+            <td>引用计数只认真正出现的</td>
+            <td>附录、<code>citation_count</code>、<code>source_count</code> 全部由「正文里实际调用过引用」的收集器产出。</td>
+            <td>区间外的记录、根本没进正文的条目也被算进引用数与附录</td>
+          </tr>
+          <tr>
+            <td>降级必须可见，失败必须出声</td>
+            <td>只有「该版本确实读不回来」（服务端 404）才允许降级为一条<strong>显式</strong>的不可用说明；其余异常原样抛成 5xx。</td>
+            <td>逐版本读历史时用裸 <code>except Exception: continue</code>，历史<strong>悄悄变短</strong>，界面看起来正常</td>
+          </tr>
+          <tr>
+            <td>可点击性由协议决定</td>
+            <td>只有 <code>http://</code> / <code>https://</code> 才渲染成链接；其余（含 DOI 这类纯标识符）作为纯文本原样展示。判定函数前后端共用。</td>
+            <td>任何 URL 都渲染成 <code>&lt;a href&gt;</code>，只做 HTML 转义 —— 转义挡不住 <code>javascript:</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <strong>接手为什么选「409 要求刷新」而不是「精确接手旧版」：</strong>
+      交接的语义是「接手<strong>当前</strong>工作」。对一个已被推进的旧版本落 <code>accepted</code> 回执，
+      等于宣称核对过一份已经过时的状态 —— 那正是要避免的不诚实。
+      探针已实测：服务端会<strong>静默接受</strong>陈旧 revision（用户核对 r1、后端确认 r2），
+      所以这道闸门必须由研续自己把守，不能指望上游报错。
+    </div>
+  </div>
+</section>
+
+<section id="ui">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">界面</div>
+      <h2>温暖纸色，首屏只讲研究</h2>
+      <p>视觉语言是「纸、墨、靛」：安静、克制、可读性优先。主视图突出研究内容、继续工作与下一步；
+         技术细节折叠收纳；按钮用看得懂的动词（保存记录 / 创建项目 / 保存交接 / 生成 Markdown / 确认接手）。</p>
+    </div>
+
+    <div class="shots">
+      <figure class="shot has-image">
+        <img src="assets/m1-p0-overlays.png" alt="M1 阶段协调人在真实可见 Edge 中拍到的 P0 现场：历史抽屉与新建项目弹窗同时覆盖在主界面上" loading="lazy">
+        <figcaption>
+          <strong>真实截图 · M1 的 P0 现场。</strong>协调人在可见 Edge 里打开页面时，
+          历史抽屉与「新建项目」弹窗同时压在界面上、关掉也隐藏不了。
+          根因是 CSS 层叠：作者样式的 <code>display</code> 无条件盖掉浏览器默认的
+          <code>[hidden]{display:none}</code>（与选择器优先级无关）。已修复，见下节。
+        </figcaption>
+      </figure>
+
+      <div class="shot">
+        <span class="tag">截图待补</span>
+        <h4>工作台账（首屏）</h4>
+        <p>顶栏「记忆已连接 · 数据全在本机」+「技术详情」按钮；左侧项目列表；中间「继续工作」英雄区；下方七类记忆分组，每条带 <code>mem_xxxxxxxx@vN</code> 短引用与变更序列。</p>
+      </div>
+
+      <div class="shot">
+        <span class="tag">截图待补</span>
+        <h4>恢复工作</h4>
+        <p>上次交接 Revision 与判定、逐条打勾的证据回溯检查、分类卡片、PowerContext 打包上下文原文（可展开）。</p>
+      </div>
+
+      <div class="shot">
+        <span class="tag">截图待补</span>
+        <h4>修订历史抽屉</h4>
+        <p>逐版本快照、PowerContext 原始 memory text、变更日志（revision / op / reason / entry_version_id）；读不回的版本显式标为不可用。</p>
+      </div>
+
+      <div class="shot">
+        <span class="tag">截图待补</span>
+        <h4>组会 / 周报</h4>
+        <p>八个章节 + 来源追溯附录，头部印统计区间与时间口径；支持下载 .md 与复制全文。</p>
+      </div>
+
+      <div class="shot">
+        <span class="tag">截图待补</span>
+        <h4>窄屏（约 520px）</h4>
+        <p>顶栏换行、英雄区堆叠、按钮全宽、抽屉占满视口宽度。</p>
+      </div>
+    </div>
+
+    <div class="callout is-amber">
+      <strong>为什么这里大面积是占位框而不是截图：</strong>开发环境里的浏览器面板没有可见表面
+      （<code>visibilityState=hidden</code>、<code>outerWidth=0</code>），截图工具直接拒绝出图，
+      CDP 鼠标事件也是空操作。本轮<strong>没有伪造任何界面截图</strong>；
+      唯一一张真实截图是上面那张 P0 现场，由协调人在可见 Edge 中拍摄。
+      其余截图需在可见浏览器里补拍。
+    </div>
+  </div>
+</section>
+
+<section id="reproduce">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">安装与复现</div>
+      <h2>在本机跑起来</h2>
+      <p>下面是 <strong>Windows PowerShell</strong> 命令，<strong>每个代码块只有一条</strong>，请逐块复制执行。
+         多行粘贴在 PowerShell 里容易把注释和命令黏成一行，所以这里不合并。</p>
+    </div>
+
+    <p class="cmd-label">环境版本（本机实测）</p>
+    <div class="table-scroll" style="margin-bottom:22px">
+      <table>
+        <tbody>
+          <tr><th>操作系统</th><td>Windows 11，<code>10.0.26200</code> x64</td></tr>
+          <tr><th>Shell</th><td>Windows PowerShell 5.1</td></tr>
+          <tr><th>Python</th><td><code>3.11.17</code>，解释器 <code>D:\conda\envs\oceanbase\python.exe</code>（既有 Conda 环境，未新建）</td></tr>
+          <tr><th>powercontext</th><td><code>1.2.0</code></td></tr>
+          <tr><th>fastapi / uvicorn</th><td><code>0.162.0</code> / <code>0.54.0</code></td></tr>
+          <tr><th>httpx / pydantic</th><td><code>0.28.1</code> / <code>2.14.2</code></td></tr>
+          <tr><th>sqlalchemy / aiosqlite</th><td><code>2.1.6</code> / <code>0.22.1</code></td></tr>
+          <tr><th>pytest</th><td><code>9.2.0</code></td></tr>
+          <tr><th>模型密钥</th><td><strong>一项都没配</strong>，核心流程照跑</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="cmd-label">1 · 进入项目目录</p>
+    <div class="cmd"><code>cd "E:\Ocean Base\qoder-competition\qoder"</code></div>
+
+    <p class="cmd-label">2 · 安装依赖</p>
+    <div class="cmd"><code>python -m pip install -r requirements.txt</code></div>
+    <p class="cmd-note">若你的 <code>python</code> 不指向上面那个环境，请把 <code>python</code> 整条替换成 <code>D:\conda\envs\oceanbase\python.exe</code>。</p>
+
+    <p class="cmd-label">3 · 让控制台正确显示中文（不改系统区域设置）</p>
+    <div class="cmd"><code>$env:PYTHONIOENCODING = "utf-8"</code></div>
+
+    <p class="cmd-label">4 · 从空目录播种一整套示例数据</p>
+    <div class="cmd"><code>python scripts\seed_demo.py --data-dir .tmp\demo --force</code></div>
+    <p class="cmd-note">脚本只调用研续自己的 HTTP API，全部真实写入 PowerContext：创建两个项目、写入 7 条记忆、修订、
+      <strong>故意</strong>用过期引用触发 409、退役、保存交接、接手三探针、校验隔离、生成周报。
+      示例数据带【示例】前缀，且<strong>数据本身</strong>就写明「合成演示数据，全部数字均为虚构、非实测」。</p>
+
+    <p class="cmd-label">5 · 指定数据目录与端口</p>
+    <div class="cmd"><code>$env:YANXU_DATA_DIR = "$PWD\.tmp\demo"</code></div>
+    <div class="cmd"><code>$env:YANXU_PORT = "8000"</code></div>
+
+    <p class="cmd-label">6 · 启动服务</p>
+    <div class="cmd"><code>python -m app.main</code></div>
+    <p class="cmd-note">冷启动到可访问约 <strong>10.5 秒</strong>（本机实测），其中约 7.3 秒是 PowerContext 服务端模块的导入开销，不是研续自身的启动逻辑。</p>
+
+    <p class="cmd-label">7 · 打开页面</p>
+    <p class="cmd-note">浏览器访问 <code>http://127.0.0.1:8000</code>；交互式接口文档在 <code>http://127.0.0.1:8000/api/docs</code>。
+      不想用示例数据，就跳过第 4 步、把第 5 步指向一个空目录，从空白开始建自己的项目。</p>
+
+    <p class="cmd-label">跑测试（另开一个 PowerShell 窗口）</p>
+    <div class="cmd"><code>cd "E:\Ocean Base\qoder-competition\qoder"</code></div>
+    <div class="cmd"><code>$env:PYTHONIOENCODING = "utf-8"</code></div>
+    <div class="cmd"><code>python -m pytest -v</code></div>
+
+    <p class="cmd-label">本机实测输出</p>
+    <pre class="output">collected 43 items
+
+tests\test_api_e2e.py .......                                            [ 16%]
+tests\test_codec.py ........                                             [ 34%]
+tests\test_m2_regressions.py .........                                   [ 55%]
+tests\test_site_contract.py .......                                      [ 72%]
+tests\test_ui_contract.py ............                                   [100%]
+
+============================= 43 passed in 26.48s =============================</pre>
+    <p class="cmd-note"><strong>没有任何 mock</strong>：每个端到端测试都拉起真实的内嵌 PowerContext Server（真实 SQLite，临时数据目录），
+      再用 <code>httpx.ASGITransport</code> 打真实 HTTP 路由。<code>test_m2_regressions.py</code> 里每个测试的 docstring
+      都写明「修复前的错误行为」，断言失败时能直接看出是哪一处回退。</p>
+  </div>
+</section>
+
+<section id="status">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">验收状态</div>
+      <h2>已验证 / 未验证，分开写</h2>
+      <p>协调人先用 <code>oceanbase</code> 环境独立复跑测试，再用探针脚本做验收，
+         打回了 1 个 P0 与 8 项后端问题。以下是修复后的真实状态 —— 包括仍然<strong>没有</strong>通过验证的部分。</p>
+    </div>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>项</th><th>状态</th><th>依据</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>P0 · 覆盖层常驻遮挡</td>
+            <td><span class="pill pill-wait">代码已修，可用性未验证</span></td>
+            <td>层叠机制已在真实渲染引擎里量到反转：带 <code>hidden</code> 时四个覆盖层计算 <code>display</code> 均为 <code>none</code>、盒尺寸 0；去掉 <code>hidden</code> 才恢复 <code>flex</code>/<code>grid</code>。但「人能用鼠标正常操作」需可见浏览器复验。</td>
+          </tr>
+          <tr>
+            <td>有效状态语义</td>
+            <td><span class="pill pill-ok">通过</span></td>
+            <td><code>continuable → blocked → complete</code> 三段推进 + 恢复简报分类，回归测试覆盖</td>
+          </tr>
+          <tr>
+            <td>接手绑定核对过的版本</td>
+            <td><span class="pill pill-ok">通过</span></td>
+            <td>缺 revision → 400；陈旧 → 409 且 <code>details</code> 含 viewed/latest；成功回执的 Revision 与核对版本一致。seed 脚本当场比对回执，不一致即退出。</td>
+          </tr>
+          <tr>
+            <td>三项 ReceiverChecks</td>
+            <td><span class="pill pill-ok">通过</span></td>
+            <td>运行时自省 <code>powercontext.http</code> 核实字段为 <code>live_state / capability / authorization</code>，UI 三个复选框文案与之一一对应；5 种部分勾选组合均 400</td>
+          </tr>
+          <tr>
+            <td>交接精确版本读取</td>
+            <td><span class="pill pill-ok">通过</span></td>
+            <td>八行边界全部实测：存在的版本 200、不存在 404 <code>artifact_not_found</code>（带真实 <code>request_id</code>）、跨项目 404、缺 revision 400、<code>revision=0</code> 422、<code>selection=prepared</code> 400</td>
+          </tr>
+          <tr>
+            <td>报告时间口径与引用诚实</td>
+            <td><span class="pill pill-ok">通过</span></td>
+            <td>倒置区间 422；「本期已解决」已改名并加口径说明；<code>dropped</code> 下一步带删除线单列；附录行数 == <code>citation_count</code> == 真正进正文的条目数</td>
+          </tr>
+          <tr>
+            <td>URL 协议白名单</td>
+            <td><span class="pill pill-ok">通过</span></td>
+            <td>9 种 scheme 实测 <code>url_href</code> 为空（含 <code>javascript:</code> / <code>data:</code> / <code>file:</code> / <code>vbscript:</code> / 裸 DOI）；报告正文从不出现 <code>&lt;javascript:</code></td>
+          </tr>
+          <tr>
+            <td>历史不静默截断</td>
+            <td><span class="pill pill-ok">通过</span></td>
+            <td>健康时 <code>unavailable == []</code>；停掉内嵌 Server 后 → 5xx、错误码以 <code>powercontext_</code> 开头、响应体不含 <code>changes</code></td>
+          </tr>
+          <tr>
+            <td>超长目标不留半成品项目</td>
+            <td><span class="pill pill-ok">通过</span></td>
+            <td>4000 字目标 → 400 <code>goal_too_long</code>（带 <code>byte_length</code> / <code>limit=8192</code>），随后项目列表返回 <code>[]</code>；缩短后重试即成功</td>
+          </tr>
+          <tr>
+            <td>ISO 日期归一化</td>
+            <td><span class="pill pill-ok">通过</span></td>
+            <td>本轮<strong>新发现</strong>：Python 3.11 的 <code>fromisoformat</code> 也接受 <code>20261102</code>，而区间过滤靠字典序比较，<code>"20261102" &gt; "2026-11-07"</code> 为真 —— 会给出错误区间且不报错。现已统一归一为 <code>YYYY-MM-DD</code>。</td>
+          </tr>
+          <tr>
+            <td>项目隔离 / 持久化 / 修订历史 / 陈旧引用 409 / 真实错误透传 / 无密钥 / 不用 localStorage</td>
+            <td><span class="pill pill-ok">通过</span></td>
+            <td>M1 验收项 A1–A4、A8–A10，后端结论由跨进程 smoke test、seed 复跑与自动化测试独立支撑</td>
+          </tr>
+          <tr>
+            <td>界面视觉与鼠标可用性</td>
+            <td><span class="pill pill-no">未验证</span></td>
+            <td>开发环境的浏览器面板 <code>visibilityState=hidden</code>、<code>outerWidth=0</code>；截图被工具拒绝（<code>NATIVE_BROWSER_VIEWPORT_UNAVAILABLE</code>）；CDP 点击返回「成功」但页面无任何变化、焦点始终在 <code>BODY</code>。已开好可见 Edge 窗口连同运行中的服务移交协调人。</td>
+          </tr>
+          <tr>
+            <td>窄屏实际观感</td>
+            <td><span class="pill pill-no">未验证</span></td>
+            <td>断点已写进 CSS（1080 / 820 / 520px）并有结构测试，实际观感需可见浏览器</td>
+          </tr>
+          <tr>
+            <td>Qoder Sites 发布</td>
+            <td><span class="pill pill-no">未执行</span></td>
+            <td>按本阶段要求不发布。本目录只是静态源码，须先由协调人完成界面复验。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <strong>一条被写进项目记录的教训：</strong>M1 曾用「在浏览器里驱动真实 DOM 事件」的方式跑完全部界面流程，
+      并据此宣称界面验收通过。协调人在真实可见的 Edge 里打开同一份代码，看到的却是上面那张 P0 截图。
+      <strong>DOM 事件跑得通 ≠ 人能用。</strong>脚本派发的事件绕过了「元素是否真的可见、可点」这一层，
+      因此对 CSS 层叠导致的遮挡是盲的；而逐条读计算样式也发现不了 ——
+      <code>.drawer{display:flex}</code> 本身「正确生效」，错的是它与 <code>[hidden]</code> 的<strong>组合</strong>结果。
+      显隐这类跨规则层叠的性质，必须直接量「带 hidden 时的计算 display」，或者干脆用眼睛看。
+      M1 的原始记录已按要求一字未改地保留，需要更正的地方就地加了「⚠ M2 更正」小块。
+    </div>
+  </div>
+</section>
+
+<section id="evidence">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">证据</div>
+      <h2>仓库内的可复核材料</h2>
+      <p>下列路径均相对于仓库的 <code>qoder/</code> 目录。全部是真实运行产物；
+         协调人的探针原始输出<strong>未被覆盖、未被修改</strong>。</p>
+    </div>
+
+    <div class="evidence">
+      <div class="ev">
+        <span class="path">PROJECT.md</span>
+        <span class="what">需求与架构唯一基线：产品流程、组件图、YX1 记忆编码、七种 kind、交接与恢复、检索、错误处理、五条诚实性不变量、验收标准 A1–A20、里程碑、约束红线、环境。</span>
+      </div>
+      <div class="ev">
+        <span class="path">DEVELOPMENT.md</span>
+        <span class="what">真实验证记录：只写跑过的命令与真实输出。M1 原文一字未改保留，四处过头结论就地加「⚠ M2 更正」；M2 部分记录 P0 根因与实测、8 项后端修复、测试套件、UI 精修、播种复跑与验收对照。</span>
+      </div>
+      <div class="ev">
+        <span class="path">README.md</span>
+        <span class="what">快速上手：单行 PowerShell 命令、环境版本表、核心机制、测试预期输出、已知边界。</span>
+      </div>
+      <div class="ev">
+        <span class="path">evidence/independent-review-m1.json</span>
+        <span class="what">协调人独立验收的<strong>原始</strong>探针结果（未覆盖）。M2 全部工作围绕这份材料展开。</span>
+      </div>
+      <div class="ev">
+        <span class="path">evidence/review_m1.py</span>
+        <span class="what">协调人的探针脚本原文（未修改），可重跑复现同一批发现。</span>
+      </div>
+      <div class="ev">
+        <span class="path">evidence/ui/m1-ledger.png</span>
+        <span class="what">P0 现场截图：真实可见 Edge 里历史抽屉与新建弹窗同时遮挡主界面。本页 <code>assets/m1-p0-overlays.png</code> 是它的副本。</span>
+      </div>
+      <div class="ev">
+        <span class="path">evidence/ui/m2-overlay-state.json</span>
+        <span class="what">M2 本轮在真实渲染引擎里的实测量值：初始加载时四个覆盖层的 hidden / 计算 display / 盒尺寸，切换 hidden 前后的对比，浏览器表面状态，截图工具的拒绝原文，以及留给协调人的八项验收清单。</span>
+      </div>
+      <div class="ev">
+        <span class="path">evidence/powercontext/smoke-persistence.md</span>
+        <span class="what">跨进程持久化 smoke test 完整记录：进程 A 写入并退出 → 进程 B 重开同一 SQLite → 读回内容与 citation 一致。</span>
+      </div>
+      <div class="ev">
+        <span class="path">evidence/dependencies/pip-freeze-before.txt · pip-install.log · pip-freeze-after.txt</span>
+        <span class="what">依赖安装前后的完整快照与安装日志。安装前该 Conda 环境只有 <code>packaging</code>、pip、setuptools、wheel，因此不存在覆盖既有包的风险。</span>
+      </div>
+      <div class="ev">
+        <span class="path">tests/test_m2_regressions.py · tests/test_ui_contract.py · tests/test_site_contract.py</span>
+        <span class="what">M2 新增的 9 个行为回归测试、12 个界面结构契约测试与 7 个展示页契约测试。行为回归的每个 docstring 写明修复前的错误行为；结构契约解析 HTML/CSS/JS 源文件，锁定覆盖层显隐机制、可访问性、焦点管理、首屏信息层级、按钮文案、窄屏支持与合成数据标注；展示页契约锁定本页自身的诚实性——不声称线上地址、不声称量化省时、真实截图与占位分开、已验证与未验证分栏。</span>
+      </div>
+      <div class="ev">
+        <span class="path">evidence/acceptance-plan.json · evidence/delivery-audit.json · evidence/provenance.json</span>
+        <span class="what">验收计划、交付审计与来源说明。其中的 <code>status</code> 字段按角色分工由协调人更新。</span>
+      </div>
+    </div>
+
+    <div class="callout is-jade">
+      <strong>合成数据的标注方式：</strong>示例项目标题带【示例】前缀，界面上有醒目的紫色边框横幅，
+      而且<strong>写进 PowerContext 的数据本身</strong>也带着同一句话——
+      「【示例】合成演示数据，全部数字均为虚构、非实测。」。
+      所以即使有人绕过界面、直接从记忆里读回内容，也不会把其中的 12ms、命中率当成实测结果引用。
+    </div>
+  </div>
+</section>
+
+<section id="constraints">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">约束与红线</div>
+      <h2>项目全程遵守的边界</h2>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <tbody>
+          <tr><th>不重实现上游</th><td>不复制、不改写、不重实现 PowerContext，只通过官方 PyPI 包 <code>powercontext==1.2.0</code> 的公开 SDK / HTTP API 调用。内嵌 Server 沿用官方 <code>examples/jupyter/_tutorial.py</code> 的既有模式。</td></tr>
+          <tr><th>不伪造成功</th><td>任何 PowerContext 调用失败必须原样暴露：服务端消息、错误码、真实 <code>request_id</code>、<code>details</code> 全部透传，只在一旁补一句中文提示。禁止吞异常返回 200、编造 request_id、用缓存冒充实时结果。</td></tr>
+          <tr><th>API 从官方资料核对</th><td>阅读公开文档 + 对已安装包做运行时自省 + 用真实请求打内嵌 Server 三层核对，不猜字段名。据此纠正了多处凭文档容易猜错的细节。</td></tr>
+          <tr><th>目录与环境</th><td>只写仓库 <code>qoder/</code> 目录，不动其他赛题目录，不推送官方仓库；不修改参考目录、不读取其中凭据；使用既有 Conda 环境，不新建；不修改系统代理与安全设置。</td></tr>
+          <tr><th>已知上游边界</th><td>PowerContext 官方把 Windows 支持标注为 <strong>experimental</strong>（macOS / Linux 为正式支持）。本机实测 smoke test 与全部 43 个测试通过，未遇到 Windows 特有问题，仍按官方口径列为已知风险。</td></tr>
+          <tr><th>安全边界</th><td>单用户本地工具，无鉴权，只应监听回环地址。资料链接的可点击性由协议白名单决定，前后端共用同一判定。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><strong>研续 Yanxu</strong> · OceanBase 2026 生态赛 Qoder 赛题 · 分支 <code>competition/qoder-yanxu</code></div>
+    <div>本页为参赛展示页<strong>源码预览</strong>，位于仓库 <code>qoder/site/</code>，<strong>尚未发布，没有线上地址</strong>。发布将在协调人完成界面复验后通过 Qoder Sites 进行。</div>
+    <div>页面本身是纯静态 HTML + CSS，无脚本、无构建步骤、无外部依赖、无追踪。唯一图片是 <code>assets/m1-p0-overlays.png</code>。</div>
+    <div>所有实测数字均来自本机真实运行；未测量的一律不写。合成演示数据在界面、数据与文档三处均标注为虚构、非实测。</div>
+  </div>
+</footer>
+
+</body>
+</html>
