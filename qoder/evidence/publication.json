@@ -1,0 +1,76 @@
+{
+  "captured_at": "2026-11-03T00:59:16-07:00",
+  "platform": "Qoder Sites (qoder-cn / prod, openapi.qoder.com.cn)",
+  "published": true,
+  "publication_index": 2,
+  "url": "https://yanxu-research-022wcl7311d.qoder.zone",
+  "host": "yanxu-research-022wcl7311d.qoder.zone",
+  "access_mode": "public",
+  "project_id": "01a19fbb-ae68-7b40-b63a-134d3a2fb3fb",
+  "site_id": "01a19fbb-ae6a-7207-9308-66dd444ef393",
+  "prepare_action_id": "39b3d0fa-4c76-4b82-8b27-721187a59139",
+  "verification_operation_id": "01a1a066-a5b7-7b05-aeba-eb34d0a19db3",
+  "publish_operation_id": "01a1a068-1509-7dbc-8c78-15249bf6b8e4",
+  "publish_operation_state": "succeeded",
+  "publish_operation_committed": true,
+  "readiness": "publication_completed",
+  "source_of_truth": "qoder/site/ (index.html + styles.css + assets/)",
+  "published_package": "qoder/site/dist/ (site/ 的公开产物副本，prepare_site 的 webDirectory)",
+  "files": [
+    {
+      "path": "assets/history.png",
+      "bytes": 117971,
+      "sha256": "a636927406d666991b47ce3d0857a3b3cde7d67b0222887bfcc2c034c95cec12"
+    },
+    {
+      "path": "assets/report.png",
+      "bytes": 87786,
+      "sha256": "c53d4264bf0ab0897dc454c7e0f7d1e4dfac413129f85483070b09f8bba1374c"
+    },
+    {
+      "path": "assets/restore.png",
+      "bytes": 96997,
+      "sha256": "1346dd44e43fbc7344ad8f18a423864dcc50af6ac54528efc37efafe01444f23"
+    },
+    {
+      "path": "assets/sample-weekly-report.md",
+      "bytes": 3077,
+      "sha256": "542e4b56fca0888a05300501f5b9a51de8781c4989ae2aff51c3efc72d1efd72"
+    },
+    {
+      "path": "index.html",
+      "bytes": 13958,
+      "sha256": "636000c9b64a8136fec66f6fec4239774a558a921e9e37ebf64382faf6fbfb1b"
+    },
+    {
+      "path": "styles.css",
+      "bytes": 10344,
+      "sha256": "46dfc6314d4052a2f544f8192d4e4fc3daa8ddd370c98f58f9cd65801fda1aa5"
+    }
+  ],
+  "changes_in_this_publication": [
+    "git clone 指定参赛分支：--branch competition/qoder-yanxu --single-branch（仓库默认分支不含研续）",
+    "运行步骤明确同一数据目录：seed --data-dir data/demo 后 $env:YANXU_DATA_DIR = \"$PWD\\data\\demo\" 再启动",
+    "环境标注 Windows PowerShell；打开页面命令注明另开一个 PowerShell 窗口（服务前台运行）"
+  ],
+  "verification": [
+    "git ls-remote 确认 refs/heads/competition/qoder-yanxu = c222c27fd1c6392d66e5416ddcecea13f51aea3c（协调人推送的提交）",
+    "线上 GET / 返回的 HTML 含分支化 clone、--data-dir data/demo、YANXU_DATA_DIR=data\\demo、另开窗口说明；旧的裸 git clone 已不存在",
+    "get_publish_status：operation succeeded + committed，published=true，access_mode=public"
+  ],
+  "recovery_note": "本次 prepare_site 首次响应为 sites_write_result_unknown，随后状态读取一度 sites_unavailable / uploading；按恢复规则保留同一 actionId 与完全相同的输入重试 prepare 后就绪，未新建 action 或站点。",
+  "history": [
+    {
+      "published_at": "2026-11-02T22:14:41-07:00",
+      "action_id": "e1cae3f3-5dfa-4284-bb47-d46c46a34339",
+      "publish_operation_id": "01a19fc0-eea3-7b91-a7ef-fd44e147b543",
+      "note": "首次发布。M3 收尾修正（clone 分支 / 数据目录一致 / 重发布示例）后由第二次发布取代。"
+    }
+  ],
+  "notes": [
+    "平台在返回的 HTML 中注入了自带水印脚本（script[data-qoder-watermark]），使线上 index 比本地大；非本页源码内容。",
+    "新站点默认 private；用户本轮明确授权发布公开展示页，故按授权将访问策略改为 public（confirmPublic=true）。",
+    "页面不运行研续后端：研续是仅监听 127.0.0.1 的本地工具，线上只有静态介绍页。",
+    "截图为协调人独立验收时在可见浏览器拍摄的真实页面；示例项目为合成演示数据。"
+  ]
+}

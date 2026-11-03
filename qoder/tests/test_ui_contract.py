@@ -250,3 +250,26 @@ def test_demo_data_is_clearly_synthetic() -> None:
     seed = (STATIC.parent.parent / "scripts" / "seed_demo.py").read_text(encoding="utf-8")
     assert "合成演示数据" in seed
     assert "非实测" in seed
+
+
+def test_demo_banner_does_not_claim_how_the_project_was_made() -> None:
+    """横幅只说明「此项目为合成演示」。
+
+    旧文案写「本项目由 seed 脚本生成」，但【示例】项目也可以由人手建，
+    横幅对来源的断言超出了它能知道的范围。
+    """
+    html, _css, _collector = _parse()
+    assert "seed 脚本生成" not in html
+    assert "此项目为合成演示" in html
+
+
+def test_default_date_follows_the_local_calendar() -> None:
+    """默认日期与下载文件名必须用本地年月日。
+
+    `new Date().toISOString()` 是 UTC：UTC-7 的 11 月 2 日晚上会得到 11 月 3 日，
+    录入表单默认值与周报文件名都会错一天。
+    """
+    script = _script()
+    assert "function localDateISO" in script
+    assert "toISOString().slice(0, 10)" not in script
+    assert script.count("localDateISO()") >= 3

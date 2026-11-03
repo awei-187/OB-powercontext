@@ -1,0 +1,44 @@
+{
+  "verified_at": "2026-11-02T23:35:52.5868907-07:00",
+  "method": "Seed process exited successfully; launched a separate app process against the same initially empty data directory; queried public HTTP routes",
+  "powercontext_version": "1.2.0",
+  "storage_backend": "sqlite",
+  "database_path": "E:\\Ocean Base\\qoder-competition\\qoder\\.tmp\\independent-m3-reproduction\\powercontext\\powercontext.db",
+  "project_count": 2,
+  "projects": [
+    {
+      "project_id": "prj_a5c885a114c049ef",
+      "name": "【示例】高吞吐量 KV 存储的写放大治理",
+      "entry_total": 7,
+      "handoff_revision": 1,
+      "evidence_checks": [
+        {
+          "claim": "state",
+          "state_index": 0,
+          "status": "available",
+          "unavailable_evidence": []
+        },
+        {
+          "claim": "state",
+          "state_index": 1,
+          "status": "available",
+          "unavailable_evidence": []
+        },
+        {
+          "claim": "next_action",
+          "state_index": null,
+          "status": "available",
+          "unavailable_evidence": []
+        }
+      ]
+    },
+    {
+      "project_id": "prj_862c61c079ec4e03",
+      "name": "【示例】多模态检索的召回优化",
+      "entry_total": 1,
+      "handoff_revision": null,
+      "evidence_checks": []
+    }
+  ],
+  "runner_note": "First reviewer PowerShell probe incorrectly wrapped the JSON array and used id instead of project_id; corrected to the actual response schema before verification."
+}

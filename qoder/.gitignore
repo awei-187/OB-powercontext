@@ -4,3 +4,8 @@ data/
 .tmp/
 __pycache__/
 *.pyc
+
+# Qoder Sites 发布包：由 site/ 源码复制生成（见 site/README.md），不入库
+site/dist/
+# Qoder 本地站点描述文件内含生成的 HTML 副本；公开发布事实单独保留在 evidence/publication.json
+site/*.qoder.site

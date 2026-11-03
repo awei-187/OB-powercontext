@@ -287,11 +287,12 @@ qoder/
 │   ├── test_codec.py           YX1 编解码纯函数
 │   ├── test_api_e2e.py         M1 端到端：闭环 / 隔离 / 修订 / 错误 / 无密钥 / 重启
 │   ├── test_m2_regressions.py  M2 行为回归：独立验收打回的每一条
-│   ├── test_ui_contract.py     M2 结构契约：解析 HTML/CSS/JS 源文件锁定 P0 与精修要求
-│   └── test_site_contract.py   展示页诚实性契约：锁定不声称线上地址 / 不声称量化省时
-├── site/                       Qoder Sites 展示页源码（静态，M2 准备，M3 发布）
+│   ├── test_ui_contract.py     M2/M3 结构契约：解析 HTML/CSS/JS 源文件锁定 P0 与精修要求
+│   └── test_site_contract.py   展示页结构契约：资源存在 / 链接结构 / 产品页必备要素
+├── site/                       Qoder Sites 展示页（M3 已发布；dist/ 为发布包，git 忽略）
 ├── evidence/                   真实运行证据（探针原始输出、依赖快照、smoke test 记录）
-│   └── ui/                     界面证据：m1-ledger.png（P0 现场）、m2-overlay-state.json（本轮实测量值）
+│   ├── ui/                     界面证据：m1-ledger.png（P0 现场）、m2-overlay-state.json（M2 实测量值）
+│   └── publication.json        M3 Qoder Sites 发布事实：站点 ID、操作 ID、产物 sha256、线上核验
 └── data/                       运行时数据，git 忽略
 ```
 
@@ -336,8 +337,8 @@ qoder/
 | 里程碑 | 内容 | 状态 |
 |---|---|---|
 | **M1** | PROJECT.md 基线；真实 PowerContext 持久化 smoke test（跨进程）；可启动纵向功能（建项目 → 录入 → 保存交接 → 恢复 → 出报告）；验证结果写入 DEVELOPMENT.md | **已完成**（界面可用性部分被 M2 独立验收打回，见 DEVELOPMENT §6 更正） |
-| **M2** | 修复独立验收发现的 P0 与 8 项后端问题；界面精修（首屏信息层级、易懂按钮、loading/错误/空状态、窄屏、技术详情折叠）；补 21 个回归与契约测试；修订文档；准备展示页源码 | **本阶段**（后端全部完成并验证；界面可用性因拿不到可见浏览器表面，移交协调人复验） |
-| M3 | 通过 Qoder Sites 发布展示网站 | 待做（须先由协调人完成界面复验） |
+| **M2** | 修复独立验收发现的 P0 与 8 项后端问题；界面精修（首屏信息层级、易懂按钮、loading/错误/空状态、窄屏、技术详情折叠）；补 21 个回归与契约测试；修订文档；准备展示页源码 | **已完成**（协调人独立复验：43 tests passed、四个边界探针修复正确、可见 Edge 真实点击走完全流程，见 evidence/independent-m2-*.json） |
+| **M3** | 通过 Qoder Sites 发布展示网站 | **已完成**：<https://yanxu-research-022wcl7311d.qoder.zone>（public；发布事实见 evidence/publication.json） |
 | M4 | 证据包整理（可见浏览器截图 / 日志 / Qoder 开发过程记录），提交材料 | 待做 |
 
 ---

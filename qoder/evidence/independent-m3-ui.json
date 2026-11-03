@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-02",
+  "method": "Visible Edge on http://127.0.0.1:8130 after a separate seed process exited; new app process using the same data directory",
+  "verified": [
+    "Both seeded projects appear after restart; main project has seven active memories and handoff r1",
+    "Default entry date is local 2026-11-02 rather than UTC 2026-11-03",
+    "Synthetic banner no longer attributes every example to the seed script",
+    "Weekly report renders seven real memory citations, including the revised problem at v2",
+    "Native accessibility click on Copy displays the success toast; clipboard contains the current 3067-character report and expected v2 citation"
+  ],
+  "evidence": ["independent-m3-seed.txt", "independent-m3-restart.json", "ui/m3-reproduction-report.md", "ui/m3-reproduction-report.png", "independent-m3-pytest.txt"],
+  "limits": [
+    "Playwright Copy click initially left the previous clipboard unchanged; native accessibility click succeeded. Only the latter was used to establish clipboard-export verification.",
+    "Download event observation timed out after both semantic and native clicks; no matching Markdown file was found in the standard Downloads directory. File download remains unverified; clipboard export is verified.",
+    "Narrow viewport appearance remains unverified."
+  ]
+}

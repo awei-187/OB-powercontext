@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-02",
+  "method": "Visible Edge browser, semantic button clicks and form input; real FastAPI and PowerContext on localhost:8123",
+  "test_project": "【示例】论文复现周计划",
+  "passed": [
+    "Initial overlays hidden; new-project dialog opens and cancel hides it",
+    "Create project with goal; save dated work record, decision with reason and next step",
+    "Revise decision v1 to v2; history drawer displays both original texts and change reasons; close hides drawer",
+    "Save verified-citation handoff r1; confirm three receiver checks; receipt identifies the reviewed r1",
+    "Restore current goal, revised decision, next step and available citation checks",
+    "Generate report for 2026-11-01 to 2026-11-02 with four actual memory citations",
+    "Copy report through UI; clipboard content matches project and contains 1818 characters; saved as m2-report-export.md"
+  ],
+  "screenshots": ["ui/m2-history.png", "ui/m2-restore-desktop.png", "ui/m2-report.png"],
+  "report": "ui/m2-report-export.md",
+  "backend": {
+    "test_result": "43 passed in 26.65s",
+    "evidence": "independent-m2-pytest.txt",
+    "boundary_recheck": "independent-review-m2.json",
+    "initial_runner_error": "Overriding pytest addopts accidentally removed the configured basetemp. Windows denied access to the system temporary directory. Re-run used an explicit new workspace-local basetemp; no permission or system configuration was changed."
+  },
+  "remaining": [
+    "Default entry date and export filename use UTC toISOString, which showed 2026-11-03 when local date was 2026-11-02; request local-date correction",
+    "Download button clicked, but browser download-event observation timed out and no matching file found in standard Downloads directory; file download is not independently verified. Clipboard export is verified.",
+    "Viewport capability requested 390x844 but observed innerWidth remained 1592; responsive rendering is not verified. Desktop screenshot is explicitly named desktop.",
+    "Showcase requires final product-oriented copy, real screenshots, working repository links and Qoder Sites publication."
+  ]
+}

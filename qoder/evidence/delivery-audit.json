@@ -1,42 +1,64 @@
 {
-  "audit_date": "2026-11-02",
-  "overall": "incomplete; M2 implementation outcome and visible UI acceptance pending",
+  "audit_date": "2026-11-03",
+  "overall": "Application, reproduction, Qoder development evidence and public Qoder Sites verified; final push and formal submission pending",
   "scope": "Qoder development, genuine PowerContext integration, Qoder Sites public website, accessible repository, reproducible example and submission materials",
   "requirements": [
     {
       "requirement": "Official competition repository ancestry and qoder directory",
-      "status": "verified for current checkout; delivery commit pending",
-      "evidence": "HEAD is d647275c308e09b7b623f322a26f5c4e85734fb0 on competition/qoder-yanxu; git status reports new project files only under qoder/",
-      "remaining": "Commit final reviewed project and verify published commit ancestry"
+      "status": "verified",
+      "evidence": "M2 commit c222c27fd1c6392d66e5416ddcecea13f51aea3c descends from d647275c308e09b7b623f322a26f5c4e85734fb0; all project changes under qoder/",
+      "remaining": "Verify ancestry of final submitted commit"
     },
     {
       "requirement": "Primary development performed in Qoder",
-      "status": "development evidence captured",
-      "evidence": ["qoder/01-task-start.png", "qoder/01-task-start.txt", "qoder/02-m2-task-start.png", "qoder/02-m2-task-start.txt"],
-      "remaining": "Capture completed M2 development record and required Qoder UID"
+      "status": "primary implementation and completed M2/M3 visible in Qoder",
+      "evidence": [
+        "qoder/01-task-start.png",
+        "qoder/01-task-start.txt",
+        "qoder/02-m2-task-start.png",
+        "qoder/02-m2-task-start.txt"
+      ],
+      "remaining": "None; completion evidence and user-provided UID recorded"
     },
     {
       "requirement": "PowerContext participates in core functionality",
-      "status": "integration verified; application correctness incomplete",
-      "evidence": ["powercontext/smoke-persistence.md", "independent-review-m1.json", "../app/memory.py", "../tests/test_api_e2e.py"],
-      "remaining": "Revalidate handoff revisions, actionable state, report semantics and full visible workflow after M2"
+      "status": "verified",
+      "evidence": [
+        "independent-m3-pytest.txt",
+        "independent-review-m2.json",
+        "independent-m3-seed.txt",
+        "independent-m3-restart.json",
+        "independent-m2-ui.json",
+        "independent-m3-ui.json"
+      ],
+      "remaining": "None for core PowerContext integration"
     },
     {
       "requirement": "Reproducible install, run and example",
-      "status": "draft available; clean final reproduction pending",
-      "evidence": ["../README.md", "../scripts/seed_demo.py", "dependencies/pip-freeze-after.txt"],
-      "remaining": "Validate corrected Windows instructions, dependency versions, seeded inputs, expected outputs and exported report"
+      "status": "fresh data-directory scenario and separate-process restart verified",
+      "evidence": [
+        "../README.md",
+        "../SUBMISSION.md",
+        "independent-m3-seed.txt",
+        "independent-m3-restart.json"
+      ],
+      "remaining": "None for documented scenario; verification reused the existing oceanbase environment, not a newly provisioned operating system"
     },
     {
       "requirement": "Qoder Sites website accessible without login",
-      "status": "not published",
-      "remaining": "Prepare and review showcase, publish via Qoder Sites, verify public access and real screenshots"
+      "status": "published publicly through Qoder Sites; no-cookie HTTP 200 and visible page verified",
+      "remaining": "None; corrected commands independently verified online",
+      "evidence": [
+        "publication.json",
+        "ui/m3-public-site.png",
+        "independent-m3-public-http.json"
+      ]
     },
     {
       "requirement": "Evaluator-accessible repository",
-      "status": "remote configured; project not committed or pushed",
-      "evidence": "origin https://github.com/awei-187/OB-powercontext.git; HEAD remains skeleton commit",
-      "remaining": "Review exact publication contents, push final project branch to origin and verify evaluator access"
+      "status": "public repository verified through GitHub API; M2 baseline pushed",
+      "evidence": "origin https://github.com/awei-187/OB-powercontext.git; remote branch matched c222c27fd1c6392d66e5416ddcecea13f51aea3c",
+      "remaining": "Commit and push final reviewed delivery"
     },
     {
       "requirement": "Competition submission",
@@ -45,9 +67,12 @@
     }
   ],
   "data_exclusion": {
-    "verified": ["qoder/data/demo/registry.db", "qoder/.tmp/ui-server.log"],
+    "verified": [
+      "qoder/data/demo/registry.db",
+      "qoder/.tmp/ui-server.log"
+    ],
     "method": "git check-ignore returned both paths",
     "limitation": "This is not a complete publication-content or credential audit"
   },
-  "ui_control": "Stopped after user Escape; no resumed UI observation or M2 completion claimed"
+  "ui_control": "Desktop workflow reviewed independently. Native accessibility Copy click succeeded; file download and narrow viewport appearance remain unverified."
 }

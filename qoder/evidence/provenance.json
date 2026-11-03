@@ -19,9 +19,44 @@
       "screenshot": "qoder/01-task-start.png",
       "visible_ui_transcript": "qoder/01-task-start.txt",
       "status": "started; implementation results not yet verified"
+    },
+    {
+      "stage": "02",
+      "description": "M2 corrective implementation submitted to Qoder",
+      "screenshot": "qoder/02-m2-task-start.png",
+      "visible_ui_transcript": "qoder/02-m2-task-start.txt",
+      "status": "completed; independent results recorded separately"
+    },
+    {
+      "stage": "03",
+      "description": "Qoder M2 completed; independent backend and visible desktop workflow verification",
+      "screenshot": "qoder/03-m2-complete.png",
+      "visible_ui_transcript": "qoder/03-m2-complete.txt",
+      "status": "43 tests passed; independent-m2-ui.json records verified scope and remaining limitations"
+    },
+    {
+      "stage": "04",
+      "description": "Qoder M3 website finalization and Qoder Sites publication task started",
+      "screenshot": "qoder/04-m3-task-start.png",
+      "visible_ui_transcript": "qoder/04-m3-task-start.txt",
+      "status": "Completed and independently verified; final corrected instructions publicly available"
+    },
+    {
+      "stage": "05",
+      "description": "Qoder completed reproduction corrections and republished the same public Qoder Sites website",
+      "screenshot": "qoder/05-publication-complete.png",
+      "visible_ui_transcript": "qoder/05-publication-complete.txt",
+      "status": "Publication operation succeeded and committed; no-cookie HTTP verification confirms corrected commands"
     }
   ],
-  "qoder_uid": null,
-  "site_url": null,
-  "submission_status": "not submitted"
+  "qoder_uid": "01a17306-8a15-783a-ad49-cdb181a86716",
+  "site_url": "https://yanxu-research-022wcl7311d.qoder.zone",
+  "submission_status": "not submitted",
+  "repository_checkpoint": {
+    "url": "https://github.com/awei-187/OB-powercontext/tree/competition/qoder-yanxu/qoder",
+    "commit": "c222c27fd1c6392d66e5416ddcecea13f51aea3c",
+    "verification": "git ls-remote origin refs/heads/competition/qoder-yanxu matches local HEAD",
+    "stage": "M2 baseline, not final submission"
+  },
+  "qoder_uid_source": "Provided by account holder in this competition conversation on 2026-11-02"
 }

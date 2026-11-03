@@ -1,5 +1,5 @@
 {
-  "status": "M1 independently reviewed: existing 15 tests pass; visible UI and boundary failures require M2 fixes; final acceptance pending",
+  "status": "M3 independent backend, seeded persistence and desktop workflow verified; final repository delivery, Qoder UID and competition submission pending",
   "core_scenarios": [
     {
       "id": "persist-resume",
@@ -57,5 +57,20 @@
       "Report accepts reversed dates"
     ],
     "disposition": "M2 corrective task sent to Qoder; no final acceptance or publication claimed"
+  },
+  "current_review": {
+    "tests": "43 passed in 29.61s",
+    "test_log": "independent-m3-pytest.txt",
+    "backend_regressions": "independent-review-m2.json",
+    "desktop": "independent-m2-ui.json",
+    "fresh_seed": "independent-m3-seed.txt",
+    "restart": "independent-m3-restart.json",
+    "m3_ui": "independent-m3-ui.json",
+    "site": "publication.json",
+    "limitations": [
+      "File download not independently verified; clipboard export verified",
+      "Narrow viewport appearance not verified",
+      "No real-user productivity study"
+    ]
   }
 }

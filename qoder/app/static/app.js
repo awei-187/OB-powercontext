@@ -48,6 +48,12 @@
     toast._timer = setTimeout(() => { node.hidden = true; }, 2800);
   }
 
+  // toISOString 是 UTC，与本地日期可能相差一天；默认值与文件名都使用本地年月日
+  function localDateISO(date = new Date()) {
+    const pad = (n) => String(n).padStart(2, "0");
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+  }
+
   function splitList(value) {
     return String(value || "").split(/[,，]/).map((item) => item.trim()).filter(Boolean);
   }
@@ -552,7 +558,7 @@
     state.editing = null;
     $("#composer-title").textContent = "录入一条记忆";
     $("#entry-submit").textContent = "保存记录";
-    $("#entry-date").value = new Date().toISOString().slice(0, 10);
+    $("#entry-date").value = localDateISO();
     $("#entry-reason").placeholder = "写入变更历史，日后回溯用";
     applyKindDefaults();
     updateByteCounter();
@@ -1181,14 +1187,17 @@
 
   function downloadReport() {
     if (!state.report) return;
-    const stamp = new Date().toISOString().slice(0, 10);
+    const stamp = localDateISO();
     const blob = new Blob([state.report.markdown], { type: "text/markdown;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
     anchor.download = `${state.report.title}-${stamp}.md`;
+    document.body.appendChild(anchor);
     anchor.click();
-    URL.revokeObjectURL(url);
+    anchor.remove();
+    // 同步 revoke 可能让浏览器在读取 blob 前就拿到失效 URL，下载静默失败
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
   /* ── 事件绑定 ─────────────────────────────────── */
@@ -1434,7 +1443,7 @@
     }
     renderKindPicker();
     renderDispositionOptions();
-    $("#entry-date").value = new Date().toISOString().slice(0, 10);
+    $("#entry-date").value = localDateISO();
     updateByteCounter();
     updateGoalByteCounter();
     await loadStatus();

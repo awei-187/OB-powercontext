@@ -1237,3 +1237,140 @@ img files exist: [('assets/m1-p0-overlays.png', True)]
 写这段测试时它立刻抓到一处自相矛盾：页面为了交代「那个分钟区间已删除」而**复述了该数字**，
 与「不得出现未测量的时间区间」的断言冲突。按上面的第 2 条改为只说明「曾给出一个区间、已删除」，
 不再复述具体数字。
+
+---
+
+## 19. M3：两处小修正、展示页改版与 Qoder Sites 发布
+
+> §18 记录的是 **M2 中间态**的展示页（内部验收报告式、占位截图、"尚未发布"状态条）。
+> M3 按赛题要求把它改版为**正式产品介绍页**并已发布，§18 的六条红线随之调整：
+> 内部验收细节（状态板、工具错误码、P0 现场图）回到 DEVELOPMENT / evidence，不上展示页。
+> 保留不变的红线：不伪造线上体验、不主张量化收益、截图只用真 capture、合成数据要标注、外链只指向已核实地址。
+
+### 19.1 两处小修正（协调人验收反馈）
+
+**本地日期。** `app.js` 三处用 `new Date().toISOString().slice(0, 10)` 取默认日期与下载文件名：
+`toISOString()` 是 UTC，本机时区为 UTC-7，11 月 2 日晚上会得到 **11 月 3 日**。
+新增 `localDateISO()`（`getFullYear/getMonth/getDate` 本地分量），替换录入表单默认值、
+boot 初始化与周报下载文件名三处。
+
+真实浏览器引擎里的对照测量（`http://127.0.0.1:8123/`，静态资源按请求读盘，无需重启）：
+
+| 量 | 值 |
+|---|---|
+| `#entry-date` 修复后 | `2026-11-02` |
+| 同一时刻 `new Date().toISOString().slice(0,10)` | `2026-11-03`（即修复前的错误值） |
+| 演示横幅文案修复后 | 「此项目为合成演示，其中的延迟、命中率等数字均为虚构……」 |
+
+**演示横幅文案。** 旧文案「本项目由 seed 脚本生成」超出了横幅能知道的范围——
+【示例】项目也可以由人手建（协调人就手工建过）。改为只声明「此项目为合成演示」。
+横幅的显示条件本来就是按项目判定（`isDemoProject`：名称含【示例】或简介含"合成"），与来源无关。
+
+**下载按钮核查。** 协调人的 download 事件观察超时，但复制导出已验证，且不能据此断言产品坏。
+核查 `downloadReport()` 实现后做了一处有依据的加固：原来 `anchor.click()` 之后**同步**
+`URL.revokeObjectURL(url)`，且 anchor 从未进入文档。同步 revoke 是已知会让部分浏览器
+在读取 blob 前就拿到失效 URL 的写法（下载静默失败），脱离文档的 anchor 在 Firefox 上也不触发下载。
+改为：anchor 入文档 → click → 移除 → `setTimeout(..., 1000)` 延迟 revoke。
+**未宣称**这解释了协调人的观察超时：其 harness 的 download 事件监听条件未核实，
+本轮不重复耗时排查工具问题；文件下载仍标为**未独立验证**。
+
+回归锁定：`test_ui_contract.py` 新增
+`test_default_date_follows_the_local_calendar`（源码不得再出现 `toISOString().slice(0, 10)`，
+且 `localDateISO()` 至少三处调用）、`test_demo_banner_does_not_claim_how_the_project_was_made`
+（横幅不得出现「seed 脚本生成」）。
+
+### 19.2 展示页改版为产品介绍页
+
+`site/index.html` / `styles.css` 整体重写。结构：顶部一句话价值主张 + 三个 CTA
+（GitHub 源码 / 本地复现 / 真实导出周报）→ 痛点四卡 → 五步流程（每步标注真实 SDK/HTTP 调用）
+→ 三张真实截图（可点开大图）→ PowerContext 承担的功能表 → 本地安装运行 → 四条局限。
+
+- 截图为协调人独立验收的真 capture：`assets/restore.png`（恢复）、`assets/history.png`（修订历史）、
+  `assets/report.png`（周报），原件在 `evidence/ui/`。页面注明截图摄于 19.1 两处小修正之前
+  （图中日期输入框默认值与横幅文案为旧值）。不再展示 M1 的 P0 现场图。
+- 大图查看器是页面唯一的脚本（约 30 行）：打开 / 关闭 / Esc / 焦点返回触发按钮。
+  在真实引擎里验证：点击第一张图 → `#lightbox` 显示且 `img.naturalWidth > 0`，
+  Esc 后隐藏且 `document.activeElement` 回到触发按钮。
+- 附 `assets/sample-weekly-report.md`：一份真实导出的周报（合成示例数据），供线上直接阅读。
+- 初版给三张图加了 `loading="lazy"`；在本环境（隐藏视口）懒加载永不触发、图片不请求。
+  三张图共约 300KB，没有延迟加载的必要，已移除；移除后三张图在真实引擎里全部 `complete` 且解码成功。
+
+`tests/test_site_contract.py` 从 7 条**文案级**断言精简为 5 条**结构级**断言：
+HTML 结构与窄屏断点、本地资源全部存在、页内锚点可达、外链只指向已核实的参赛仓库、
+产品页必备要素（三个 CTA、五步、三张真截图、运行与局限章节、合成标注、无未测量时间区间）。
+删掉的是锁过时中间状态的断言（必须"截图待补"、禁止任何外链、必须仅一张 P0 图、必须"尚未发布"、
+必须复述某句文案）——它们锁的是 M2 中间态，不是产品需求。
+
+### 19.3 Qoder Sites 发布（真实结果）
+
+发布事实与产物 sha256 见 `evidence/publication.json`。要点：
+
+| 项 | 值 |
+|---|---|
+| 线上地址 | <https://yanxu-research-022wcl7311d.qoder.zone> |
+| 访问策略 | public（新站点默认 private；本轮用户明确授权发布**公开**展示页，故按授权变更） |
+| project / site ID | `01a19fbb-ae68-7b40-b63a-134d3a2fb3fb` / `01a19fbb-ae6a-7207-9308-66dd444ef393` |
+| prepare actionId | `e1cae3f3-5dfa-4284-bb47-d46c46a34339`（`webDirectory=dist`） |
+| publish 操作 | `01a19fc0-eea3-7b91-a7ef-fd44e147b543`，`state=succeeded`、`committed=true` |
+| 发布内容 | 仅 `site/dist/` 静态资源（页面、样式、3 张截图、1 份示例周报）；未上传数据库、凭据或其他项目 |
+
+线上核验（真实请求 + 真实浏览器引擎打开线上地址）：
+
+- `GET /` → 200，标题正确；`GET /styles.css`、`/assets/restore.png`、`/assets/sample-weekly-report.md` → 200；
+- 线上 HTML 比本地大约 57KB：平台注入了自带水印脚本 `script[data-qoder-watermark]`，非本页源码内容；
+- 三张截图在真实引擎里全部加载解码成功；大图查看器开 / 关 / 焦点返回均正常；
+- 研续后端**没有**也不需要上线：页面不运行任何后端，工具本体仍只监听 `127.0.0.1`。
+
+### 19.4 本轮测试与仍未验证项
+
+套件仍为 43 个测试（`test_ui_contract.py` 12 → 14，`test_site_contract.py` 7 → 5），全部通过：
+
+```
+tests\test_api_e2e.py .......                                            [ 16%]
+tests\test_codec.py ........                                             [ 34%]
+tests\test_m2_regressions.py .........                                   [ 55%]
+tests\test_site_contract.py .....                                        [ 67%]
+tests\test_ui_contract.py ..............                                 [100%]
+
+============================= 43 passed in 25.91s =============================
+```
+
+仍未验证（不升级口径）：
+
+- **窄屏实际观感**：本环境视口设置不生效，只有 530px 宽度下的结构测量（网格塌缩为单列、顶栏导航隐藏、
+  代码块横向滚动），观感需可见浏览器复验。
+- **文件下载**：下载路径已加固，但下载行为本身没有独立验证；复制导出由协调人验证过。
+- 展示页在**可见浏览器**里的观感：线上功能已在真实引擎核验，视觉观感同上待复验。
+
+### 19.5 M3 收尾：复现文档修正与第二次发布
+
+协调人线上复验通过（无登录 HTTP 200、截图放大正常）后指出两处**阻断复现**的文档缺陷，本轮只修文档、不动核心代码：
+
+1. **clone 缺分支**：仓库默认分支是 `dot/gaode-reviewed`，不含研续。页面与 README 的克隆命令改为
+   `git clone --branch competition/qoder-yanxu --single-branch https://github.com/awei-187/OB-powercontext.git`。
+   已用 `git ls-remote` 核实该分支存在且指向协调人推送的 `c222c27`。
+2. **数据目录不一致**：`seed_demo.py` 默认写 `data/demo`，而服务默认读 `data`。页面与 README 现在显式串成同一条链：
+   `python scripts/seed_demo.py --data-dir data/demo`（不加 `--force`）→
+   `$env:YANXU_DATA_DIR = "$PWD\data\demo"` → `python -m app.main`；
+   打开页面的 `start http://127.0.0.1:8000` 注明**另开一个 PowerShell 窗口**（服务前台占用原窗口）。
+   页面环境标注为 Windows PowerShell；README 的命令统一写作 `python`（3.11+），
+   本机完整解释器路径只留在环境版本表的备注里。
+3. `site/README.md` 的重发布示例不再递归删除 `dist/`，改为创建目录 + 覆盖已知静态文件。
+
+**第二次发布**（同一 project / site，全新 actionId）：
+
+| 项 | 值 |
+|---|---|
+| prepare actionId | `39b3d0fa-4c76-4b82-8b27-721187a59139` |
+| verification 操作 | `01a1a066-a5b7-7b05-aeba-eb34d0a19db3`（succeeded） |
+| publish 操作 | `01a1a068-1509-7dbc-8c78-15249bf6b8e4`（succeeded、committed、`published=true`） |
+| 线上地址 / 访问策略 | 不变：<https://yanxu-research-022wcl7311d.qoder.zone> ，public |
+
+过程记录（恢复规则的实际使用）：首次 `prepare_site` 响应为 `sites_write_result_unknown`，
+随后的状态读取先返回 `sites_unavailable`、再停在 `preparation.state=uploading`。
+按技能恢复规则**保留同一 actionId 与完全相同的输入**重试 `prepare_site`（不新建 action、不新建站点），
+重试返回新的 verification 操作后就绪并一次发布成功。完整事实见 `evidence/publication.json`
+（第二次为当前记录，首次发布保留在 `history` 里）。
+
+线上核验：`GET /` 的 HTML 含分支化 clone、`--data-dir data/demo`、`YANXU_DATA_DIR=…data\demo`、
+「另开一个 PowerShell 窗口」说明；旧的裸 `git clone` 字符串已不存在。

@@ -1,0 +1,71 @@
+PowerContext application operation failed
+Traceback (most recent call last):
+  File "D:\conda\envs\oceanbase\Lib\site-packages\powercontext\server\app.py", line 5002, in observed_endpoint
+    result = await endpoint(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\conda\envs\oceanbase\Lib\site-packages\powercontext\server\app.py", line 3132, in revise_memory_entry
+    result = await application.memory.for_scope(request.scope_id).revise(mapping.revise_request(request))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\conda\envs\oceanbase\Lib\site-packages\powercontext\builtin\runtime\application.py", line 2524, in revise
+    current, entry = await _current_citation(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\conda\envs\oceanbase\Lib\site-packages\powercontext\builtin\runtime\application.py", line 3568, in _current_citation
+    raise RevisionConflictError(citation.memory_ref, current)
+powercontext.errors.RevisionConflictError: artifact is not the latest revision
+研续示例数据播种 · 全部写入真实 PowerContext
+  PowerContext 版本        1.2.0
+  内嵌 Server              http://127.0.0.1:61632
+  存储后端                   sqlite
+  记忆数据库                  E:\Ocean Base\qoder-competition\qoder\.tmp\independent-m3-reproduction\powercontext\powercontext.db
+  自动记忆提取                 False
+  可用检索方式                 auto, fts
+
+[1/7] 创建两个项目（各自独立 Scope）
+  【示例】高吞吐量 KV 存储的写放大治理   prj_a5c885a114c049ef / scp_0grac3gvbamavv84bm0xybemcj
+  【示例】多模态检索的召回优化         prj_862c61c079ec4e03 / scp_7zepj8xe6bv2w3s4pr6rspf4kc
+
+[2/7] 向台账项目写入 7 条记忆
+  工作记录 · 基线复现：默认 leveled 合并 mem_d035cca8@v1 state=active
+  已确认决策 · 合并策略改为 size-tiered + 每日凌 mem_dd6510c6@v1 state=active
+  未解决问题 · 写入抖动是否完全来自 flush 抢占 IO mem_b92d9f4c@v1 state=active
+  下一步 · 用 blktrace 抓一次抖动现场的 IO 队 mem_adf4ff83@v1 state=active
+  待办 · 补齐 4KB / 16KB value 的对比矩 mem_9e9788b3@v1 state=active
+  资料出处 · OceanBase LSM-Tree 合并策略设 mem_957636af@v1 state=active
+  工作记录 · 一次录错的工作记录（稍后会被退役） mem_7467dd85@v1 state=active
+
+[3/7] 修订一条未解决问题（revise 保留 entry_id，推进版本）
+  修订前 / 修订后              mem_b92d9f4c@v1 → mem_b92d9f4c@v2
+  entry_id 是否不变          True
+  工件修订号                  r8 → r9
+
+[4/7] 用过期引用再修订一次，确认服务端真的会拒绝
+       （内嵌 Server 会为此打印一段 RevisionConflictError 回溯，这是预期的）
+  HTTP 状态                409
+  错误码                    powercontext_server_response
+  服务端错误码                 revision_conflict
+  服务端消息                  The Memory Revision is stale.
+  研续给出的提示                记忆已被另一次修订推进，请刷新后基于最新版本重试。
+
+[5/7] 退役一条误写记忆（无物理删除，历史保留）
+  退役后 state              inactive
+  可读回的历史快照数              1
+  变更操作序列                 add → deactivate
+
+[6/7] 保存交接（本人撰写，引用真实记忆 → basis=verified）
+  预填已确认状态                2 条（均带真实 MemoryCitation）
+  交接工件                   handoff/handoff@r1
+  边界 Source              yanxu-handoff-20261102-233508-069693
+  不带核对版本就接手 →            HTTP 400 acknowledge_revision_required
+  未核对三项就接手 →             HTTP 400 handoff_ack_requires_check
+  核对后接手 →                Revision 1 · receipt Source yanxu-ack-20261102-233508-018919
+
+[7/7] 校验隔离并生成周报
+  另一项目检索「合并」             命中 0 条（应为 0）
+  恢复简报 · 活跃记忆            7
+  恢复简报 · 上次交接            Revision 1
+  证据回溯检查                 3/3 条仍可回溯
+
+周报 Markdown 已写出：E:\Ocean Base\qoder-competition\qoder\.tmp\independent-m3-reproduction\示例周报.md（3067 字符）
+接下来可以启动服务在浏览器里查看：
+    set YANXU_DATA_DIR=E:\Ocean Base\qoder-competition\qoder\.tmp\independent-m3-reproduction
+    python -m app.main

@@ -1,0 +1,11 @@
+{
+  "checked_at": "2026-11-03T01:03:12.0374683-07:00",
+  "url": "https://yanxu-research-022wcl7311d.qoder.zone",
+  "http_status": 200,
+  "request": "Independent HTTP request without browser cookies or authentication",
+  "correct_branch": true,
+  "explicit_data_directory": true,
+  "separate_shell": true,
+  "title_present": true,
+  "state": "Final reproduction corrections verified online"
+}

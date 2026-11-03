@@ -10,6 +10,9 @@
 - 数据真源：所有业务内容只存在 PowerContext 的 SQLite 里。**不使用 localStorage 承载数据**，不 mock，不本地兜底。
 
 需求、架构、验收标准与里程碑见 [PROJECT.md](PROJECT.md)；真实验证结果见 [DEVELOPMENT.md](DEVELOPMENT.md)。
+参赛展示页（静态介绍页，不运行后端）已发布：<https://yanxu-research-022wcl7311d.qoder.zone>，
+源码与发布事实见 [site/](site/) 与 [evidence/publication.json](evidence/publication.json)。
+参赛材料、Qoder UID、验证样例与证据索引见 [SUBMISSION.md](SUBMISSION.md)。
 
 ---
 
@@ -37,11 +40,19 @@
 下面的命令都写作 `python`；若你的 `python` 不指向这个环境，
 请把它整条替换成 `D:\conda\envs\oceanbase\python.exe`。
 
-### 1. 进入项目目录
+### 1. 获取代码（参赛分支）
+
+仓库默认分支不含研续，**必须指定分支**克隆：
 
 ```powershell
-cd "E:\Ocean Base\qoder-competition\qoder"
+git clone --branch competition/qoder-yanxu --single-branch https://github.com/awei-187/OB-powercontext.git
 ```
+
+```powershell
+cd OB-powercontext/qoder
+```
+
+（本机的开发副本在 `E:\Ocean Base\qoder-competition\qoder`；评委与新用户一律从上面的分支克隆。）
 
 ### 2. 安装依赖
 
@@ -59,38 +70,43 @@ $env:PYTHONIOENCODING = "utf-8"
 ```
 
 ```powershell
-python scripts\seed_demo.py --data-dir .tmp\demo --force
+python scripts/seed_demo.py --data-dir data/demo
 ```
 
-`--force` 会在目录非空时先删掉重建；不加 `--force` 时脚本会拒绝覆盖已有数据。
+不加 `--force`：目录非空时脚本会拒绝覆盖，不会删你的数据；确认要重建才加 `--force`。
 `$env:PYTHONIOENCODING` 只是为了让 Windows 控制台（默认 GBK）正确显示中文示例数据，
 不改系统区域设置。示例数据全部带【示例】前缀，且**数据本身**就写明
 「合成演示数据，全部数字均为虚构、非实测」——请勿把其中 12ms、命中率等数字当作实测结果引用。
 
-### 4. 启动服务
+### 4. 用同一数据目录启动服务
+
+seed 默认写 `data/demo`，而服务默认读 `data`，**两者不是同一个目录**，
+所以启动前把 `YANXU_DATA_DIR` 指到第 3 步用的目录：
 
 ```powershell
-$env:YANXU_DATA_DIR = "$PWD\.tmp\demo"
-```
-
-```powershell
-$env:YANXU_PORT = "8000"
+$env:YANXU_DATA_DIR = "$PWD\data\demo"
 ```
 
 ```powershell
 python -m app.main
 ```
 
-看到下面两行即启动完成（冷启动约 10.5 秒，其中约 7.3 秒是 PowerContext 服务端模块的导入开销）：
+服务在**前台**运行并占用这个窗口。看到下面两行即启动完成（冷启动约 10.5 秒，其中约 7.3 秒是 PowerContext 服务端模块的导入开销）：
 
 ```
 研续 Yanxu → http://127.0.0.1:8000
-数据目录   → E:\Ocean Base\qoder-competition\qoder\.tmp\demo
+数据目录   → …\qoder\data\demo
 ```
 
-### 5. 打开页面
+### 5. 打开页面（另开一个 PowerShell 窗口）
 
-浏览器访问 <http://127.0.0.1:8000>。交互式接口文档在 <http://127.0.0.1:8000/api/docs>。
+第 4 步的窗口被服务占用，**另开一个 PowerShell 窗口**执行：
+
+```powershell
+start http://127.0.0.1:8000
+```
+
+交互式接口文档在 <http://127.0.0.1:8000/api/docs>。
 
 不想用示例数据，就跳过第 3 步、把第 4 步的 `YANXU_DATA_DIR` 指向一个空目录（或干脆不设，
 默认 `qoder\data`），从空白开始建自己的项目。
@@ -212,10 +228,10 @@ collected 43 items
 tests\test_api_e2e.py .......                                            [ 16%]
 tests\test_codec.py ........                                             [ 34%]
 tests\test_m2_regressions.py .........                                   [ 55%]
-tests\test_site_contract.py .......                                      [ 72%]
-tests\test_ui_contract.py ............                                   [100%]
+tests\test_site_contract.py .....                                        [ 67%]
+tests\test_ui_contract.py ..............                                 [100%]
 
-============================= 43 passed in 26.48s =============================
+============================= 43 passed in 25.91s =============================
 ```
 
 43 个测试分五类，**没有任何 mock**——每个端到端测试都拉起真实的内嵌 PowerContext Server
@@ -226,8 +242,8 @@ tests\test_ui_contract.py ............                                   [100%]
 | `test_codec.py` | 8 | YX1 编解码纯函数：字段往返、空头部键省略、正文含 `---`、头部换行被拒、标签去重、CRLF 归一、外来文本容忍、NFC/UTF-8 字节数 |
 | `test_api_e2e.py` | 7 | M1 端到端：完整闭环、项目隔离、修订与历史、陈旧引用 409、真实错误透传、Server 停止后的 5xx、无模型密钥、整体重启后数据仍在 |
 | `test_m2_regressions.py` | 9 | M2 行为回归：有效状态语义、接手版本绑定、三项 ReceiverChecks、交接精确版本读取、报告时间口径与引用诚实、URL 协议白名单、超长目标不留半成品、日期归一化、历史不静默截断 |
-| `test_ui_contract.py` | 12 | M2 结构契约：解析 HTML/CSS/JS 源文件，锁定覆盖层显隐机制、可访问性、焦点管理、首屏信息层级、按钮文案、窄屏支持、合成数据标注 |
-| `test_site_contract.py` | 7 | 展示页诚实性契约：解析 `site/` 静态源码，锁定结构完整、零脚本零外链零相对链接、不声称线上地址、不声称量化省时、截图占位与真实截图分开、已验证/未验证分栏、合成演示数据有标注 |
+| `test_ui_contract.py` | 14 | M2/M3 结构契约：解析 HTML/CSS/JS 源文件，锁定覆盖层显隐机制、可访问性、焦点管理、首屏信息层级、按钮文案、窄屏支持、合成数据标注、本地日期默认值 |
+| `test_site_contract.py` | 5 | 展示页结构契约：HTML 结构、本地资源存在、页内锚点可达、外链只指向已核实仓库、产品页必备要素（源码入口 / 五步流程 / 三张真实截图 / 运行与局限） |
 
 `test_m2_regressions.py` 里每个测试的 docstring 都写明「修复前的错误行为」，
 断言失败时能直接看出是哪一处回退。
@@ -247,12 +263,9 @@ tests\test_ui_contract.py ............                                   [100%]
   503 `handoff_generation_unavailable`。研续不使用这两个端点，改用本人撰写路径。
 - 没有自动记忆提取（`memory_extraction=False`）：所有记忆都由用户显式录入。
 - 单用户本地工具，没有鉴权。请只监听回环地址。
-- **界面可用性尚未完成可视化验收**：开发环境里的浏览器面板没有可见表面
-  （`visibilityState=hidden`、`outerWidth=0`），截图工具直接拒绝出图，
-  CDP 鼠标事件也是空操作。覆盖层显隐的层叠机制已在真实渲染引擎里量到修复，
-  但「人能用鼠标正常操作」这一条需在可见浏览器里复验。
-  实测量值与移交清单见 [evidence/ui/m2-overlay-state.json](evidence/ui/m2-overlay-state.json)
-  与 [DEVELOPMENT.md](DEVELOPMENT.md) §12.4。
+- 桌面可见浏览器已独立验收建项、记忆修订、交接、恢复与复制报告，见
+  [M2 界面记录](evidence/independent-m2-ui.json) 和 [M3 复现记录](evidence/independent-m3-ui.json)。
+  文件下载落盘与窄屏视觉尚未独立验证；复制导出已验证。
 - 研续**不主张任何量化的时间节省**。PROJECT.md 初稿里那个「重建一次要 20–60 分钟」
   没有测量支撑，已删除并标注为未验证假设。
 

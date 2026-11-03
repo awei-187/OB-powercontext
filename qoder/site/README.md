@@ -1,18 +1,30 @@
-# qoder/site/ · 参赛展示页源码
+# qoder/site/ · 参赛展示页
 
-**状态：源码预览，尚未发布，没有线上地址。**
-按 M2 要求本轮不发布；协调人完成界面复验后，M3 再通过 Qoder Sites 发布。
+**已发布：** <https://yanxu-research-022wcl7311d.qoder.zone> （Qoder Sites，访问策略 public）
+发布事实（站点 ID、操作 ID、产物 sha256、线上核验记录）见
+[evidence/publication.json](../evidence/publication.json)。
+
+## 这是什么
+
+参赛的**产品介绍页**：一句话价值主张、痛点、五步流程、三张真实截图（可点开大图）、
+PowerContext 承担的真实功能、本地安装运行、简短局限。
+它**不运行研续**——研续是只监听 `127.0.0.1` 的本地工具，线上只有这一份静态介绍。
 
 ## 内容
 
 | 文件 | 说明 |
 |---|---|
-| `index.html` | 展示页正文：痛点、五步产品流程、真实 PowerContext 集成对照表、五条诚实性不变量、界面（含截图占位）、安装与复现命令、已验证 / 未验证状态板、证据清单、约束红线 |
-| `styles.css` | 样式。视觉语言与产品本体一致（纸 / 墨 / 靛，同一组设计令牌），含 720px 窄屏断点 |
-| `assets/m1-p0-overlays.png` | `evidence/ui/m1-ledger.png` 的副本 —— M1 那个 P0 的真实现场截图 |
+| `index.html` | 页面正文。末尾约 30 行内联脚本只做大图查看器（开 / 关 / Esc / 焦点返回） |
+| `styles.css` | 样式，与产品本体同一组设计令牌（纸 / 墨 / 靛 / 玉），含 900px 与 620px 两个窄屏断点 |
+| `assets/restore.png` | 真实截图：新会话恢复页（协调人在可见浏览器中拍摄） |
+| `assets/history.png` | 真实截图：记忆修订历史抽屉，决策 v1 → v2 |
+| `assets/report.png` | 真实截图：组会 / 周报页与来源追溯 |
+| `assets/sample-weekly-report.md` | 一份真实导出的周报（合成示例数据），供线上直接阅读 |
+| `dist/` | 发布包：上面公开文件的副本，`prepare_site` 的 `webDirectory`。已 gitignore |
 
-纯静态：无脚本、无构建步骤、无外部依赖、无追踪、无外链。
-已离线校验：标签闭合、id 不重复、图片有 alt、锚点全部可达、本地资源全部存在、CSS 花括号平衡。
+三张截图的原件在 `evidence/ui/`（`m2-restore-desktop.png` / `m2-history.png` / `m2-report.png`），
+是协调人独立验收时的真实页面 capture；其中的示例项目为合成演示数据。
+截图摄于本轮两处小修正（日期输入框默认值、合成演示横幅文案）之前。
 
 ## 本地预览
 
@@ -26,17 +38,38 @@ python -m http.server 8125 --bind 127.0.0.1
 
 浏览器打开 `http://127.0.0.1:8125/`。
 
-## 写作红线（发布前请逐条复查）
+## 重新发布
 
-1. **不伪造线上体验**：页面顶部状态条与页脚都写明「尚未发布，没有线上地址」。
-   发布后须把这两处改掉，并只填真实的 Qoder Sites 地址。
-2. **不主张量化时间节省**：痛点一节明确写了「不主张任何量化的时间节省」，
-   并交代了 PROJECT.md 初稿那个「20–60 分钟」为什么被删。请勿在别处补回这类数字。
-3. **截图只有真的一张**：`assets/m1-p0-overlays.png` 是协调人在可见 Edge 里拍的 P0 现场。
-   其余五个位置是**明确标注「截图待补」的占位框**，不得用生成图、示意图或渲染图顶替。
-   补拍后请把对应 `<div class="shot">` 换成 `<figure class="shot has-image">` 并写清截图内容。
-4. **合成数据要标注**：页面已说明示例数据的 12ms、命中率等数字为虚构、非实测，请勿改成实测口吻。
-5. **未验证项不许升级**：状态板里「界面视觉与鼠标可用性」「窄屏实际观感」「Qoder Sites 发布」
-   三行是 `未验证` / `未执行`。只有在可见浏览器里真的验过之后才能改。
-6. **仓库内路径用纯文本**：证据清单里的 `PROJECT.md`、`evidence/...` 等一律是 `<code>` 纯文本，
-   不是超链接 —— 发布到线上后仓库相对路径会 404。若要加链接，只加已确认可公开访问的地址。
+发布包是源码的副本，改完页面先重建再发布（只创建目录并覆盖已知的静态文件，不递归删除）：
+
+```powershell
+cd "E:\Ocean Base\qoder-competition\qoder\site"
+```
+
+```powershell
+New-Item -ItemType Directory -Force -Path dist\assets | Out-Null
+```
+
+```powershell
+Copy-Item index.html, styles.css dist\ -Force
+```
+
+```powershell
+Copy-Item assets\restore.png, assets\history.png, assets\report.png, assets\sample-weekly-report.md dist\assets\ -Force
+```
+
+然后用 Qoder Sites 的 `prepare_site`（`projectRoot` 指向 `qoder/site`、`webDirectory` 为 `dist`、
+**新的 actionId**、沿用现有 `projectId`）→ `get_publish_status` → `publish_site`，
+并把新的发布事实补进 `evidence/publication.json`。内容变了必须用新 actionId，不要复用旧的。
+
+## 写作约定（改文案前请读）
+
+1. **不伪造线上体验**：页面不暗示研续可以在线试用；「本地复现体验」指向安装步骤。
+2. **不主张量化收益**：不写节省了多少时间、多少用户——没有测量支撑。
+3. **截图只用真 capture**：`assets/` 里三张图来自 `evidence/ui/` 的真实验收截图，
+   不得用生成图、示意图或渲染图顶替，也不得裁剪掉界面里的合成数据标注。
+4. **合成数据要标注**：页面已说明示例为合成演示；示例周报里的数字是虚构的。
+5. **外链只指向已核实地址**：目前只有参赛仓库（已核实 public）与页内锚点、本地资源。
+   加新外链前先确认它真实存在且可公开引用。
+6. **内部验收细节不上页**：红线清单、未验证状态板、工具错误码等留在
+   `DEVELOPMENT.md` 与 `evidence/`，页面只保留读者需要的产品信息与简短局限。
