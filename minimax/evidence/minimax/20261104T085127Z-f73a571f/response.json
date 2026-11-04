@@ -1,0 +1,9 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "\"\"\"Order listing with optional status filtering and pagination.\"\"\"\n\nfrom collections.abc import Sequence\nfrom typing import Any\n\n\n_VALID_STATUSES = frozenset({\"pending\", \"paid\", \"cancelled\"})\n\n\ndef list_orders(\n    orders: Sequence[dict[str, Any]],\n    *,\n    page: int = 1,\n    page_size: int = 2,\n    status: str | None = None,\n) -> list[dict[str, Any]]:\n    \"\"\"Return one page in input order, without changing caller-owned records.\"\"\"\n    if type(page) is not int or page < 1:\n        raise ValueError(\"page must be a positive integer\")\n    if type(page_size) is not int or page_size < 1:\n        raise ValueError(\"page_size must be a positive integer\")\n    if status is not None and (\n        not isinstance(status, str) or status not in _VALID_STATUSES\n    ):\n        raise ValueError(\"status must be one of: pending, paid, cancelled\")\n\n    matching_orders = orders\n    if status is not None:\n        matching_orders = [order for order in orders if order[\"status\"] == status]\n\n    start = (page - 1) * page_size\n    return [dict(order) for order in matching_orders[start : start + page_size]]\n"
+    }
+  ],
+  "reasoning_blocks_omitted": true
+}

@@ -1,0 +1,11 @@
+test_all_valid_statuses_preserve_order (test_target.TargetTests.test_all_valid_statuses_preserve_order) ... ok
+test_filter_does_not_mutate_input (test_target.TargetTests.test_filter_does_not_mutate_input) ... ok
+test_filter_precedes_pagination (test_target.TargetTests.test_filter_precedes_pagination) ... ok
+test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) ... ok
+test_no_matches (test_target.TargetTests.test_no_matches) ... ok
+test_none_is_compatible (test_target.TargetTests.test_none_is_compatible) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+OK

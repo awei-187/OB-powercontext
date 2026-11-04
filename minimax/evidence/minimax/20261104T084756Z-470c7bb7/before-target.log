@@ -1,0 +1,158 @@
+test_all_valid_statuses_preserve_order (test_target.TargetTests.test_all_valid_statuses_preserve_order) ... 
+  test_all_valid_statuses_preserve_order (test_target.TargetTests.test_all_valid_statuses_preserve_order) (status='paid') ... ERROR
+  test_all_valid_statuses_preserve_order (test_target.TargetTests.test_all_valid_statuses_preserve_order) (status='pending') ... ERROR
+  test_all_valid_statuses_preserve_order (test_target.TargetTests.test_all_valid_statuses_preserve_order) (status='cancelled') ... ERROR
+test_filter_does_not_mutate_input (test_target.TargetTests.test_filter_does_not_mutate_input) ... ERROR
+test_filter_precedes_pagination (test_target.TargetTests.test_filter_precedes_pagination) ... ERROR
+test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) ... 
+  test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status='') ... ERROR
+  test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status='PAID') ... ERROR
+  test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status=' paid') ... ERROR
+  test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status='unknown') ... ERROR
+  test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status='refunded') ... ERROR
+  test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status=True) ... ERROR
+  test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status=7) ... ERROR
+  test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status=[]) ... ERROR
+  test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status={}) ... ERROR
+test_no_matches (test_target.TargetTests.test_no_matches) ... ERROR
+test_none_is_compatible (test_target.TargetTests.test_none_is_compatible) ... ERROR
+
+======================================================================
+ERROR: test_all_valid_statuses_preserve_order (test_target.TargetTests.test_all_valid_statuses_preserve_order) (status='paid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/tests/test_target.py", line 25, in test_all_valid_statuses_preserve_order
+    result = list_orders(self.orders, status=status, page_size=20)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: list_orders() got an unexpected keyword argument 'status'
+
+======================================================================
+ERROR: test_all_valid_statuses_preserve_order (test_target.TargetTests.test_all_valid_statuses_preserve_order) (status='pending')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/tests/test_target.py", line 25, in test_all_valid_statuses_preserve_order
+    result = list_orders(self.orders, status=status, page_size=20)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: list_orders() got an unexpected keyword argument 'status'
+
+======================================================================
+ERROR: test_all_valid_statuses_preserve_order (test_target.TargetTests.test_all_valid_statuses_preserve_order) (status='cancelled')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/tests/test_target.py", line 25, in test_all_valid_statuses_preserve_order
+    result = list_orders(self.orders, status=status, page_size=20)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: list_orders() got an unexpected keyword argument 'status'
+
+======================================================================
+ERROR: test_filter_does_not_mutate_input (test_target.TargetTests.test_filter_does_not_mutate_input)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/tests/test_target.py", line 43, in test_filter_does_not_mutate_input
+    result = list_orders(self.orders, status="paid")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: list_orders() got an unexpected keyword argument 'status'
+
+======================================================================
+ERROR: test_filter_precedes_pagination (test_target.TargetTests.test_filter_precedes_pagination)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/tests/test_target.py", line 19, in test_filter_precedes_pagination
+    result = list_orders(self.orders, status="paid", page=2, page_size=2)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: list_orders() got an unexpected keyword argument 'status'
+
+======================================================================
+ERROR: test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/tests/test_target.py", line 39, in test_invalid_status_is_rejected
+    list_orders(self.orders, status=status)
+TypeError: list_orders() got an unexpected keyword argument 'status'
+
+======================================================================
+ERROR: test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status='PAID')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/tests/test_target.py", line 39, in test_invalid_status_is_rejected
+    list_orders(self.orders, status=status)
+TypeError: list_orders() got an unexpected keyword argument 'status'
+
+======================================================================
+ERROR: test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status=' paid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/tests/test_target.py", line 39, in test_invalid_status_is_rejected
+    list_orders(self.orders, status=status)
+TypeError: list_orders() got an unexpected keyword argument 'status'
+
+======================================================================
+ERROR: test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status='unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/tests/test_target.py", line 39, in test_invalid_status_is_rejected
+    list_orders(self.orders, status=status)
+TypeError: list_orders() got an unexpected keyword argument 'status'
+
+======================================================================
+ERROR: test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status='refunded')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/tests/test_target.py", line 39, in test_invalid_status_is_rejected
+    list_orders(self.orders, status=status)
+TypeError: list_orders() got an unexpected keyword argument 'status'
+
+======================================================================
+ERROR: test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/tests/test_target.py", line 39, in test_invalid_status_is_rejected
+    list_orders(self.orders, status=status)
+TypeError: list_orders() got an unexpected keyword argument 'status'
+
+======================================================================
+ERROR: test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status=7)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/tests/test_target.py", line 39, in test_invalid_status_is_rejected
+    list_orders(self.orders, status=status)
+TypeError: list_orders() got an unexpected keyword argument 'status'
+
+======================================================================
+ERROR: test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status=[])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/tests/test_target.py", line 39, in test_invalid_status_is_rejected
+    list_orders(self.orders, status=status)
+TypeError: list_orders() got an unexpected keyword argument 'status'
+
+======================================================================
+ERROR: test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) (status={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/tests/test_target.py", line 39, in test_invalid_status_is_rejected
+    list_orders(self.orders, status=status)
+TypeError: list_orders() got an unexpected keyword argument 'status'
+
+======================================================================
+ERROR: test_no_matches (test_target.TargetTests.test_no_matches)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/tests/test_target.py", line 32, in test_no_matches
+    self.assertEqual(list_orders([{"id": 1, "status": "paid"}], status="pending"), [])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: list_orders() got an unexpected keyword argument 'status'
+
+======================================================================
+ERROR: test_none_is_compatible (test_target.TargetTests.test_none_is_compatible)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/tests/test_target.py", line 29, in test_none_is_compatible
+    self.assertEqual(list_orders(self.orders, status=None), list_orders(self.orders))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: list_orders() got an unexpected keyword argument 'status'
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.026s
+
+FAILED (errors=16)

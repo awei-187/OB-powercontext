@@ -1,0 +1,181 @@
+{
+  "run_id": "20261104T085127Z-f73a571f",
+  "started_at_utc": "2026-11-04T08:51:27.331616+00:00",
+  "region": "cn",
+  "applied": true,
+  "passed": true,
+  "git_base_commit": "d647275c308e09b7b623f322a26f5c4e85734fb0",
+  "workflow_sha256": "e14cf3e4f108e0ac80b6fdb81928dcb5fe867817a0be2eba0fe069322b2848f2",
+  "tests_sha256_before": {
+    "tests/test_target.py": "41b090aebd134af81fcab47be1b4f6b85aab3536dd46ea84c98ac7a704f2b01a",
+    "tests/test_regression.py": "6b73507103ab4731fe2720ac3341cf95dc362e341b4272e2866d182b3981b181"
+  },
+  "before_sha256": "fecf81f215525c09a96361bc3f4e04fd7d89f0551e12b033c5cb257cb70335d6",
+  "before_tests": {
+    "target": {
+      "command": [
+        "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/.venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_target.py",
+        "-v"
+      ],
+      "exit_code": 1,
+      "log_path": "evidence/minimax/20261104T085127Z-f73a571f/before-target.log",
+      "log_sha256": "cbf2a6f120f77b50103d99d54e3f16c052f2c46f7cdd58792d61af36e4b5bef2"
+    },
+    "regression": {
+      "command": [
+        "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/.venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_regression.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log_path": "evidence/minimax/20261104T085127Z-f73a571f/before-regression.log",
+      "log_sha256": "892b3b6e7fca6405ef9c58cda0fd9ccdfc7dc4da17c7c8ffeede8b82ab6597ac"
+    }
+  },
+  "cli_version": "mmx 1.0.28",
+  "model_command": [
+    "/home/research/.local/bin/mmx",
+    "text",
+    "chat",
+    "--messages-file",
+    "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/evidence/minimax/20261104T084956Z-570d8c22/messages.json",
+    "--region",
+    "cn",
+    "--max-tokens",
+    "8192",
+    "--output",
+    "json",
+    "--quiet",
+    "--non-interactive"
+  ],
+  "reused_model_response_from": "evidence/minimax/20261104T084956Z-570d8c22",
+  "model_exit_code": 0,
+  "new_model_call": false,
+  "model": null,
+  "usage": null,
+  "candidate_tests": {
+    "target": {
+      "command": [
+        "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/.venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_target.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log_path": "evidence/minimax/20261104T085127Z-f73a571f/candidate-target.log",
+      "log_sha256": "d9b10354c5943994b7a3a3da477751a7653cd42239652e13644da0cd67b5d192"
+    },
+    "regression": {
+      "command": [
+        "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/.venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_regression.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log_path": "evidence/minimax/20261104T085127Z-f73a571f/candidate-regression.log",
+      "log_sha256": "892b3b6e7fca6405ef9c58cda0fd9ccdfc7dc4da17c7c8ffeede8b82ab6597ac"
+    }
+  },
+  "after_tests": {
+    "target": {
+      "command": [
+        "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/.venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_target.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log_path": "evidence/minimax/20261104T085127Z-f73a571f/after-target.log",
+      "log_sha256": "d9b10354c5943994b7a3a3da477751a7653cd42239652e13644da0cd67b5d192"
+    },
+    "regression": {
+      "command": [
+        "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/.venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_regression.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log_path": "evidence/minimax/20261104T085127Z-f73a571f/after-regression.log",
+      "log_sha256": "892b3b6e7fca6405ef9c58cda0fd9ccdfc7dc4da17c7c8ffeede8b82ab6597ac"
+    }
+  },
+  "after_sha256": "8dc533e8480c2f97bdd8c854f4b7db416eb61b501b25179b19b030da617f9ebf",
+  "tests_sha256_after": {
+    "tests/test_target.py": "41b090aebd134af81fcab47be1b4f6b85aab3536dd46ea84c98ac7a704f2b01a",
+    "tests/test_regression.py": "6b73507103ab4731fe2720ac3341cf95dc362e341b4272e2866d182b3981b181"
+  },
+  "saved_progress_citation": {
+    "memory_ref": {
+      "family": "memory",
+      "artifact_id": "memory",
+      "revision": 2
+    },
+    "entry_id": "mem_ent_56b98963e0494b56a6a102d6c5581bd6",
+    "entry_version_id": "mem_ver_6e89a7a71e0d4443b4ed387d89e68a59"
+  },
+  "post_change_ingestion": {
+    "project_id": "orders-demo",
+    "generation": 5,
+    "documents": 4,
+    "changed": 1,
+    "removed": 0,
+    "sources": [
+      {
+        "path": "specs/orders-v1.md",
+        "sha256": "e282921d1fe974e7b2c7fc99cdcd4a0a6973249e55e40bd48112fe168acbe1f6",
+        "role": "spec"
+      },
+      {
+        "path": "sample_project/orders.py",
+        "sha256": "8dc533e8480c2f97bdd8c854f4b7db416eb61b501b25179b19b030da617f9ebf",
+        "role": "implementation"
+      },
+      {
+        "path": "tests/test_regression.py",
+        "sha256": "6b73507103ab4731fe2720ac3341cf95dc362e341b4272e2866d182b3981b181",
+        "role": "regression_test"
+      },
+      {
+        "path": "tests/test_target.py",
+        "sha256": "41b090aebd134af81fcab47be1b4f6b85aab3536dd46ea84c98ac7a704f2b01a",
+        "role": "target_test"
+      }
+    ]
+  },
+  "finished_at_utc": "2026-11-04T08:51:30.539028+00:00"
+}

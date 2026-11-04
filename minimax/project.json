@@ -1,0 +1,9 @@
+{
+  "project_id": "orders-demo",
+  "documents": [
+    {"path": "specs/orders-v1.md", "role": "spec"},
+    {"path": "sample_project/orders.py", "role": "implementation"},
+    {"path": "tests/test_regression.py", "role": "regression_test"},
+    {"path": "tests/test_target.py", "role": "target_test"}
+  ]
+}

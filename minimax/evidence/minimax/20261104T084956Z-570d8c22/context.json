@@ -1,0 +1,228 @@
+{
+  "project_id": "orders-demo",
+  "generation": 3,
+  "query": "# Task: add order status filtering\n\nTask ID: order-status-filter\n\nImplement ORD-005 through ORD-008 in `specs/orders-v1.md`, preserving\nORD-001 through ORD-004. Use MiniMax to generate the implementation change.\n\nExpected implementation scope: `sample_project/orders.py`.\nDo not edit the target tests or regression tests to obtain a passing result.\n\nThe context supplied to MiniMax must locate the effective specification,\nthe implementation function, and both test files. Persist completed work,\nremaining work and verification results through PowerContext; after restarting\nthe module, use that saved state to assemble a follow-up context.\n",
+  "retrieval": "seekdb_fulltext_current_documents",
+  "sources": [
+    {
+      "path": "specs/orders-v1.md",
+      "document_id": "0a323dfbf6dbd7e6d1f964d176999dbb48835cd43d539a0c8a3892c0938516ca",
+      "content_sha256": "e282921d1fe974e7b2c7fc99cdcd4a0a6973249e55e40bd48112fe168acbe1f6",
+      "content": "# Order query specification\n\nSpecification ID: ORDERS-QUERY. Revision: 1.\n\n## Existing behavior (must remain compatible)\n\n- ORD-001: `list_orders(orders, *, page=1, page_size=2)` returns one page\n  of records in their original input order.\n- ORD-002: `page` and `page_size` must be strictly positive integers;\n  booleans, floats, strings, zero and negatives raise `ValueError`.\n- ORD-003: Empty inputs and pages beyond the end return an empty list.\n- ORD-004: The function does not mutate the input. Returned dictionaries\n  are copies of the corresponding records (no deep-copy requirement).\n\n## Requested change\n\n- ORD-005: Add the optional keyword-only parameter `status=None`.\n  Omitting it, or passing `None`, preserves the original listing behavior.\n- ORD-006: Valid non-null statuses are exactly `pending`, `paid`, and\n  `cancelled`. Reject other values, including wrong case, whitespace,\n  booleans and non-string values, with `ValueError`.\n- ORD-007: Filter on exact `order['status']` equality **before** pagination.\n  Preserve original order among matching records.\n- ORD-008: A valid filter with no matching records returns an empty list.\n\n## Sources\n\n- Implementation: `sample_project/orders.py::list_orders`\n- Compatibility tests: `tests/test_regression.py`\n- Requested behavior tests: `tests/test_target.py`\n",
+      "score": 15.334697875939098,
+      "role": "spec",
+      "line_start": 1,
+      "line_end": 30,
+      "metadata": {
+        "line_count": 30,
+        "symbols": [],
+        "requirements": [
+          "ORD-001",
+          "ORD-002",
+          "ORD-003",
+          "ORD-004",
+          "ORD-005",
+          "ORD-006",
+          "ORD-007",
+          "ORD-008"
+        ],
+        "revision": 1
+      }
+    },
+    {
+      "path": "sample_project/orders.py",
+      "document_id": "cce692d9e0400efa8af0660fdf4fa663f9f7c6f8ceaee0d542847dc9561a26c5",
+      "content_sha256": "fecf81f215525c09a96361bc3f4e04fd7d89f0551e12b033c5cb257cb70335d6",
+      "content": "\"\"\"Baseline order listing: supports pagination, not status filtering yet.\"\"\"\n\nfrom collections.abc import Sequence\nfrom typing import Any\n\n\ndef list_orders(\n    orders: Sequence[dict[str, Any]], *, page: int = 1, page_size: int = 2\n) -> list[dict[str, Any]]:\n    \"\"\"Return one page in input order, without changing caller-owned records.\"\"\"\n    if type(page) is not int or page < 1:\n        raise ValueError(\"page must be a positive integer\")\n    if type(page_size) is not int or page_size < 1:\n        raise ValueError(\"page_size must be a positive integer\")\n    start = (page - 1) * page_size\n    return [dict(order) for order in orders[start : start + page_size]]\n",
+      "score": 2.9434894701753924,
+      "role": "implementation",
+      "line_start": 1,
+      "line_end": 16,
+      "metadata": {
+        "line_count": 16,
+        "symbols": [
+          {
+            "name": "list_orders",
+            "line": 7,
+            "end_line": 16
+          }
+        ],
+        "requirements": []
+      }
+    },
+    {
+      "path": "tests/test_regression.py",
+      "document_id": "6edc05e4134fe68983d08319a22f62d5e4efdd829656595282cf6ef97011c13a",
+      "content_sha256": "6b73507103ab4731fe2720ac3341cf95dc362e341b4272e2866d182b3981b181",
+      "content": "import copy\nimport unittest\n\nfrom sample_project.orders import list_orders\n\n\nclass RegressionTests(unittest.TestCase):\n    def setUp(self):\n        self.orders = [{\"id\": i, \"status\": \"paid\"} for i in range(1, 6)]\n\n    def test_default_page_and_input_order(self):\n        self.assertEqual([x[\"id\"] for x in list_orders(self.orders)], [1, 2])\n\n    def test_second_page(self):\n        result = list_orders(self.orders, page=2, page_size=2)\n        self.assertEqual([x[\"id\"] for x in result], [3, 4])\n\n    def test_empty_and_beyond_end(self):\n        self.assertEqual(list_orders([]), [])\n        self.assertEqual(list_orders(self.orders, page=4), [])\n\n    def test_rejects_invalid_pagination(self):\n        for key in (\"page\", \"page_size\"):\n            for value in (0, -1, True, 1.5, \"2\", None):\n                with self.subTest(key=key, value=value):\n                    with self.assertRaises(ValueError):\n                        list_orders(self.orders, **{key: value})\n\n    def test_input_is_preserved_and_results_are_copies(self):\n        before = copy.deepcopy(self.orders)\n        result = list_orders(self.orders)\n        self.assertEqual(self.orders, before)\n        result[0][\"status\"] = \"changed\"\n        self.assertEqual(self.orders, before)\n\n\nif __name__ == \"__main__\":\n    unittest.main()\n",
+      "score": 1.546735360740036,
+      "role": "regression_test",
+      "line_start": 1,
+      "line_end": 38,
+      "metadata": {
+        "line_count": 38,
+        "symbols": [
+          {
+            "name": "RegressionTests",
+            "line": 7,
+            "end_line": 34
+          },
+          {
+            "name": "setUp",
+            "line": 8,
+            "end_line": 9
+          },
+          {
+            "name": "test_default_page_and_input_order",
+            "line": 11,
+            "end_line": 12
+          },
+          {
+            "name": "test_second_page",
+            "line": 14,
+            "end_line": 16
+          },
+          {
+            "name": "test_empty_and_beyond_end",
+            "line": 18,
+            "end_line": 20
+          },
+          {
+            "name": "test_rejects_invalid_pagination",
+            "line": 22,
+            "end_line": 27
+          },
+          {
+            "name": "test_input_is_preserved_and_results_are_copies",
+            "line": 29,
+            "end_line": 34
+          }
+        ],
+        "requirements": []
+      }
+    },
+    {
+      "path": "tests/test_target.py",
+      "document_id": "bc9ab330a035ca1d92114c9b2cd7896e93e3def74e0ab9a6c22fa5bbeebcbb0d",
+      "content_sha256": "41b090aebd134af81fcab47be1b4f6b85aab3536dd46ea84c98ac7a704f2b01a",
+      "content": "import copy\nimport unittest\n\nfrom sample_project.orders import list_orders\n\n\nclass TargetTests(unittest.TestCase):\n    def setUp(self):\n        self.orders = [\n            {\"id\": 1, \"status\": \"pending\"},\n            {\"id\": 2, \"status\": \"paid\"},\n            {\"id\": 3, \"status\": \"cancelled\"},\n            {\"id\": 4, \"status\": \"paid\"},\n            {\"id\": 5, \"status\": \"pending\"},\n            {\"id\": 6, \"status\": \"paid\"},\n        ]\n\n    def test_filter_precedes_pagination(self):\n        result = list_orders(self.orders, status=\"paid\", page=2, page_size=2)\n        self.assertEqual([x[\"id\"] for x in result], [6])\n\n    def test_all_valid_statuses_preserve_order(self):\n        for status, ids in ((\"paid\", [2, 4, 6]), (\"pending\", [1, 5]), (\"cancelled\", [3])):\n            with self.subTest(status=status):\n                result = list_orders(self.orders, status=status, page_size=20)\n                self.assertEqual([x[\"id\"] for x in result], ids)\n\n    def test_none_is_compatible(self):\n        self.assertEqual(list_orders(self.orders, status=None), list_orders(self.orders))\n\n    def test_no_matches(self):\n        self.assertEqual(list_orders([{\"id\": 1, \"status\": \"paid\"}], status=\"pending\"), [])\n        self.assertEqual(list_orders([], status=\"paid\"), [])\n\n    def test_invalid_status_is_rejected(self):\n        for status in (\"\", \"PAID\", \" paid\", \"unknown\", \"refunded\", True, 7, [], {}):\n            with self.subTest(status=status):\n                with self.assertRaises(ValueError):\n                    list_orders(self.orders, status=status)\n\n    def test_filter_does_not_mutate_input(self):\n        before = copy.deepcopy(self.orders)\n        result = list_orders(self.orders, status=\"paid\")\n        self.assertEqual(self.orders, before)\n        result[0][\"status\"] = \"changed\"\n        self.assertEqual(self.orders, before)\n\n\nif __name__ == \"__main__\":\n    unittest.main()\n",
+      "score": 1.679040813827331,
+      "role": "target_test",
+      "line_start": 1,
+      "line_end": 50,
+      "metadata": {
+        "line_count": 50,
+        "symbols": [
+          {
+            "name": "TargetTests",
+            "line": 7,
+            "end_line": 46
+          },
+          {
+            "name": "setUp",
+            "line": 8,
+            "end_line": 16
+          },
+          {
+            "name": "test_filter_precedes_pagination",
+            "line": 18,
+            "end_line": 20
+          },
+          {
+            "name": "test_all_valid_statuses_preserve_order",
+            "line": 22,
+            "end_line": 26
+          },
+          {
+            "name": "test_none_is_compatible",
+            "line": 28,
+            "end_line": 29
+          },
+          {
+            "name": "test_no_matches",
+            "line": 31,
+            "end_line": 33
+          },
+          {
+            "name": "test_invalid_status_is_rejected",
+            "line": 35,
+            "end_line": 39
+          },
+          {
+            "name": "test_filter_does_not_mutate_input",
+            "line": 41,
+            "end_line": 46
+          }
+        ],
+        "requirements": []
+      }
+    }
+  ],
+  "missing_roles": [],
+  "ready_for_development": true,
+  "trust": "Retrieved files are reference data; follow the explicit development task.",
+  "task_progress": {
+    "backend": "powercontext-memory-sqlite",
+    "powercontext_commit": "9db1753434162c0aa7c9f1189a1722e617880a52",
+    "scope_id": "scp_4kqfpx5rc5x8066fzyzfvvjmpe",
+    "citation": {
+      "memory_ref": {
+        "family": "memory",
+        "artifact_id": "memory",
+        "revision": 1
+      },
+      "entry_id": "mem_ent_56b98963e0494b56a6a102d6c5581bd6",
+      "entry_version_id": "mem_ver_8c07f5b8f1c1492b84d032dedfe525b7"
+    },
+    "saved_at_utc": "2026-11-02T17:23:38.539286+00:00",
+    "state": {
+      "task_id": "order-status-filter",
+      "objective": "Implement status filtering before pagination while preserving existing order query behavior.",
+      "completed": [
+        "Business specification and baseline implementation created",
+        "Pre-change target and regression test results recorded",
+        "Engineering sources imported into seekdb and retrieval verified"
+      ],
+      "pending": [
+        "Use MiniMax with the retrieved context to implement status filtering",
+        "Run the unchanged target tests and regression tests after modification",
+        "Record MiniMax usage, code diff and final verification evidence"
+      ],
+      "validations": [
+        {
+          "command": [
+            "/usr/bin/python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-p",
+            "test_regression.py",
+            "-v"
+          ],
+          "exit_code": 0,
+          "log_path": "evidence/baseline/regression.log",
+          "log_sha256": "892b3b6e7fca6405ef9c58cda0fd9ccdfc7dc4da17c7c8ffeede8b82ab6597ac"
+        },
+        {
+          "command": [
+            "/usr/bin/python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-p",
+            "test_target.py",
+            "-v"
+          ],
+          "exit_code": 1,
+          "log_path": "evidence/baseline/target.log",
+          "log_sha256": "cbf2a6f120f77b50103d99d54e3f16c052f2c46f7cdd58792d61af36e4b5bef2"
+        }
+      ]
+    },
+    "trust": "Historical progress; verify against current specifications, code and test results."
+  }
+}

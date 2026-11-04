@@ -1,0 +1,38 @@
+--- a/sample_project/orders.py
++++ b/sample_project/orders.py
+@@ -1,16 +1,32 @@
+-"""Baseline order listing: supports pagination, not status filtering yet."""
++"""Order listing with optional status filtering and pagination."""
+ 
+ from collections.abc import Sequence
+ from typing import Any
+ 
+ 
++_VALID_STATUSES = frozenset({"pending", "paid", "cancelled"})
++
++
+ def list_orders(
+-    orders: Sequence[dict[str, Any]], *, page: int = 1, page_size: int = 2
++    orders: Sequence[dict[str, Any]],
++    *,
++    page: int = 1,
++    page_size: int = 2,
++    status: str | None = None,
+ ) -> list[dict[str, Any]]:
+     """Return one page in input order, without changing caller-owned records."""
+     if type(page) is not int or page < 1:
+         raise ValueError("page must be a positive integer")
+     if type(page_size) is not int or page_size < 1:
+         raise ValueError("page_size must be a positive integer")
++    if status is not None and (
++        not isinstance(status, str) or status not in _VALID_STATUSES
++    ):
++        raise ValueError("status must be one of: pending, paid, cancelled")
++
++    matching_orders = orders
++    if status is not None:
++        matching_orders = [order for order in orders if order["status"] == status]
++
+     start = (page - 1) * page_size
+-    return [dict(order) for order in orders[start : start + page_size]]
++    return [dict(order) for order in matching_orders[start : start + page_size]]

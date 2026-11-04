@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "checks": [
+    "Fresh PowerContext storage returns no fabricated progress",
+    "Writer exits; independent process restores exact state and PowerContext citation",
+    "A new prepare process combines seekdb sources with restored PowerContext progress",
+    "Updated progress revises the same Memory entry and restores the new version",
+    "Project and task scopes are independently isolated",
+    "Rejected state input preserves previously committed progress"
+  ],
+  "report": "evidence/task-memory/verification-55c7a7d22f50480eaa7c18d50e34569d.json"
+}

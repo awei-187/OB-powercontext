@@ -1,0 +1,26 @@
+
+Send a chat completion (MiniMax Messages API)
+Usage: mmx text chat --message <text> [flags]
+
+Options:
+  --model <model>          Model ID (default: MiniMax-M3.1-Flash-Preview)
+  --message <text>         Message text (repeatable, prefix role: to set role)
+  --messages-file <path>   JSON file with messages array (use - for stdin)
+  --system <text>          System prompt
+  --max-tokens <n>         Maximum tokens to generate (default: 4096)
+  --temperature <n>        Sampling temperature (0.0, 1.0]
+  --top-p <n>              Nucleus sampling threshold
+  --stream                 Stream response tokens (default: on in TTY)
+  --tool <json-or-path>    Tool definition as JSON or file path (repeatable)
+
+Examples:
+  mmx text chat --message "What is MiniMax?"
+  mmx text chat --model MiniMax-M3.1-Flash-Preview --system "You are a coding assistant." --message "Write fizzbuzz in Python"
+  mmx text chat --message "Hello" --message "assistant:Hi!" --message "How are you?"
+  cat conversation.json | mmx text chat --messages-file - --stream
+  mmx text chat --message "Hello" --output json
+
+API Reference: https://platform.minimax.cn/docs/api-reference/text-post
+
+Global flags (--api-key, --output, --quiet, etc.) are always available.
+Run mmx --help for the full list.

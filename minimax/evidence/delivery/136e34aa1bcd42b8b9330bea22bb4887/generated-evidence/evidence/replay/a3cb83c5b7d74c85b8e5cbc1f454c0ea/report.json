@@ -1,0 +1,76 @@
+{
+  "source_run": "20261104T085127Z-f73a571f",
+  "timestamp_utc": "2026-11-04T11:11:03.021560+00:00",
+  "model_called": false,
+  "passed": true,
+  "runs": {
+    "before-target": {
+      "command": [
+        "/tmp/minimax-delivery-zapl_6lz/minimax/.venv/bin/python",
+        "-S",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_target.py",
+        "-v"
+      ],
+      "exit_code": 1,
+      "log_sha256": "df992f4ca3cf98255ee1111bb8d908e826b80e4a0e3efefb0ff482daef6aefcf"
+    },
+    "before-regression": {
+      "command": [
+        "/tmp/minimax-delivery-zapl_6lz/minimax/.venv/bin/python",
+        "-S",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_regression.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log_sha256": "892b3b6e7fca6405ef9c58cda0fd9ccdfc7dc4da17c7c8ffeede8b82ab6597ac"
+    },
+    "after-target": {
+      "command": [
+        "/tmp/minimax-delivery-zapl_6lz/minimax/.venv/bin/python",
+        "-S",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_target.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log_sha256": "d9b10354c5943994b7a3a3da477751a7653cd42239652e13644da0cd67b5d192"
+    },
+    "after-regression": {
+      "command": [
+        "/tmp/minimax-delivery-zapl_6lz/minimax/.venv/bin/python",
+        "-S",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_regression.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log_sha256": "892b3b6e7fca6405ef9c58cda0fd9ccdfc7dc4da17c7c8ffeede8b82ab6597ac"
+    }
+  }
+}

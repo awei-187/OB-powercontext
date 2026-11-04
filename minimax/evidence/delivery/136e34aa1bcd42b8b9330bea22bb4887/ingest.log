@@ -1,0 +1,31 @@
+{
+  "project_id": "orders-demo",
+  "generation": 1,
+  "documents": 4,
+  "changed": 4,
+  "removed": 0,
+  "sources": [
+    {
+      "path": "specs/orders-v1.md",
+      "sha256": "e282921d1fe974e7b2c7fc99cdcd4a0a6973249e55e40bd48112fe168acbe1f6",
+      "role": "spec"
+    },
+    {
+      "path": "sample_project/orders.py",
+      "sha256": "8dc533e8480c2f97bdd8c854f4b7db416eb61b501b25179b19b030da617f9ebf",
+      "role": "implementation"
+    },
+    {
+      "path": "tests/test_regression.py",
+      "sha256": "6b73507103ab4731fe2720ac3341cf95dc362e341b4272e2866d182b3981b181",
+      "role": "regression_test"
+    },
+    {
+      "path": "tests/test_target.py",
+      "sha256": "41b090aebd134af81fcab47be1b4f6b85aab3536dd46ea84c98ac7a704f2b01a",
+      "role": "target_test"
+    }
+  ],
+  "timestamp_utc": "2026-11-04T11:10:15.972136+00:00",
+  "audit_file": "runtime/queries/ingest-6af47a7fcd5445c6bae4facb62496da8.json"
+}

@@ -1,0 +1,10 @@
+test_default_page_and_input_order (test_regression.RegressionTests.test_default_page_and_input_order) ... ok
+test_empty_and_beyond_end (test_regression.RegressionTests.test_empty_and_beyond_end) ... ok
+test_input_is_preserved_and_results_are_copies (test_regression.RegressionTests.test_input_is_preserved_and_results_are_copies) ... ok
+test_rejects_invalid_pagination (test_regression.RegressionTests.test_rejects_invalid_pagination) ... ok
+test_second_page (test_regression.RegressionTests.test_second_page) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.001s
+
+OK

@@ -1,0 +1,67 @@
+{
+  "run_id": "20261104T084756Z-470c7bb7",
+  "started_at_utc": "2026-11-04T08:47:56.978714+00:00",
+  "region": "cn",
+  "applied": false,
+  "passed": false,
+  "git_base_commit": "d647275c308e09b7b623f322a26f5c4e85734fb0",
+  "workflow_sha256": "2092fa34d4d9c0350811630c3c39b6d3798bab3994f7555acb81467f0f05f476",
+  "tests_sha256_before": {
+    "tests/test_target.py": "41b090aebd134af81fcab47be1b4f6b85aab3536dd46ea84c98ac7a704f2b01a",
+    "tests/test_regression.py": "6b73507103ab4731fe2720ac3341cf95dc362e341b4272e2866d182b3981b181"
+  },
+  "before_sha256": "fecf81f215525c09a96361bc3f4e04fd7d89f0551e12b033c5cb257cb70335d6",
+  "before_tests": {
+    "target": {
+      "command": [
+        "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/.venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_target.py",
+        "-v"
+      ],
+      "exit_code": 1,
+      "log_path": "evidence/minimax/20261104T084756Z-470c7bb7/before-target.log",
+      "log_sha256": "f9408b6282e338227e66833fe52162a893836315bb6a652214c4f4e5dc214f32"
+    },
+    "regression": {
+      "command": [
+        "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/.venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_regression.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log_path": "evidence/minimax/20261104T084756Z-470c7bb7/before-regression.log",
+      "log_sha256": "892b3b6e7fca6405ef9c58cda0fd9ccdfc7dc4da17c7c8ffeede8b82ab6597ac"
+    }
+  },
+  "cli_version": "mmx 1.0.28",
+  "model_command": [
+    "/home/research/.local/bin/mmx",
+    "text",
+    "chat",
+    "--messages-file",
+    "/mnt/e/2026fall/ocean_base/OB-powercontext/minimax/evidence/minimax/20261104T084756Z-470c7bb7/messages.json",
+    "--region",
+    "cn",
+    "--max-tokens",
+    "8192",
+    "--output",
+    "json",
+    "--quiet",
+    "--non-interactive"
+  ],
+  "model_exit_code": 0,
+  "failure_type": "AttributeError",
+  "finished_at_utc": "2026-11-04T08:48:42.576859+00:00"
+}

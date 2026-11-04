@@ -1,0 +1,2 @@
+# Preserve raw test logs and unified-diff context, including intentional trailing spaces.
+evidence/** -whitespace

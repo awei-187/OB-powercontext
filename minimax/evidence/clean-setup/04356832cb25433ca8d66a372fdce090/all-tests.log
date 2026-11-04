@@ -1,0 +1,19 @@
+test_env_values_are_literal (test_context_inputs.ContextInputTests.test_env_values_are_literal) ... ok
+test_preserves_raw_line_endings_and_extracts_symbols (test_context_inputs.ContextInputTests.test_preserves_raw_line_endings_and_extracts_symbols) ... ok
+test_reject_path_traversal (test_context_inputs.ContextInputTests.test_reject_path_traversal) ... ok
+test_default_page_and_input_order (test_regression.RegressionTests.test_default_page_and_input_order) ... ok
+test_empty_and_beyond_end (test_regression.RegressionTests.test_empty_and_beyond_end) ... ok
+test_input_is_preserved_and_results_are_copies (test_regression.RegressionTests.test_input_is_preserved_and_results_are_copies) ... ok
+test_rejects_invalid_pagination (test_regression.RegressionTests.test_rejects_invalid_pagination) ... ok
+test_second_page (test_regression.RegressionTests.test_second_page) ... ok
+test_all_valid_statuses_preserve_order (test_target.TargetTests.test_all_valid_statuses_preserve_order) ... ok
+test_filter_does_not_mutate_input (test_target.TargetTests.test_filter_does_not_mutate_input) ... ok
+test_filter_precedes_pagination (test_target.TargetTests.test_filter_precedes_pagination) ... ok
+test_invalid_status_is_rejected (test_target.TargetTests.test_invalid_status_is_rejected) ... ok
+test_no_matches (test_target.TargetTests.test_no_matches) ... ok
+test_none_is_compatible (test_target.TargetTests.test_none_is_compatible) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.033s
+
+OK

@@ -1,0 +1,228 @@
+{
+  "timestamp_utc": "2026-11-04T11:10:34.711893+00:00",
+  "powercontext_version": "1.2.0",
+  "command": [
+    "/tmp/minimax-delivery-zapl_6lz/minimax/.venv/bin/python",
+    "scripts/verify_task_memory.py"
+  ],
+  "git_base_commit": null,
+  "source_identity": "SHA-256 identifies the actual delivered working files; Git metadata is optional",
+  "working_tree_sha256": {
+    "compose.yaml": "f9dd930c664f9dc70a1f48d432038ebbd8ca5af8010b6a729df77d7b1fd868a4",
+    "project.json": "2f073d18d02eb464dfc09da03cfb9721754530a080e3776192baeba3cde84f0a",
+    "pyproject.toml": "2fca6b61257de1f55090aeac677a66835b01c16a5dd7d6c8edf2b2e607ce4884",
+    "sample_project/__init__.py": "25c8c5ee54a11860aa6842d9a66784942abd89c56e90279d02c9ea4c58f30731",
+    "sample_project/__main__.py": "f467332791daffe0730662576d1acd89233dec8ff00bc848bf3b893ccd31d7ab",
+    "sample_project/orders.py": "8dc533e8480c2f97bdd8c854f4b7db416eb61b501b25179b19b030da617f9ebf",
+    "scripts/bootstrap_database.py": "9f51a053d326e440d98bab55ac6c4ad8a60ac46155d15f1b23db26577e6bf4ad",
+    "scripts/checkpoint_progress.py": "845e27632751b28ca0bb096cd8c11c3cbe6b7782071d3bb3344ec108233df968",
+    "scripts/finalize_progress.py": "d16bfb9fb2b7dcc9ea2373c94d3f8615abce1614167241efe3b6b091bb4bd1ff",
+    "scripts/record_baseline.py": "7c8f6bdb73b6b6047a794f81d5d1cfa800e0aaa01e97fde206eb10fc4ec4cffe",
+    "scripts/replay_evidence.py": "caf0cb33cbdc94a322973a3db7e9ed5a9724b576a9a1858b7d53232b5ac070f8",
+    "scripts/run_minimax_task.py": "e14cf3e4f108e0ac80b6fdb81928dcb5fe867817a0be2eba0fe069322b2848f2",
+    "scripts/verify_clean_setup.py": "084dd3f40ed9690dbb89ab40604073205ef09d90582f92310ef01fe057bde079",
+    "scripts/verify_context.py": "a0b297468581c44a8c5f059193db31da3a0f257aafbc68826bfa75a04d60f45a",
+    "scripts/verify_delivery.py": "a6abc2902744d23f14806967a12a502110a0e0dd157814de9a59e6821c43aeb2",
+    "scripts/verify_task_memory.py": "5f688e8a090adff65093c9cef9499a3344aa5a351927f0c499649a95ebaefc31",
+    "sdd_context/__init__.py": "cd60dd1d22fbfc98a8ff9be6b342dca74276ef19839a739b4ce305b9ce61a68e",
+    "sdd_context/__main__.py": "a426d9f92c8341cc53cd3d6de5f4feddc649fa07f85f4a7b0e013ff6c0d2b1c0",
+    "sdd_context/config.py": "1e9adc5f0af5162e4b01308303f2786b229abcbba3fa14fb6702d216bb885c2b",
+    "sdd_context/documents.py": "cd26c2f5be8001353769b0c7849dc0419225760a56137ef62dd2c370890713fc",
+    "sdd_context/provenance.py": "61ac3927ca39fc4f268a4c9729f7cc72198cc8c7488c35fd0344111175438470",
+    "sdd_context/store.py": "ddbbcd05cc610014c090d4e530cfd67775c87686552456de5a55a4069f2593b8",
+    "sdd_context/task_memory.py": "5392a8287b7e2b96aa18133ab7266252a50fc84a5d6f591db83fdee152982b73",
+    "specs/orders-v1.md": "e282921d1fe974e7b2c7fc99cdcd4a0a6973249e55e40bd48112fe168acbe1f6",
+    "specs/update-example.md": "06dd0b517aa76e6d996b0c1046d8eac3dc8e5adc27a5f122576287fdac0256b0",
+    "tasks/order-status-filter.md": "ea56f8d24bbfb37aaa6c8b8307d94172b850a24540fcf3dabfd4a46fc1033b72",
+    "tests/test_context_inputs.py": "392d4e758309d1b1bb1dd2143db3e581df4baccc38cd482b9c34a355b16ff563",
+    "tests/test_minimax_adapter.py": "328950e037cd6ba0107af18af191d3197d873e0013192a1e748499ee0dc79924",
+    "tests/test_regression.py": "6b73507103ab4731fe2720ac3341cf95dc362e341b4272e2866d182b3981b181",
+    "tests/test_target.py": "41b090aebd134af81fcab47be1b4f6b85aab3536dd46ea84c98ac7a704f2b01a",
+    "uv.lock": "7a3765b0a3076c6a938b379ee90d15820ccfd350ee0ce4e7caf484c009576883"
+  },
+  "passed": true,
+  "checks": [
+    "Fresh PowerContext storage returns no fabricated progress",
+    "Writer exits; independent process restores exact state and PowerContext citation",
+    "A new prepare process combines seekdb sources with restored PowerContext progress",
+    "Updated progress revises the same Memory entry and restores the new version",
+    "Project and task scopes are independently isolated",
+    "Rejected state input preserves previously committed progress"
+  ],
+  "processes": [
+    {
+      "command": [
+        "/tmp/minimax-delivery-zapl_6lz/minimax/.venv/bin/python",
+        "-m",
+        "sdd_context",
+        "--project-root",
+        "/tmp/minimax-delivery-zapl_6lz/minimax",
+        "--state-dir",
+        "/tmp/minimax-task-memory-yxjrjezx/powercontext",
+        "state-show",
+        "--task-id",
+        "verification-55c7a7d22f50480eaa7c18d50e34569d"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"found\": false,\n  \"task_progress\": null,\n  \"timestamp_utc\": \"2026-11-04T11:10:44.998258+00:00\",\n  \"audit_file\": \"runtime/queries/state-show-3fd69932071f45f5b22c8cb71ec718d4.json\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/tmp/minimax-delivery-zapl_6lz/minimax/.venv/bin/python",
+        "-m",
+        "sdd_context",
+        "--project-root",
+        "/tmp/minimax-delivery-zapl_6lz/minimax",
+        "--state-dir",
+        "/tmp/minimax-task-memory-yxjrjezx/powercontext",
+        "state-save",
+        "--input",
+        "/tmp/minimax-task-memory-yxjrjezx/state.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"backend\": \"powercontext-memory-sqlite\",\n  \"powercontext_commit\": \"9db1753434162c0aa7c9f1189a1722e617880a52\",\n  \"scope_id\": \"scp_31kq8gqf6tx2z2my1gnvf5g8qq\",\n  \"citation\": {\n    \"memory_ref\": {\n      \"family\": \"memory\",\n      \"artifact_id\": \"memory\",\n      \"revision\": 1\n    },\n    \"entry_id\": \"mem_ent_fcd27918f234421d97a1a7f8f79d06cf\",\n    \"entry_version_id\": \"mem_ver_b091d0172b5f4b9faca196da2ae40701\"\n  },\n  \"saved_at_utc\": \"2026-11-04T11:10:46.463671+00:00\",\n  \"state\": {\n    \"task_id\": \"verification-55c7a7d22f50480eaa7c18d50e34569d\",\n    \"objective\": \"Integration fixture: verify restart persistence\",\n    \"completed\": [\n      \"Integration fixture checkpoint A\"\n    ],\n    \"pending\": [\n      \"Integration fixture next action B\"\n    ],\n    \"validations\": []\n  },\n  \"trust\": \"Historical progress; verify against current specifications, code and test results.\",\n  \"timestamp_utc\": \"2026-11-04T11:10:46.922273+00:00\",\n  \"audit_file\": \"runtime/queries/state-save-5af16f8ae1a44333a58350b34f7aa3f3.json\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/tmp/minimax-delivery-zapl_6lz/minimax/.venv/bin/python",
+        "-m",
+        "sdd_context",
+        "--project-root",
+        "/tmp/minimax-delivery-zapl_6lz/minimax",
+        "--state-dir",
+        "/tmp/minimax-task-memory-yxjrjezx/powercontext",
+        "state-show",
+        "--task-id",
+        "verification-55c7a7d22f50480eaa7c18d50e34569d"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"found\": true,\n  \"task_progress\": {\n    \"backend\": \"powercontext-memory-sqlite\",\n    \"powercontext_commit\": \"9db1753434162c0aa7c9f1189a1722e617880a52\",\n    \"scope_id\": \"scp_31kq8gqf6tx2z2my1gnvf5g8qq\",\n    \"citation\": {\n      \"memory_ref\": {\n        \"family\": \"memory\",\n        \"artifact_id\": \"memory\",\n        \"revision\": 1\n      },\n      \"entry_id\": \"mem_ent_fcd27918f234421d97a1a7f8f79d06cf\",\n      \"entry_version_id\": \"mem_ver_b091d0172b5f4b9faca196da2ae40701\"\n    },\n    \"saved_at_utc\": \"2026-11-04T11:10:46.463671+00:00\",\n    \"state\": {\n      \"task_id\": \"verification-55c7a7d22f50480eaa7c18d50e34569d\",\n      \"objective\": \"Integration fixture: verify restart persistence\",\n      \"completed\": [\n        \"Integration fixture checkpoint A\"\n      ],\n      \"pending\": [\n        \"Integration fixture next action B\"\n      ],\n      \"validations\": []\n    },\n    \"trust\": \"Historical progress; verify against current specifications, code and test results.\"\n  },\n  \"timestamp_utc\": \"2026-11-04T11:10:48.856256+00:00\",\n  \"audit_file\": \"runtime/queries/state-show-7150e76a26d1447f8c21e42ab9445655.json\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/tmp/minimax-delivery-zapl_6lz/minimax/.venv/bin/python",
+        "-m",
+        "sdd_context",
+        "--project-root",
+        "/tmp/minimax-delivery-zapl_6lz/minimax",
+        "--state-dir",
+        "/tmp/minimax-task-memory-yxjrjezx/powercontext",
+        "prepare",
+        "--task",
+        "tasks/order-status-filter.md",
+        "--task-id",
+        "verification-55c7a7d22f50480eaa7c18d50e34569d"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"project_id\": \"orders-demo\",\n  \"generation\": 1,\n  \"query\": \"# Task: add order status filtering\\n\\nTask ID: order-status-filter\\n\\nImplement ORD-005 through ORD-008 in `specs/orders-v1.md`, preserving\\nORD-001 through ORD-004. Use MiniMax to generate the implementation change.\\n\\nExpected implementation scope: `sample_project/orders.py`.\\nDo not edit the target tests or regression tests to obtain a passing result.\\n\\nThe context supplied to MiniMax must locate the effective specification,\\nthe implementation function, and both test files. Persist completed work,\\nremaining work and verification results through PowerContext; after restarting\\nthe module, use that saved state to assemble a follow-up context.\",\n  \"retrieval\": \"seekdb_fulltext_current_documents\",\n  \"sources\": [\n    {\n      \"path\": \"specs/orders-v1.md\",\n      \"document_id\": \"0a323dfbf6dbd7e6d1f964d176999dbb48835cd43d539a0c8a3892c0938516ca\",\n      \"content_sha256\": \"e282921d1fe974e7b2c7fc99cdcd4a0a6973249e55e40bd48112fe168acbe1f6\",\n      \"content\": \"# Order query specification\\n\\nSpecification ID: ORDERS-QUERY. Revision: 1.\\n\\n## Existing behavior (must remain compatible)\\n\\n- ORD-001: `list_orders(orders, *, page=1, page_size=2)` returns one page\\n  of records in their original input order.\\n- ORD-002: `page` and `page_size` must be strictly positive integers;\\n  booleans, floats, strings, zero and negatives raise `ValueError`.\\n- ORD-003: Empty inputs and pages beyond the end return an empty list.\\n- ORD-004: The function does not mutate the input. Returned dictionaries\\n  are copies of the corresponding records (no deep-copy requirement).\\n\\n## Requested change\\n\\n- ORD-005: Add the optional keyword-only parameter `status=None`.\\n  Omitting it, or passing `None`, preserves the original listing behavior.\\n- ORD-006: Valid non-null statuses are exactly `pending`, `paid`, and\\n  `cancelled`. Reject other values, including wrong case, whitespace,\\n  booleans and non-string values, with `ValueError`.\\n- ORD-007: Filter on exact `order['status']` equality **before** pagination.\\n  Preserve original order among matching records.\\n- ORD-008: A valid filter with no matching records returns an empty list.\\n\\n## Sources\\n\\n- Implementation: `sample_project/orders.py::list_orders`\\n- Compatibility tests: `tests/test_regression.py`\\n- Requested behavior tests: `tests/test_target.py`\\n\",\n      \"score\": 3.3077734497781313,\n      \"role\": \"spec\",\n      \"line_start\": 1,\n      \"line_end\": 30,\n      \"metadata\": {\n        \"line_count\": 30,\n        \"symbols\": [],\n        \"requirements\": [\n          \"ORD-001\",\n          \"ORD-002\",\n          \"ORD-003\",\n          \"ORD-004\",\n          \"ORD-005\",\n          \"ORD-006\",\n          \"ORD-007\",\n          \"ORD-008\"\n        ],\n        \"revision\": 1\n      }\n    },\n    {\n      \"path\": \"sample_project/orders.py\",\n      \"document_id\": \"cce692d9e0400efa8af0660fdf4fa663f9f7c6f8ceaee0d542847dc9561a26c5\",\n      \"content_sha256\": \"8dc533e8480c2f97bdd8c854f4b7db416eb61b501b25179b19b030da617f9ebf\",\n      \"content\": \"\\\"\\\"\\\"Order listing with optional status filtering and pagination.\\\"\\\"\\\"\\n\\nfrom collections.abc import Sequence\\nfrom typing import Any\\n\\n\\n_VALID_STATUSES = frozenset({\\\"pending\\\", \\\"paid\\\", \\\"cancelled\\\"})\\n\\n\\ndef list_orders(\\n    orders: Sequence[dict[str, Any]],\\n    *,\\n    page: int = 1,\\n    page_size: int = 2,\\n    status: str | None = None,\\n) -> list[dict[str, Any]]:\\n    \\\"\\\"\\\"Return one page in input order, without changing caller-owned records.\\\"\\\"\\\"\\n    if type(page) is not int or page < 1:\\n        raise ValueError(\\\"page must be a positive integer\\\")\\n    if type(page_size) is not int or page_size < 1:\\n        raise ValueError(\\\"page_size must be a positive integer\\\")\\n    if status is not None and (\\n        not isinstance(status, str) or status not in _VALID_STATUSES\\n    ):\\n        raise ValueError(\\\"status must be one of: pending, paid, cancelled\\\")\\n\\n    matching_orders = orders\\n    if status is not None:\\n        matching_orders = [order for order in orders if order[\\\"status\\\"] == status]\\n\\n    start = (page - 1) * page_size\\n    return [dict(order) for order in matching_orders[start : start + page_size]]\",\n      \"score\": 1.177692897797197,\n      \"role\": \"implementation\",\n      \"line_start\": 1,\n      \"line_end\": 32,\n      \"metadata\": {\n        \"line_count\": 32,\n        \"symbols\": [\n          {\n            \"name\": \"list_orders\",\n            \"line\": 10,\n            \"end_line\": 32\n          }\n        ],\n        \"requirements\": []\n      }\n    },\n    {\n      \"path\": \"tests/test_regression.py\",\n      \"document_id\": \"6edc05e4134fe68983d08319a22f62d5e4efdd829656595282cf6ef97011c13a\",\n      \"content_sha256\": \"6b73507103ab4731fe2720ac3341cf95dc362e341b4272e2866d182b3981b181\",\n      \"content\": \"import copy\\nimport unittest\\n\\nfrom sample_project.orders import list_orders\\n\\n\\nclass RegressionTests(unittest.TestCase):\\n    def setUp(self):\\n        self.orders = [{\\\"id\\\": i, \\\"status\\\": \\\"paid\\\"} for i in range(1, 6)]\\n\\n    def test_default_page_and_input_order(self):\\n        self.assertEqual([x[\\\"id\\\"] for x in list_orders(self.orders)], [1, 2])\\n\\n    def test_second_page(self):\\n        result = list_orders(self.orders, page=2, page_size=2)\\n        self.assertEqual([x[\\\"id\\\"] for x in result], [3, 4])\\n\\n    def test_empty_and_beyond_end(self):\\n        self.assertEqual(list_orders([]), [])\\n        self.assertEqual(list_orders(self.orders, page=4), [])\\n\\n    def test_rejects_invalid_pagination(self):\\n        for key in (\\\"page\\\", \\\"page_size\\\"):\\n            for value in (0, -1, True, 1.5, \\\"2\\\", None):\\n                with self.subTest(key=key, value=value):\\n                    with self.assertRaises(ValueError):\\n                        list_orders(self.orders, **{key: value})\\n\\n    def test_input_is_preserved_and_results_are_copies(self):\\n        before = copy.deepcopy(self.orders)\\n        result = list_orders(self.orders)\\n        self.assertEqual(self.orders, before)\\n        result[0][\\\"status\\\"] = \\\"changed\\\"\\n        self.assertEqual(self.orders, before)\\n\\n\\nif __name__ == \\\"__main__\\\":\\n    unittest.main()\\n\",\n      \"score\": 0.5867443915658992,\n      \"role\": \"regression_test\",\n      \"line_start\": 1,\n      \"line_end\": 38,\n      \"metadata\": {\n        \"line_count\": 38,\n        \"symbols\": [\n          {\n            \"name\": \"RegressionTests\",\n            \"line\": 7,\n            \"end_line\": 34\n          },\n          {\n            \"name\": \"setUp\",\n            \"line\": 8,\n            \"end_line\": 9\n          },\n          {\n            \"name\": \"test_default_page_and_input_order\",\n            \"line\": 11,\n            \"end_line\": 12\n          },\n          {\n            \"name\": \"test_second_page\",\n            \"line\": 14,\n            \"end_line\": 16\n          },\n          {\n            \"name\": \"test_empty_and_beyond_end\",\n            \"line\": 18,\n            \"end_line\": 20\n          },\n          {\n            \"name\": \"test_rejects_invalid_pagination\",\n            \"line\": 22,\n            \"end_line\": 27\n          },\n          {\n            \"name\": \"test_input_is_preserved_and_results_are_copies\",\n            \"line\": 29,\n            \"end_line\": 34\n          }\n        ],\n        \"requirements\": []\n      }\n    },\n    {\n      \"path\": \"tests/test_target.py\",\n      \"document_id\": \"bc9ab330a035ca1d92114c9b2cd7896e93e3def74e0ab9a6c22fa5bbeebcbb0d\",\n      \"content_sha256\": \"41b090aebd134af81fcab47be1b4f6b85aab3536dd46ea84c98ac7a704f2b01a\",\n      \"content\": \"import copy\\nimport unittest\\n\\nfrom sample_project.orders import list_orders\\n\\n\\nclass TargetTests(unittest.TestCase):\\n    def setUp(self):\\n        self.orders = [\\n            {\\\"id\\\": 1, \\\"status\\\": \\\"pending\\\"},\\n            {\\\"id\\\": 2, \\\"status\\\": \\\"paid\\\"},\\n            {\\\"id\\\": 3, \\\"status\\\": \\\"cancelled\\\"},\\n            {\\\"id\\\": 4, \\\"status\\\": \\\"paid\\\"},\\n            {\\\"id\\\": 5, \\\"status\\\": \\\"pending\\\"},\\n            {\\\"id\\\": 6, \\\"status\\\": \\\"paid\\\"},\\n        ]\\n\\n    def test_filter_precedes_pagination(self):\\n        result = list_orders(self.orders, status=\\\"paid\\\", page=2, page_size=2)\\n        self.assertEqual([x[\\\"id\\\"] for x in result], [6])\\n\\n    def test_all_valid_statuses_preserve_order(self):\\n        for status, ids in ((\\\"paid\\\", [2, 4, 6]), (\\\"pending\\\", [1, 5]), (\\\"cancelled\\\", [3])):\\n            with self.subTest(status=status):\\n                result = list_orders(self.orders, status=status, page_size=20)\\n                self.assertEqual([x[\\\"id\\\"] for x in result], ids)\\n\\n    def test_none_is_compatible(self):\\n        self.assertEqual(list_orders(self.orders, status=None), list_orders(self.orders))\\n\\n    def test_no_matches(self):\\n        self.assertEqual(list_orders([{\\\"id\\\": 1, \\\"status\\\": \\\"paid\\\"}], status=\\\"pending\\\"), [])\\n        self.assertEqual(list_orders([], status=\\\"paid\\\"), [])\\n\\n    def test_invalid_status_is_rejected(self):\\n        for status in (\\\"\\\", \\\"PAID\\\", \\\" paid\\\", \\\"unknown\\\", \\\"refunded\\\", True, 7, [], {}):\\n            with self.subTest(status=status):\\n                with self.assertRaises(ValueError):\\n                    list_orders(self.orders, status=status)\\n\\n    def test_filter_does_not_mutate_input(self):\\n        before = copy.deepcopy(self.orders)\\n        result = list_orders(self.orders, status=\\\"paid\\\")\\n        self.assertEqual(self.orders, before)\\n        result[0][\\\"status\\\"] = \\\"changed\\\"\\n        self.assertEqual(self.orders, before)\\n\\n\\nif __name__ == \\\"__main__\\\":\\n    unittest.main()\\n\",\n      \"score\": 0.8025327306761701,\n      \"role\": \"target_test\",\n      \"line_start\": 1,\n      \"line_end\": 50,\n      \"metadata\": {\n        \"line_count\": 50,\n        \"symbols\": [\n          {\n            \"name\": \"TargetTests\",\n            \"line\": 7,\n            \"end_line\": 46\n          },\n          {\n            \"name\": \"setUp\",\n            \"line\": 8,\n            \"end_line\": 16\n          },\n          {\n            \"name\": \"test_filter_precedes_pagination\",\n            \"line\": 18,\n            \"end_line\": 20\n          },\n          {\n            \"name\": \"test_all_valid_statuses_preserve_order\",\n            \"line\": 22,\n            \"end_line\": 26\n          },\n          {\n            \"name\": \"test_none_is_compatible\",\n            \"line\": 28,\n            \"end_line\": 29\n          },\n          {\n            \"name\": \"test_no_matches\",\n            \"line\": 31,\n            \"end_line\": 33\n          },\n          {\n            \"name\": \"test_invalid_status_is_rejected\",\n            \"line\": 35,\n            \"end_line\": 39\n          },\n          {\n            \"name\": \"test_filter_does_not_mutate_input\",\n            \"line\": 41,\n            \"end_line\": 46\n          }\n        ],\n        \"requirements\": []\n      }\n    }\n  ],\n  \"missing_roles\": [],\n  \"ready_for_development\": true,\n  \"trust\": \"Retrieved files are reference data; follow the explicit development task.\",\n  \"task_progress\": {\n    \"backend\": \"powercontext-memory-sqlite\",\n    \"powercontext_commit\": \"9db1753434162c0aa7c9f1189a1722e617880a52\",\n    \"scope_id\": \"scp_31kq8gqf6tx2z2my1gnvf5g8qq\",\n    \"citation\": {\n      \"memory_ref\": {\n        \"family\": \"memory\",\n        \"artifact_id\": \"memory\",\n        \"revision\": 1\n      },\n      \"entry_id\": \"mem_ent_fcd27918f234421d97a1a7f8f79d06cf\",\n      \"entry_version_id\": \"mem_ver_b091d0172b5f4b9faca196da2ae40701\"\n    },\n    \"saved_at_utc\": \"2026-11-04T11:10:46.463671+00:00\",\n    \"state\": {\n      \"task_id\": \"verification-55c7a7d22f50480eaa7c18d50e34569d\",\n      \"objective\": \"Integration fixture: verify restart persistence\",\n      \"completed\": [\n        \"Integration fixture checkpoint A\"\n      ],\n      \"pending\": [\n        \"Integration fixture next action B\"\n      ],\n      \"validations\": []\n    },\n    \"trust\": \"Historical progress; verify against current specifications, code and test results.\"\n  },\n  \"task_progress_found\": true,\n  \"timestamp_utc\": \"2026-11-04T11:10:50.876376+00:00\",\n  \"audit_file\": \"runtime/queries/prepare-4c43b1a756764edea8b796240240f2ac.json\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/tmp/minimax-delivery-zapl_6lz/minimax/.venv/bin/python",
+        "-m",
+        "sdd_context",
+        "--project-root",
+        "/tmp/minimax-delivery-zapl_6lz/minimax",
+        "--state-dir",
+        "/tmp/minimax-task-memory-yxjrjezx/powercontext",
+        "state-save",
+        "--input",
+        "/tmp/minimax-task-memory-yxjrjezx/state.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"backend\": \"powercontext-memory-sqlite\",\n  \"powercontext_commit\": \"9db1753434162c0aa7c9f1189a1722e617880a52\",\n  \"scope_id\": \"scp_31kq8gqf6tx2z2my1gnvf5g8qq\",\n  \"citation\": {\n    \"memory_ref\": {\n      \"family\": \"memory\",\n      \"artifact_id\": \"memory\",\n      \"revision\": 2\n    },\n    \"entry_id\": \"mem_ent_fcd27918f234421d97a1a7f8f79d06cf\",\n    \"entry_version_id\": \"mem_ver_7446add579b34ac38a5e45347cfb45b8\"\n  },\n  \"saved_at_utc\": \"2026-11-04T11:10:52.324374+00:00\",\n  \"state\": {\n    \"task_id\": \"verification-55c7a7d22f50480eaa7c18d50e34569d\",\n    \"objective\": \"Integration fixture: verify restart persistence\",\n    \"completed\": [\n      \"Integration fixture checkpoint A\",\n      \"Integration fixture checkpoint C\"\n    ],\n    \"pending\": [\n      \"Integration fixture replacement action D\"\n    ],\n    \"validations\": []\n  },\n  \"trust\": \"Historical progress; verify against current specifications, code and test results.\",\n  \"timestamp_utc\": \"2026-11-04T11:10:53.029760+00:00\",\n  \"audit_file\": \"runtime/queries/state-save-426a416431374327a8fdbbc689857575.json\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/tmp/minimax-delivery-zapl_6lz/minimax/.venv/bin/python",
+        "-m",
+        "sdd_context",
+        "--project-root",
+        "/tmp/minimax-delivery-zapl_6lz/minimax",
+        "--state-dir",
+        "/tmp/minimax-task-memory-yxjrjezx/powercontext",
+        "state-show",
+        "--task-id",
+        "verification-55c7a7d22f50480eaa7c18d50e34569d"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"found\": true,\n  \"task_progress\": {\n    \"backend\": \"powercontext-memory-sqlite\",\n    \"powercontext_commit\": \"9db1753434162c0aa7c9f1189a1722e617880a52\",\n    \"scope_id\": \"scp_31kq8gqf6tx2z2my1gnvf5g8qq\",\n    \"citation\": {\n      \"memory_ref\": {\n        \"family\": \"memory\",\n        \"artifact_id\": \"memory\",\n        \"revision\": 2\n      },\n      \"entry_id\": \"mem_ent_fcd27918f234421d97a1a7f8f79d06cf\",\n      \"entry_version_id\": \"mem_ver_7446add579b34ac38a5e45347cfb45b8\"\n    },\n    \"saved_at_utc\": \"2026-11-04T11:10:52.324374+00:00\",\n    \"state\": {\n      \"task_id\": \"verification-55c7a7d22f50480eaa7c18d50e34569d\",\n      \"objective\": \"Integration fixture: verify restart persistence\",\n      \"completed\": [\n        \"Integration fixture checkpoint A\",\n        \"Integration fixture checkpoint C\"\n      ],\n      \"pending\": [\n        \"Integration fixture replacement action D\"\n      ],\n      \"validations\": []\n    },\n    \"trust\": \"Historical progress; verify against current specifications, code and test results.\"\n  },\n  \"timestamp_utc\": \"2026-11-04T11:10:55.107471+00:00\",\n  \"audit_file\": \"runtime/queries/state-show-8e5a918eb98142de94fcc638f84a9cb0.json\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/tmp/minimax-delivery-zapl_6lz/minimax/.venv/bin/python",
+        "-m",
+        "sdd_context",
+        "--project-root",
+        "/tmp/minimax-delivery-zapl_6lz/minimax",
+        "--state-dir",
+        "/tmp/minimax-task-memory-yxjrjezx/powercontext",
+        "--manifest",
+        "/tmp/minimax-task-memory-yxjrjezx/other-project.json",
+        "state-show",
+        "--task-id",
+        "verification-55c7a7d22f50480eaa7c18d50e34569d"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"found\": false,\n  \"task_progress\": null,\n  \"timestamp_utc\": \"2026-11-04T11:10:57.147036+00:00\",\n  \"audit_file\": \"runtime/queries/state-show-1f10bbbcf7e24bb789ecb0da3f861233.json\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/tmp/minimax-delivery-zapl_6lz/minimax/.venv/bin/python",
+        "-m",
+        "sdd_context",
+        "--project-root",
+        "/tmp/minimax-delivery-zapl_6lz/minimax",
+        "--state-dir",
+        "/tmp/minimax-task-memory-yxjrjezx/powercontext",
+        "state-show",
+        "--task-id",
+        "other-task-55c7a7d22f50480eaa7c18d50e34569d"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"found\": false,\n  \"task_progress\": null,\n  \"timestamp_utc\": \"2026-11-04T11:10:59.073544+00:00\",\n  \"audit_file\": \"runtime/queries/state-show-bbc635ef0e54490cab000f73cb33debd.json\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/tmp/minimax-delivery-zapl_6lz/minimax/.venv/bin/python",
+        "-m",
+        "sdd_context",
+        "--project-root",
+        "/tmp/minimax-delivery-zapl_6lz/minimax",
+        "--state-dir",
+        "/tmp/minimax-task-memory-yxjrjezx/powercontext",
+        "state-save",
+        "--input",
+        "/tmp/minimax-task-memory-yxjrjezx/state.json"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "1 validation error for TaskState\nunexpected_field\n  Extra inputs are not permitted [type=extra_forbidden, input_value=True, input_type=bool]\n    For further information visit https://errors.pydantic.dev/2.14/v/extra_forbidden\n"
+    },
+    {
+      "command": [
+        "/tmp/minimax-delivery-zapl_6lz/minimax/.venv/bin/python",
+        "-m",
+        "sdd_context",
+        "--project-root",
+        "/tmp/minimax-delivery-zapl_6lz/minimax",
+        "--state-dir",
+        "/tmp/minimax-task-memory-yxjrjezx/powercontext",
+        "state-show",
+        "--task-id",
+        "verification-55c7a7d22f50480eaa7c18d50e34569d"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"found\": true,\n  \"task_progress\": {\n    \"backend\": \"powercontext-memory-sqlite\",\n    \"powercontext_commit\": \"9db1753434162c0aa7c9f1189a1722e617880a52\",\n    \"scope_id\": \"scp_31kq8gqf6tx2z2my1gnvf5g8qq\",\n    \"citation\": {\n      \"memory_ref\": {\n        \"family\": \"memory\",\n        \"artifact_id\": \"memory\",\n        \"revision\": 2\n      },\n      \"entry_id\": \"mem_ent_fcd27918f234421d97a1a7f8f79d06cf\",\n      \"entry_version_id\": \"mem_ver_7446add579b34ac38a5e45347cfb45b8\"\n    },\n    \"saved_at_utc\": \"2026-11-04T11:10:52.324374+00:00\",\n    \"state\": {\n      \"task_id\": \"verification-55c7a7d22f50480eaa7c18d50e34569d\",\n      \"objective\": \"Integration fixture: verify restart persistence\",\n      \"completed\": [\n        \"Integration fixture checkpoint A\",\n        \"Integration fixture checkpoint C\"\n      ],\n      \"pending\": [\n        \"Integration fixture replacement action D\"\n      ],\n      \"validations\": []\n    },\n    \"trust\": \"Historical progress; verify against current specifications, code and test results.\"\n  },\n  \"timestamp_utc\": \"2026-11-04T11:11:02.755223+00:00\",\n  \"audit_file\": \"runtime/queries/state-show-5a25a4f464a9457a94bebe425966a5b1.json\"\n}\n",
+      "stderr": ""
+    }
+  ]
+}

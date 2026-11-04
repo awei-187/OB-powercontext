@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "checks": [
+    "All four source roles retrieved from real seekdb with exact text and digests",
+    "Retrieval reads persisted database text, not local file contents",
+    "Unchanged re-import preserves document identities",
+    "Revision 2 replaces current spec while revision 1 remains exactly auditable",
+    "Invalid input does not advance the imported generation",
+    "Project namespaces do not leak revised documents into another project",
+    "Unmatched query reports missing roles instead of fixed answers",
+    "Removed manifest sources leave current retrieval but retain history"
+  ],
+  "report": "evidence/context/verification-e5443c11a60e448e8bea7325caa143d8.json"
+}
