@@ -5,6 +5,7 @@ import {lexicalQuery,variants,scoreFusionSql,defaultStrategy} from './retrieval.
 process.env.SEEKDB_BINDINGS_CACHE_DIR ??= path.resolve('.cache/bindings');
 const { SeekdbClient } = await import('seekdb');
 export const spec = JSON.parse(await readFile('model-manifest.json'));
+const resultDir=process.env.RESULT_DIR||'test-results';
 export const db = new SeekdbClient(process.env.SEEKDB_HOST ? {
   host: process.env.SEEKDB_HOST, port: Number(process.env.SEEKDB_PORT || 2881),
   user: process.env.SEEKDB_USER || 'root', password: process.env.SEEKDB_PASSWORD || '',
@@ -14,6 +15,25 @@ export const mode = process.env.SEEKDB_HOST ? 'server' : 'Windows embedded nativ
 // A single SDK connection uses @search_parm. Serialize whole operations, including GET_SQL + execution.
 let tail = Promise.resolve();
 export function serial(fn) { const p = tail.then(fn); tail = p.catch(() => {}); return p; }
+export async function ensureServerConnection() {
+  if (mode !== 'server') return;
+  let lastError;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      await db.execute('SELECT 1');
+      return;
+    } catch (error) {
+      lastError = error;
+      // seekdb-js 1.4.0 retains a mysql2 connection after the Server restarts. Close only
+      // the SDK connection, then reconnect with the same server configuration before any
+      // read or mutation. Docker's host-port forwarding can trail the internal healthcheck,
+      // so use bounded backoff for this read-only preflight; the business request runs once.
+      await db.close().catch(() => {});
+      if (attempt < 4) await new Promise(resolve => setTimeout(resolve, 250 * (attempt + 1)));
+    }
+  }
+  throw lastError;
+}
 let initialized = false;
 export async function init() {
   if (initialized) return;
@@ -100,15 +120,24 @@ export async function search(id, p) {
   let results;
   try {
     if(config.denseWeight!==undefined){
-      const rows=await db.execute(scoreFusionSql('`c$v2$'+c.collectionId+'`',config),[JSON.stringify(p.embedding),lexical,lexical,topK]);
+      const sql=scoreFusionSql('`c$v2$'+c.collectionId+'`',config),params=[JSON.stringify(p.embedding),lexical,lexical,topK];
+      let rows;
+      if(mode==='server'){
+        // seekdb-js 1.4.0 Connection.execute treats only SELECT/SHOW/DESC prefixes as row queries.
+        // quality-v2 intentionally starts with WITH, so use the SDK-owned mysql2 connection and
+        // keep the exact parameterized CTE inside seekdb rather than rewriting or client-fusing it.
+        await internal.execute('SELECT 1');
+        [rows]=await internal.connectionManager.getRawConnection().query(sql,params);
+        trace.push({sql,params,transport:'seekdb-js 1.4.0 server raw query for WITH row result'});
+      }else rows=await db.execute(sql,params);
       results={ids:[rows.map(r=>r._id.toString())],documents:[rows.map(r=>r.document)],metadatas:[rows.map(r=>typeof r.metadata==='string'?JSON.parse(r.metadata):r.metadata)],distances:[rows.map(r=>Number(r._score))]};
     }else results=await c.hybridSearch({query:{whereDocument:{$contains:lexical}},
     knn:{queryEmbeddings:[p.embedding],nResults:Math.max(config.candidates,topK)},
     rank:{rrf:{rankWindowSize:60,rankConstant:config.rankConstant}},nResults:topK,include:['documents','metadatas']});
   } finally {internal.execute=originalExecute;}
   const searchMs=performance.now()-t;
-  await mkdir('test-results',{recursive:true});
-  await appendFile('test-results/hybrid-sql.jsonl',JSON.stringify({at:new Date().toISOString(),kb:id,query:p.query,strategy,lexicalQuery:lexical,trace})+'\n');
+  await mkdir(resultDir,{recursive:true});
+  await appendFile(path.join(resultDir,'hybrid-sql.jsonl'),JSON.stringify({at:new Date().toISOString(),kb:id,query:p.query,strategy,lexicalQuery:lexical,trace})+'\n');
   return {results,searchMs,strategy,lexicalQuery:lexical,engine:config.denseWeight!==undefined?'seekdb SQL: vector + fulltext → normalized score fusion':'seekdb DBMS_HYBRID_SEARCH.GET_SQL → database RRF SQL'};
 }
 // Read-only diagnostics for the local verification script; not exposed as an HTTP endpoint.

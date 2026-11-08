@@ -1,0 +1,80 @@
+{
+  "afterServiceRestart": true,
+  "health": {
+    "ok": true,
+    "mode": "server",
+    "version": [
+      {
+        "version": "5.7.25-OceanBase seekdb-v1.4.0.0"
+      }
+    ]
+  },
+  "state": {
+    "phase": "ready",
+    "backend": "webgpu",
+    "dtype": "fp16",
+    "adapter": {
+      "vendor": "amd",
+      "architecture": "rdna-2",
+      "device": "",
+      "description": ""
+    },
+    "sessionLoadMs": 437.7250000089407,
+    "warmupMs": 231.2449999898672,
+    "requestedDtype": "fp16",
+    "fallbackReason": null,
+    "readyMs": 706.0850000083447,
+    "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+    "profile": {
+      "repo": "Xenova/bge-small-zh-v1.5",
+      "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+      "dtype": "fp16",
+      "dimension": 512,
+      "pooling": "cls",
+      "normalize": true,
+      "maxTokens": 256
+    },
+    "resources": [
+      {
+        "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+        "ms": 1.9350000023841858,
+        "bytes": 439125,
+        "transferBytes": 439425
+      },
+      {
+        "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+        "ms": 1.030000001192093,
+        "bytes": 367,
+        "transferBytes": 667
+      },
+      {
+        "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+        "ms": 1.425000011920929,
+        "bytes": 716,
+        "transferBytes": 1016
+      },
+      {
+        "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model_fp16.onnx",
+        "ms": 44.99500000476837,
+        "bytes": 47497427,
+        "transferBytes": 47497727
+      }
+    ]
+  },
+  "result": {
+    "query": "火星蓝莓计划授权口令",
+    "queryEmbeddingMs": 15.159999996423721,
+    "searchMs": 2.1622999999963213,
+    "endToEndMs": 24.86999998986721,
+    "ids": [
+      "incremental-mars",
+      "index-1",
+      "index-0",
+      "privacy-3",
+      "index-4"
+    ],
+    "strategy": "quality-v2",
+    "engine": "seekdb SQL: vector + fulltext → normalized score fusion"
+  },
+  "ok": true
+}

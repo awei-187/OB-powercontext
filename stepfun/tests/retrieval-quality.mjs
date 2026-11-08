@@ -8,13 +8,13 @@ let original;
 try{original=JSON.parse(await readFile('test-results/retrieval-quality/baseline-v1/test-results/benchmark.json')).runs.find(r=>r.config.dtype==='fp16');}catch{}
 const report={at:new Date().toISOString(),fixtureSha256:fixtureHash,conditions:{cpu:os.cpus()[0].model,totalMemory:os.totalmem(),freeMemoryAtStart:os.freemem(),queries:12,documents:100,repeats:3,k:5,
   note:'Paired alternating order, one FP16 WebGPU model; same persisted document vectors; each measured query recomputes its embedding in the browser; warmup per case excluded'},strategies:variants,cases:[],warmups:[]};
-const browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
+const browser=await chromium.launch({executablePath:process.env.CHROME||'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
 const page=await browser.newPage({viewport:{width:1280,height:1000}}),unexpected=[],errors=[];
 page.on('request',r=>{if(!r.url().startsWith('http://127.0.0.1:4317')&&!r.url().startsWith('blob:'))unexpected.push(r.url());});page.on('pageerror',e=>errors.push(e.message));
 try {
-  await page.goto('http://127.0.0.1:4317');await page.waitForFunction(()=>window.stepfunTest);await page.waitForFunction(()=>document.querySelector('#kb').options.length>0);
+  await page.goto('http://127.0.0.1:4317');await page.waitForFunction(()=>window.stepfunTest);await page.waitForFunction(()=>document.querySelector('#dbStatus').textContent.includes('已连接'));
   report.browser=await browser.version();report.model=await page.evaluate(()=>window.stepfunTest.loadModel('fp16','auto'));assert.equal(report.model.backend,'webgpu');assert.equal(report.model.dtype,'fp16');
-  report.health=await page.evaluate(()=>window.stepfunTest.api('/health'));
+  report.health=await page.evaluate(()=>window.stepfunTest.api('/health'));if(process.env.EXPECT_DB_MODE)assert.equal(report.health.mode,process.env.EXPECT_DB_MODE);
   let baselineId=original?.kb.id;
   const existing=await page.evaluate(()=>window.stepfunTest.api('/kbs'));
   if(process.env.QUALITY_FRESH==='1' || !existing.some(k=>k.id===baselineId)){

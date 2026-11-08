@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';import os from 'node:os';import {quality
 const f=JSON.parse(await readFile('data/fixture.json')),manifest=JSON.parse(await readFile('model-manifest.json'));
 const out=process.env.RESULT_DIR||'test-results/benchmark-'+new Date().toISOString().replace(/[:.]/g,'-');await mkdir(out,{recursive:true});
 const report={at:new Date().toISOString(),device:{platform:os.platform(),cpu:os.cpus()[0].model,cores:os.cpus().length,totalMemory:os.totalmem(),freeMemoryAtStart:os.freemem()},
-  conditions:{documents:f.documents.length,queries:f.queries.length,repeats:3,k:5,tokenLimit:256,wasmThreads:2,batchSize:4,modelInstances:'one at a time',database:'seekdb 1.4.0 native Windows; same local persisted database',corpus:'data/fixture.json',qrels:'authored topical relevance; engineering regression only',model:manifest},runs:[]};
+  conditions:{documents:f.documents.length,queries:f.queries.length,repeats:3,k:5,tokenLimit:256,wasmThreads:2,batchSize:4,modelInstances:'one at a time',database:'recorded from runtime /api/health',corpus:'data/fixture.json',qrels:'authored topical relevance; engineering regression only',model:manifest},runs:[]};
 const configs=[{dtype:'fp32',backend:'auto',expect:'webgpu'},{dtype:'fp16',backend:'auto',expect:'webgpu'},{dtype:'fp32',backend:'auto',disableGpu:true,expect:'wasm'},{dtype:'q8',backend:'auto',disableGpu:true,expect:'wasm'}];
 const executablePath=process.env.CHROME||'C:/Program Files/Google/Chrome/Application/chrome.exe';
 for(const config of configs){
@@ -15,6 +15,7 @@ for(const config of configs){
   page.on('request',r=>{if(!r.url().startsWith('http://127.0.0.1:4317')&&!r.url().startsWith('blob:'))run.unexpectedRequests.push(r.url());});
   try {
     await page.goto('http://127.0.0.1:4317');await page.waitForFunction(()=>window.stepfunTest);
+    run.health=await page.evaluate(()=>window.stepfunTest.api('/health'));if(process.env.EXPECT_DB_MODE)assert.equal(run.health.mode,process.env.EXPECT_DB_MODE);report.health??=run.health;report.conditions.database={mode:run.health.mode,version:run.health.version};
     run.coldLoad=await page.evaluate(c=>window.stepfunTest.loadModel(c.dtype,c.backend),config);
     assert.equal(run.coldLoad.backend,config.expect);
     run.cachedReload=await page.evaluate(c=>window.stepfunTest.loadModel(c.dtype,c.backend),config);

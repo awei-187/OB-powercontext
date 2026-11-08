@@ -7,6 +7,7 @@
     "build": "node scripts/build.mjs",
     "start": "node --env-file-if-exists=.env server/index.mjs",
     "db:check": "node --env-file-if-exists=.env scripts/check-db.mjs",
+    "db:check:server": "node --env-file-if-exists=.env scripts/check-db-server.mjs",
     "test": "node --test tests/*.test.mjs",
     "test:browser": "node tests/browser.mjs",
     "benchmark": "node tests/benchmark.mjs",

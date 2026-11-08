@@ -1,0 +1,3496 @@
+{
+  "at": "2026-11-08T06:17:24.191Z",
+  "device": {
+    "platform": "win32",
+    "cpu": "AMD Ryzen 7 7700X 8-Core Processor             ",
+    "cores": 16,
+    "totalMemory": 33444225024,
+    "freeMemoryAtStart": 16889012224
+  },
+  "conditions": {
+    "documents": 100,
+    "queries": 12,
+    "repeats": 3,
+    "k": 5,
+    "tokenLimit": 256,
+    "wasmThreads": 2,
+    "batchSize": 4,
+    "modelInstances": "one at a time",
+    "database": {
+      "mode": "server",
+      "version": [
+        {
+          "version": "5.7.25-OceanBase seekdb-v1.4.0.0"
+        }
+      ]
+    },
+    "corpus": "data/fixture.json",
+    "qrels": "authored topical relevance; engineering regression only",
+    "model": {
+      "repo": "Xenova/bge-small-zh-v1.5",
+      "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+      "dimension": 512,
+      "pooling": "cls",
+      "normalize": true,
+      "maxTokens": 256,
+      "queryPrefix": "为这个句子生成表示以用于检索相关文章：",
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 1057,
+          "gitBlob": "e26ec7fcc01a7aff66171d44acff0a80fae865e1"
+        },
+        {
+          "path": "config.json",
+          "bytes": 716,
+          "gitBlob": "d590a6643f5dcdd0cfb0477e3c291488c16fc2d7"
+        },
+        {
+          "path": "onnx/model.onnx",
+          "bytes": 94851877,
+          "sha256": "69a0b846f4f116b5e6aabf9546ea6754d02264f3211a13a1bd69b31b8040749a"
+        },
+        {
+          "path": "onnx/model_fp16.onnx",
+          "bytes": 47497427,
+          "sha256": "60d0fe5eb8d4e251d4b24dff010a2625c10a013503f0d09f625e8a9b0311315f"
+        },
+        {
+          "path": "onnx/model_quantized.onnx",
+          "bytes": 24010842,
+          "sha256": "15b717c382bcb518ba457b93ea6850ede7f4f1cd8937454aa06972366cd19bcc"
+        },
+        {
+          "path": "quantize_config.json",
+          "bytes": 674,
+          "gitBlob": "1930f78444c1fa23c7c5dc01e60d98b19c6e2be9"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 125,
+          "gitBlob": "a8b3208c2884c4efb86e49300fdd3dc877220cdf"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 439125,
+          "gitBlob": "cdb3043fc938fc918c06e66cf704c2ba58f88747"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 367,
+          "gitBlob": "3a59388f0fd1bd22dec2ce7902c1be8e1fb84107"
+        },
+        {
+          "path": "vocab.txt",
+          "bytes": 109540,
+          "gitBlob": "ca4f9781030019ab9b253c6dcb8c7878b6dc87a5"
+        }
+      ]
+    }
+  },
+  "runs": [
+    {
+      "config": {
+        "dtype": "fp32",
+        "backend": "auto",
+        "expect": "webgpu"
+      },
+      "browser": "156.0.8078.80",
+      "unexpectedRequests": [],
+      "pageErrors": [],
+      "queryRuns": [
+        {
+          "repeat": 0,
+          "queryId": "q-index",
+          "query": "刚上传的资料搜不到怎么办？",
+          "queryEmbeddingMs": 14.675000011920929,
+          "searchMs": 5.546099999977741,
+          "endToEndMs": 26.980000004172325,
+          "ids": [
+            "index-0",
+            "export-2",
+            "export-0",
+            "export-4",
+            "import-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.6062493248765826
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-privacy",
+          "query": "我的文字会被发到云端模型处理吗？",
+          "queryEmbeddingMs": 16.689999997615814,
+          "searchMs": 2.0164999999979045,
+          "endToEndMs": 39.90999999642372,
+          "ids": [
+            "privacy-2",
+            "privacy-0",
+            "model-0",
+            "privacy-4",
+            "model-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.6,
+          "ndcg": 0.6716163029634937
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-gpu",
+          "query": "没有可用显卡还能进行文本向量化吗？",
+          "queryEmbeddingMs": 16.04500000178814,
+          "searchMs": 1.8214999999909196,
+          "endToEndMs": 24.29500000178814,
+          "ids": [
+            "import-4",
+            "model-3",
+            "privacy-1",
+            "gpu-2",
+            "privacy-0"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.08703245752405495
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-kb",
+          "query": "切换资料库后怎样避免搜到另一份资料？",
+          "queryEmbeddingMs": 15.450000002980232,
+          "searchMs": 2.0573000000149477,
+          "endToEndMs": 35.4750000089407,
+          "ids": [
+            "export-2",
+            "kb-0",
+            "export-4",
+            "backup-4",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.46067715488476185
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-library",
+          "query": "图书到期可以再延长多久？",
+          "queryEmbeddingMs": 13.149999991059303,
+          "searchMs": 1.8755999999993946,
+          "endToEndMs": 29.83500000834465,
+          "ids": [
+            "library-1",
+            "library-0",
+            "library-2",
+            "course-3",
+            "library-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.7638018173230531
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-wifi",
+          "query": "访客连上无线网却不能上网该怎么办？",
+          "queryEmbeddingMs": 16.314999997615814,
+          "searchMs": 1.9882999999972526,
+          "endToEndMs": 24.275000005960464,
+          "ids": [
+            "wifi-2",
+            "wifi-0",
+            "wifi-4",
+            "wifi-3",
+            "wifi-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-room",
+          "query": "预约的会议室迟到多久会被释放？",
+          "queryEmbeddingMs": 16.400000005960464,
+          "searchMs": 1.8447000000160187,
+          "endToEndMs": 34.90999999642372,
+          "ids": [
+            "room-2",
+            "room-0",
+            "room-3",
+            "room-1",
+            "room-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-parking",
+          "query": "访客停车收费标准是多少？",
+          "queryEmbeddingMs": 14,
+          "searchMs": 1.7732000000250991,
+          "endToEndMs": 22.13000001013279,
+          "ids": [
+            "parking-0",
+            "parking-4",
+            "parking-2",
+            "parking-3",
+            "parking-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-backup",
+          "query": "完整备份保留多长时间？",
+          "queryEmbeddingMs": 10.390000000596046,
+          "searchMs": 1.8078000000095926,
+          "endToEndMs": 18.47000001370907,
+          "ids": [
+            "backup-1",
+            "backup-2",
+            "backup-3",
+            "backup-0",
+            "backup-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.7698986984637216
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-export",
+          "query": "性能测量的原始记录如何保存？",
+          "queryEmbeddingMs": 14.469999998807907,
+          "searchMs": 1.7789000000047963,
+          "endToEndMs": 33.92499999701977,
+          "ids": [
+            "export-1",
+            "export-4",
+            "backup-3",
+            "privacy-0",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.3295833540079424
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-import",
+          "query": "可以上传扫描图片当知识库资料吗？",
+          "queryEmbeddingMs": 13.995000004768372,
+          "searchMs": 1.981100000004517,
+          "endToEndMs": 31.049999997019768,
+          "ids": [
+            "import-2",
+            "export-2",
+            "kb-2",
+            "kb-0",
+            "kb-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.20208310829219417
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-model",
+          "query": "模型文件怎样确认版本和完整性？",
+          "queryEmbeddingMs": 14.939999997615814,
+          "searchMs": 1.8652000000001863,
+          "endToEndMs": 23.009999990463257,
+          "ids": [
+            "model-1",
+            "backup-2",
+            "model-0",
+            "model-2",
+            "model-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.6704166459920575
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-index",
+          "query": "刚上传的资料搜不到怎么办？",
+          "queryEmbeddingMs": 15.640000000596046,
+          "searchMs": 1.7940999999991618,
+          "endToEndMs": 39.144999995827675,
+          "ids": [
+            "index-0",
+            "export-2",
+            "export-0",
+            "export-4",
+            "import-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.6062493248765826
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-privacy",
+          "query": "我的文字会被发到云端模型处理吗？",
+          "queryEmbeddingMs": 16.055000007152557,
+          "searchMs": 1.963900000002468,
+          "endToEndMs": 24.109999999403954,
+          "ids": [
+            "privacy-2",
+            "privacy-0",
+            "model-0",
+            "privacy-4",
+            "model-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.6,
+          "ndcg": 0.6716163029634937
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-gpu",
+          "query": "没有可用显卡还能进行文本向量化吗？",
+          "queryEmbeddingMs": 16.03499999642372,
+          "searchMs": 1.9404999999969732,
+          "endToEndMs": 39.355000004172325,
+          "ids": [
+            "import-4",
+            "model-3",
+            "privacy-1",
+            "gpu-2",
+            "privacy-0"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.08703245752405495
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-kb",
+          "query": "切换资料库后怎样避免搜到另一份资料？",
+          "queryEmbeddingMs": 15.575000002980232,
+          "searchMs": 2.0089000000152737,
+          "endToEndMs": 31.349999994039536,
+          "ids": [
+            "export-2",
+            "kb-0",
+            "export-4",
+            "backup-4",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.46067715488476185
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-library",
+          "query": "图书到期可以再延长多久？",
+          "queryEmbeddingMs": 13.069999992847443,
+          "searchMs": 1.8348999999871012,
+          "endToEndMs": 21.355000004172325,
+          "ids": [
+            "library-1",
+            "library-0",
+            "library-2",
+            "course-3",
+            "library-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.7638018173230531
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-wifi",
+          "query": "访客连上无线网却不能上网该怎么办？",
+          "queryEmbeddingMs": 15.024999991059303,
+          "searchMs": 2.6304999999993015,
+          "endToEndMs": 23.815000012516975,
+          "ids": [
+            "wifi-2",
+            "wifi-0",
+            "wifi-4",
+            "wifi-3",
+            "wifi-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-room",
+          "query": "预约的会议室迟到多久会被释放？",
+          "queryEmbeddingMs": 14.359999999403954,
+          "searchMs": 3.4292999999888707,
+          "endToEndMs": 24.679999992251396,
+          "ids": [
+            "room-2",
+            "room-0",
+            "room-3",
+            "room-1",
+            "room-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-parking",
+          "query": "访客停车收费标准是多少？",
+          "queryEmbeddingMs": 14.814999997615814,
+          "searchMs": 1.8557000000146218,
+          "endToEndMs": 22.469999998807907,
+          "ids": [
+            "parking-0",
+            "parking-4",
+            "parking-2",
+            "parking-3",
+            "parking-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-backup",
+          "query": "完整备份保留多长时间？",
+          "queryEmbeddingMs": 8.965000003576279,
+          "searchMs": 1.9996999999857508,
+          "endToEndMs": 17.07999999821186,
+          "ids": [
+            "backup-1",
+            "backup-2",
+            "backup-3",
+            "backup-0",
+            "backup-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.7698986984637216
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-export",
+          "query": "性能测量的原始记录如何保存？",
+          "queryEmbeddingMs": 13.679999992251396,
+          "searchMs": 5.157500000001164,
+          "endToEndMs": 29.475000008940697,
+          "ids": [
+            "export-1",
+            "export-4",
+            "backup-3",
+            "privacy-0",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.3295833540079424
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-import",
+          "query": "可以上传扫描图片当知识库资料吗？",
+          "queryEmbeddingMs": 13.745000004768372,
+          "searchMs": 1.8092000000178814,
+          "endToEndMs": 22.50500001013279,
+          "ids": [
+            "import-2",
+            "export-2",
+            "kb-2",
+            "kb-0",
+            "kb-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.20208310829219417
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-model",
+          "query": "模型文件怎样确认版本和完整性？",
+          "queryEmbeddingMs": 16.29000000655651,
+          "searchMs": 1.8445000000065193,
+          "endToEndMs": 40.71500000357628,
+          "ids": [
+            "model-1",
+            "backup-2",
+            "model-0",
+            "model-2",
+            "model-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.6704166459920575
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-index",
+          "query": "刚上传的资料搜不到怎么办？",
+          "queryEmbeddingMs": 13.144999995827675,
+          "searchMs": 1.9697999999916647,
+          "endToEndMs": 23.644999995827675,
+          "ids": [
+            "index-0",
+            "export-2",
+            "export-0",
+            "export-4",
+            "import-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.6062493248765826
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-privacy",
+          "query": "我的文字会被发到云端模型处理吗？",
+          "queryEmbeddingMs": 14.82999999821186,
+          "searchMs": 1.8241000000271015,
+          "endToEndMs": 22.849999994039536,
+          "ids": [
+            "privacy-2",
+            "privacy-0",
+            "model-0",
+            "privacy-4",
+            "model-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.6,
+          "ndcg": 0.6716163029634937
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-gpu",
+          "query": "没有可用显卡还能进行文本向量化吗？",
+          "queryEmbeddingMs": 13.715000003576279,
+          "searchMs": 1.7876000000105705,
+          "endToEndMs": 31.600000008940697,
+          "ids": [
+            "import-4",
+            "model-3",
+            "privacy-1",
+            "gpu-2",
+            "privacy-0"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.08703245752405495
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-kb",
+          "query": "切换资料库后怎样避免搜到另一份资料？",
+          "queryEmbeddingMs": 14.280000001192093,
+          "searchMs": 1.9967999999935273,
+          "endToEndMs": 22.575000002980232,
+          "ids": [
+            "export-2",
+            "kb-0",
+            "export-4",
+            "backup-4",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.46067715488476185
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-library",
+          "query": "图书到期可以再延长多久？",
+          "queryEmbeddingMs": 15.559999987483025,
+          "searchMs": 1.8256000000110362,
+          "endToEndMs": 23.25,
+          "ids": [
+            "library-1",
+            "library-0",
+            "library-2",
+            "course-3",
+            "library-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.7638018173230531
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-wifi",
+          "query": "访客连上无线网却不能上网该怎么办？",
+          "queryEmbeddingMs": 14.149999991059303,
+          "searchMs": 1.833199999993667,
+          "endToEndMs": 22.349999994039536,
+          "ids": [
+            "wifi-2",
+            "wifi-0",
+            "wifi-4",
+            "wifi-3",
+            "wifi-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-room",
+          "query": "预约的会议室迟到多久会被释放？",
+          "queryEmbeddingMs": 15.140000000596046,
+          "searchMs": 1.8611000000091735,
+          "endToEndMs": 23.025000005960464,
+          "ids": [
+            "room-2",
+            "room-0",
+            "room-3",
+            "room-1",
+            "room-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-parking",
+          "query": "访客停车收费标准是多少？",
+          "queryEmbeddingMs": 16.559999987483025,
+          "searchMs": 2.070899999991525,
+          "endToEndMs": 33.87000000476837,
+          "ids": [
+            "parking-0",
+            "parking-4",
+            "parking-2",
+            "parking-3",
+            "parking-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-backup",
+          "query": "完整备份保留多长时间？",
+          "queryEmbeddingMs": 9.5,
+          "searchMs": 2.0494999999937136,
+          "endToEndMs": 31.21500000357628,
+          "ids": [
+            "backup-1",
+            "backup-2",
+            "backup-3",
+            "backup-0",
+            "backup-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.7698986984637216
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-export",
+          "query": "性能测量的原始记录如何保存？",
+          "queryEmbeddingMs": 13.325000002980232,
+          "searchMs": 1.8287000000127591,
+          "endToEndMs": 21.599999994039536,
+          "ids": [
+            "export-1",
+            "export-4",
+            "backup-3",
+            "privacy-0",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.3295833540079424
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-import",
+          "query": "可以上传扫描图片当知识库资料吗？",
+          "queryEmbeddingMs": 17.325000002980232,
+          "searchMs": 1.9574000000138767,
+          "endToEndMs": 41.70499999821186,
+          "ids": [
+            "import-2",
+            "export-2",
+            "kb-2",
+            "kb-0",
+            "kb-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.20208310829219417
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-model",
+          "query": "模型文件怎样确认版本和完整性？",
+          "queryEmbeddingMs": 13.57999999821186,
+          "searchMs": 1.927800000004936,
+          "endToEndMs": 22.16500000655651,
+          "ids": [
+            "model-1",
+            "backup-2",
+            "model-0",
+            "model-2",
+            "model-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.6704166459920575
+        }
+      ],
+      "imports": [],
+      "health": {
+        "ok": true,
+        "mode": "server",
+        "version": [
+          {
+            "version": "5.7.25-OceanBase seekdb-v1.4.0.0"
+          }
+        ]
+      },
+      "coldLoad": {
+        "phase": "ready",
+        "backend": "webgpu",
+        "dtype": "fp32",
+        "adapter": {
+          "vendor": "amd",
+          "architecture": "rdna-2",
+          "device": "",
+          "description": ""
+        },
+        "sessionLoadMs": 555.3299999982119,
+        "warmupMs": 225.16499999165535,
+        "requestedDtype": "fp32",
+        "fallbackReason": null,
+        "readyMs": 817.0949999988079,
+        "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+        "profile": {
+          "repo": "Xenova/bge-small-zh-v1.5",
+          "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+          "dtype": "fp32",
+          "dimension": 512,
+          "pooling": "cls",
+          "normalize": true,
+          "maxTokens": 256
+        },
+        "resources": [
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+            "ms": 2.019999995827675,
+            "bytes": 439125,
+            "transferBytes": 439425
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+            "ms": 1.290000006556511,
+            "bytes": 367,
+            "transferBytes": 667
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+            "ms": 1.5249999910593033,
+            "bytes": 716,
+            "transferBytes": 1016
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model.onnx",
+            "ms": 84.74500000476837,
+            "bytes": 94851877,
+            "transferBytes": 94852177
+          }
+        ]
+      },
+      "cachedReload": {
+        "phase": "ready",
+        "backend": "webgpu",
+        "dtype": "fp32",
+        "adapter": {
+          "vendor": "amd",
+          "architecture": "rdna-2",
+          "device": "",
+          "description": ""
+        },
+        "sessionLoadMs": 206.18000000715256,
+        "warmupMs": 202.9699999988079,
+        "requestedDtype": "fp32",
+        "fallbackReason": null,
+        "readyMs": 443.7800000011921,
+        "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+        "profile": {
+          "repo": "Xenova/bge-small-zh-v1.5",
+          "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+          "dtype": "fp32",
+          "dimension": 512,
+          "pooling": "cls",
+          "normalize": true,
+          "maxTokens": 256
+        },
+        "resources": []
+      },
+      "kb": {
+        "id": "kb_6acc1aeff0de4062aeef944680200810",
+        "name": "评测-fp32-webgpu-1794118645867",
+        "dtype": "fp32",
+        "dirty": 0,
+        "count": 0,
+        "retrieval": "quality-v2"
+      },
+      "firstImport": {
+        "kb": "kb_6acc1aeff0de4062aeef944680200810",
+        "documents": 100,
+        "batchSize": 4,
+        "embeddingMs": 930.6849999725819,
+        "writeMs": 344.3176000000676,
+        "refreshMs": 506.3788999999815,
+        "totalMs": 1956.4749999940395,
+        "backend": "webgpu",
+        "dtype": "fp32"
+      },
+      "summary": {
+        "recallAt5": 0.6333333333333333,
+        "ndcgAt5": 0.6052522845018399,
+        "queryEmbeddingMedianMs": 14.814999997615814,
+        "searchMedianMs": 1.8755999999993946,
+        "endToEndMedianMs": 24.275000005960464,
+        "firstQuery": {
+          "repeat": 0,
+          "queryId": "q-index",
+          "query": "刚上传的资料搜不到怎么办？",
+          "queryEmbeddingMs": 14.675000011920929,
+          "searchMs": 5.546099999977741,
+          "endToEndMs": 26.980000004172325,
+          "ids": [
+            "index-0",
+            "export-2",
+            "export-0",
+            "export-4",
+            "import-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.6062493248765826
+        },
+        "batchComparison": []
+      },
+      "ok": true
+    },
+    {
+      "config": {
+        "dtype": "fp16",
+        "backend": "auto",
+        "expect": "webgpu"
+      },
+      "browser": "156.0.8078.80",
+      "unexpectedRequests": [],
+      "pageErrors": [],
+      "queryRuns": [
+        {
+          "repeat": 0,
+          "queryId": "q-index",
+          "query": "刚上传的资料搜不到怎么办？",
+          "queryEmbeddingMs": 13.219999998807907,
+          "searchMs": 5.3334000000031665,
+          "endToEndMs": 25.04000000655651,
+          "ids": [
+            "index-0",
+            "export-2",
+            "export-0",
+            "export-4",
+            "import-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.6062493248765826
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-privacy",
+          "query": "我的文字会被发到云端模型处理吗？",
+          "queryEmbeddingMs": 15.160000011324883,
+          "searchMs": 1.9628999999840744,
+          "endToEndMs": 23.274999991059303,
+          "ids": [
+            "privacy-2",
+            "privacy-0",
+            "model-0",
+            "privacy-4",
+            "model-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.6,
+          "ndcg": 0.6716163029634937
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-gpu",
+          "query": "没有可用显卡还能进行文本向量化吗？",
+          "queryEmbeddingMs": 13.91499999165535,
+          "searchMs": 2.1613000000070315,
+          "endToEndMs": 22.519999995827675,
+          "ids": [
+            "import-4",
+            "model-3",
+            "privacy-1",
+            "gpu-2",
+            "privacy-0"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.08703245752405495
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-kb",
+          "query": "切换资料库后怎样避免搜到另一份资料？",
+          "queryEmbeddingMs": 16.230000004172325,
+          "searchMs": 1.9477000000188127,
+          "endToEndMs": 40.564999997615814,
+          "ids": [
+            "export-2",
+            "kb-0",
+            "export-4",
+            "backup-4",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.46067715488476185
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-library",
+          "query": "图书到期可以再延长多久？",
+          "queryEmbeddingMs": 14.45499999821186,
+          "searchMs": 2.075199999992037,
+          "endToEndMs": 22.84000000357628,
+          "ids": [
+            "library-1",
+            "library-0",
+            "library-2",
+            "course-3",
+            "library-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.7638018173230531
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-wifi",
+          "query": "访客连上无线网却不能上网该怎么办？",
+          "queryEmbeddingMs": 15.234999999403954,
+          "searchMs": 2.4161000000021886,
+          "endToEndMs": 23.75499999523163,
+          "ids": [
+            "wifi-2",
+            "wifi-0",
+            "wifi-4",
+            "wifi-3",
+            "wifi-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-room",
+          "query": "预约的会议室迟到多久会被释放？",
+          "queryEmbeddingMs": 15.385000005364418,
+          "searchMs": 1.9789999999920838,
+          "endToEndMs": 23.28999999165535,
+          "ids": [
+            "room-2",
+            "room-0",
+            "room-3",
+            "room-1",
+            "room-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-parking",
+          "query": "访客停车收费标准是多少？",
+          "queryEmbeddingMs": 12.54500000178814,
+          "searchMs": 1.9391999999934342,
+          "endToEndMs": 20.71000000834465,
+          "ids": [
+            "parking-0",
+            "parking-4",
+            "parking-2",
+            "parking-3",
+            "parking-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-backup",
+          "query": "完整备份保留多长时间？",
+          "queryEmbeddingMs": 9.689999997615814,
+          "searchMs": 1.775199999974575,
+          "endToEndMs": 17.46500000357628,
+          "ids": [
+            "backup-1",
+            "backup-2",
+            "backup-3",
+            "backup-0",
+            "backup-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.7698986984637216
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-export",
+          "query": "性能测量的原始记录如何保存？",
+          "queryEmbeddingMs": 13.38000001013279,
+          "searchMs": 1.7872000000206754,
+          "endToEndMs": 21.265000000596046,
+          "ids": [
+            "export-1",
+            "export-4",
+            "backup-3",
+            "privacy-0",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.3295833540079424
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-import",
+          "query": "可以上传扫描图片当知识库资料吗？",
+          "queryEmbeddingMs": 12.810000002384186,
+          "searchMs": 2.1669999999867287,
+          "endToEndMs": 21.105000004172325,
+          "ids": [
+            "import-2",
+            "export-2",
+            "kb-2",
+            "kb-0",
+            "kb-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.20208310829219417
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-model",
+          "query": "模型文件怎样确认版本和完整性？",
+          "queryEmbeddingMs": 14.769999995827675,
+          "searchMs": 1.859599999996135,
+          "endToEndMs": 26.53499999642372,
+          "ids": [
+            "model-1",
+            "backup-2",
+            "model-0",
+            "model-2",
+            "model-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.6704166459920575
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-index",
+          "query": "刚上传的资料搜不到怎么办？",
+          "queryEmbeddingMs": 13.245000004768372,
+          "searchMs": 2.3554999999760184,
+          "endToEndMs": 29.99500000476837,
+          "ids": [
+            "index-0",
+            "export-2",
+            "export-0",
+            "export-4",
+            "import-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.6062493248765826
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-privacy",
+          "query": "我的文字会被发到云端模型处理吗？",
+          "queryEmbeddingMs": 13.484999999403954,
+          "searchMs": 2.097799999988638,
+          "endToEndMs": 22.094999998807907,
+          "ids": [
+            "privacy-2",
+            "privacy-0",
+            "model-0",
+            "privacy-4",
+            "model-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.6,
+          "ndcg": 0.6716163029634937
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-gpu",
+          "query": "没有可用显卡还能进行文本向量化吗？",
+          "queryEmbeddingMs": 13.25,
+          "searchMs": 1.9945000000006985,
+          "endToEndMs": 21.36999998986721,
+          "ids": [
+            "import-4",
+            "model-3",
+            "privacy-1",
+            "gpu-2",
+            "privacy-0"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.08703245752405495
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-kb",
+          "query": "切换资料库后怎样避免搜到另一份资料？",
+          "queryEmbeddingMs": 13.780000001192093,
+          "searchMs": 2.3119000000006054,
+          "endToEndMs": 34.78499999642372,
+          "ids": [
+            "export-2",
+            "kb-0",
+            "export-4",
+            "backup-4",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.46067715488476185
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-library",
+          "query": "图书到期可以再延长多久？",
+          "queryEmbeddingMs": 13.730000004172325,
+          "searchMs": 1.8464999999850988,
+          "endToEndMs": 21.950000002980232,
+          "ids": [
+            "library-1",
+            "library-0",
+            "library-2",
+            "course-3",
+            "library-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.7638018173230531
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-wifi",
+          "query": "访客连上无线网却不能上网该怎么办？",
+          "queryEmbeddingMs": 14.319999992847443,
+          "searchMs": 1.9518000000098255,
+          "endToEndMs": 22.07999999821186,
+          "ids": [
+            "wifi-2",
+            "wifi-0",
+            "wifi-4",
+            "wifi-3",
+            "wifi-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-room",
+          "query": "预约的会议室迟到多久会被释放？",
+          "queryEmbeddingMs": 14.150000005960464,
+          "searchMs": 2.01400000002468,
+          "endToEndMs": 34.57500000298023,
+          "ids": [
+            "room-2",
+            "room-0",
+            "room-3",
+            "room-1",
+            "room-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-parking",
+          "query": "访客停车收费标准是多少？",
+          "queryEmbeddingMs": 12.11999998986721,
+          "searchMs": 1.9269999999960419,
+          "endToEndMs": 20.219999998807907,
+          "ids": [
+            "parking-0",
+            "parking-4",
+            "parking-2",
+            "parking-3",
+            "parking-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-backup",
+          "query": "完整备份保留多长时间？",
+          "queryEmbeddingMs": 9.17000000178814,
+          "searchMs": 1.8114000000059605,
+          "endToEndMs": 17.094999998807907,
+          "ids": [
+            "backup-1",
+            "backup-2",
+            "backup-3",
+            "backup-0",
+            "backup-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.7698986984637216
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-export",
+          "query": "性能测量的原始记录如何保存？",
+          "queryEmbeddingMs": 14.135000005364418,
+          "searchMs": 1.815600000001723,
+          "endToEndMs": 21.72000001370907,
+          "ids": [
+            "export-1",
+            "export-4",
+            "backup-3",
+            "privacy-0",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.3295833540079424
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-import",
+          "query": "可以上传扫描图片当知识库资料吗？",
+          "queryEmbeddingMs": 13.299999997019768,
+          "searchMs": 2.2633999999961816,
+          "endToEndMs": 34.57500000298023,
+          "ids": [
+            "import-2",
+            "export-2",
+            "kb-2",
+            "kb-0",
+            "kb-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.20208310829219417
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-model",
+          "query": "模型文件怎样确认版本和完整性？",
+          "queryEmbeddingMs": 12.620000004768372,
+          "searchMs": 2.2031000000133645,
+          "endToEndMs": 21.304999992251396,
+          "ids": [
+            "model-1",
+            "backup-2",
+            "model-0",
+            "model-2",
+            "model-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.6704166459920575
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-index",
+          "query": "刚上传的资料搜不到怎么办？",
+          "queryEmbeddingMs": 14.390000000596046,
+          "searchMs": 2.416899999981979,
+          "endToEndMs": 25.105000004172325,
+          "ids": [
+            "index-0",
+            "export-2",
+            "export-0",
+            "export-4",
+            "import-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.6062493248765826
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-privacy",
+          "query": "我的文字会被发到云端模型处理吗？",
+          "queryEmbeddingMs": 13.590000003576279,
+          "searchMs": 2.0903000000107568,
+          "endToEndMs": 21.875,
+          "ids": [
+            "privacy-2",
+            "privacy-0",
+            "model-0",
+            "privacy-4",
+            "model-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.6,
+          "ndcg": 0.6716163029634937
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-gpu",
+          "query": "没有可用显卡还能进行文本向量化吗？",
+          "queryEmbeddingMs": 13.970000013709068,
+          "searchMs": 1.9946000000054482,
+          "endToEndMs": 21.814999997615814,
+          "ids": [
+            "import-4",
+            "model-3",
+            "privacy-1",
+            "gpu-2",
+            "privacy-0"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.08703245752405495
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-kb",
+          "query": "切换资料库后怎样避免搜到另一份资料？",
+          "queryEmbeddingMs": 15.224999994039536,
+          "searchMs": 2.24210000000312,
+          "endToEndMs": 34.730000004172325,
+          "ids": [
+            "export-2",
+            "kb-0",
+            "export-4",
+            "backup-4",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.46067715488476185
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-library",
+          "query": "图书到期可以再延长多久？",
+          "queryEmbeddingMs": 11.965000003576279,
+          "searchMs": 2.0825000000186265,
+          "endToEndMs": 20.405000001192093,
+          "ids": [
+            "library-1",
+            "library-0",
+            "library-2",
+            "course-3",
+            "library-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.7638018173230531
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-wifi",
+          "query": "访客连上无线网却不能上网该怎么办？",
+          "queryEmbeddingMs": 13.21000000834465,
+          "searchMs": 2.022899999981746,
+          "endToEndMs": 21.775000005960464,
+          "ids": [
+            "wifi-2",
+            "wifi-0",
+            "wifi-4",
+            "wifi-3",
+            "wifi-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-room",
+          "query": "预约的会议室迟到多久会被释放？",
+          "queryEmbeddingMs": 14.875,
+          "searchMs": 2.143000000010943,
+          "endToEndMs": 36.41499999165535,
+          "ids": [
+            "room-2",
+            "room-0",
+            "room-3",
+            "room-1",
+            "room-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-parking",
+          "query": "访客停车收费标准是多少？",
+          "queryEmbeddingMs": 12.890000000596046,
+          "searchMs": 1.82929999998305,
+          "endToEndMs": 20.980000004172325,
+          "ids": [
+            "parking-0",
+            "parking-4",
+            "parking-2",
+            "parking-3",
+            "parking-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-backup",
+          "query": "完整备份保留多长时间？",
+          "queryEmbeddingMs": 7.91499999165535,
+          "searchMs": 1.9326000000000931,
+          "endToEndMs": 15.820000007748604,
+          "ids": [
+            "backup-1",
+            "backup-2",
+            "backup-3",
+            "backup-0",
+            "backup-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.7698986984637216
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-export",
+          "query": "性能测量的原始记录如何保存？",
+          "queryEmbeddingMs": 13.194999992847443,
+          "searchMs": 1.8123999999952503,
+          "endToEndMs": 21.054999992251396,
+          "ids": [
+            "export-1",
+            "export-4",
+            "backup-3",
+            "privacy-0",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.3295833540079424
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-import",
+          "query": "可以上传扫描图片当知识库资料吗？",
+          "queryEmbeddingMs": 14.469999998807907,
+          "searchMs": 2.1557000000029802,
+          "endToEndMs": 35.51500000059605,
+          "ids": [
+            "import-2",
+            "export-2",
+            "kb-2",
+            "kb-0",
+            "kb-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.20208310829219417
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-model",
+          "query": "模型文件怎样确认版本和完整性？",
+          "queryEmbeddingMs": 14.024999991059303,
+          "searchMs": 1.9996000000101048,
+          "endToEndMs": 22.25,
+          "ids": [
+            "model-1",
+            "backup-2",
+            "model-0",
+            "model-2",
+            "model-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.6704166459920575
+        }
+      ],
+      "imports": [
+        {
+          "repeat": 0,
+          "kb": "kb_50575b6bcf9c40198708cf9d4250115b",
+          "documents": 100,
+          "batchSize": 1,
+          "embeddingMs": 927.6450001001358,
+          "writeMs": 626.5829999998386,
+          "refreshMs": 505.0826000000234,
+          "totalMs": 2611.1500000059605,
+          "backend": "webgpu",
+          "dtype": "fp16"
+        },
+        {
+          "repeat": 0,
+          "kb": "kb_50575b6bcf9c40198708cf9d4250115b",
+          "documents": 100,
+          "batchSize": 4,
+          "embeddingMs": 744.2149999886751,
+          "writeMs": 310.8945000000531,
+          "refreshMs": 503.5276999999769,
+          "totalMs": 1725.3799999952316,
+          "backend": "webgpu",
+          "dtype": "fp16"
+        },
+        {
+          "repeat": 1,
+          "kb": "kb_50575b6bcf9c40198708cf9d4250115b",
+          "documents": 100,
+          "batchSize": 4,
+          "embeddingMs": 753.1550000011921,
+          "writeMs": 303.029499999946,
+          "refreshMs": 603.5032000000065,
+          "totalMs": 1822.9100000113249,
+          "backend": "webgpu",
+          "dtype": "fp16"
+        },
+        {
+          "repeat": 1,
+          "kb": "kb_50575b6bcf9c40198708cf9d4250115b",
+          "documents": 100,
+          "batchSize": 1,
+          "embeddingMs": 923.4299999326468,
+          "writeMs": 619.1311999999161,
+          "refreshMs": 504.7533000000112,
+          "totalMs": 2593.7000000029802,
+          "backend": "webgpu",
+          "dtype": "fp16"
+        },
+        {
+          "repeat": 2,
+          "kb": "kb_50575b6bcf9c40198708cf9d4250115b",
+          "documents": 100,
+          "batchSize": 1,
+          "embeddingMs": 929.8049999922514,
+          "writeMs": 618.0143999999564,
+          "refreshMs": 507.7006999999867,
+          "totalMs": 2597.0750000029802,
+          "backend": "webgpu",
+          "dtype": "fp16"
+        },
+        {
+          "repeat": 2,
+          "kb": "kb_50575b6bcf9c40198708cf9d4250115b",
+          "documents": 100,
+          "batchSize": 4,
+          "embeddingMs": 733.47999997437,
+          "writeMs": 317.3613000000187,
+          "refreshMs": 605.0452000000223,
+          "totalMs": 1819.2450000047684,
+          "backend": "webgpu",
+          "dtype": "fp16"
+        }
+      ],
+      "health": {
+        "ok": true,
+        "mode": "server",
+        "version": [
+          {
+            "version": "5.7.25-OceanBase seekdb-v1.4.0.0"
+          }
+        ]
+      },
+      "coldLoad": {
+        "phase": "ready",
+        "backend": "webgpu",
+        "dtype": "fp16",
+        "adapter": {
+          "vendor": "amd",
+          "architecture": "rdna-2",
+          "device": "",
+          "description": ""
+        },
+        "sessionLoadMs": 432.48499999940395,
+        "warmupMs": 227.9150000065565,
+        "requestedDtype": "fp16",
+        "fallbackReason": null,
+        "readyMs": 697.2249999940395,
+        "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+        "profile": {
+          "repo": "Xenova/bge-small-zh-v1.5",
+          "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+          "dtype": "fp16",
+          "dimension": 512,
+          "pooling": "cls",
+          "normalize": true,
+          "maxTokens": 256
+        },
+        "resources": [
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+            "ms": 2.0850000083446503,
+            "bytes": 439125,
+            "transferBytes": 439425
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+            "ms": 1.300000011920929,
+            "bytes": 367,
+            "transferBytes": 667
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+            "ms": 1.4600000083446503,
+            "bytes": 716,
+            "transferBytes": 1016
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model_fp16.onnx",
+            "ms": 45.28000000119209,
+            "bytes": 47497427,
+            "transferBytes": 47497727
+          }
+        ]
+      },
+      "cachedReload": {
+        "phase": "ready",
+        "backend": "webgpu",
+        "dtype": "fp16",
+        "adapter": {
+          "vendor": "amd",
+          "architecture": "rdna-2",
+          "device": "",
+          "description": ""
+        },
+        "sessionLoadMs": 182.49500000476837,
+        "warmupMs": 187.98499999940395,
+        "requestedDtype": "fp16",
+        "fallbackReason": null,
+        "readyMs": 406.17500001192093,
+        "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+        "profile": {
+          "repo": "Xenova/bge-small-zh-v1.5",
+          "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+          "dtype": "fp16",
+          "dimension": 512,
+          "pooling": "cls",
+          "normalize": true,
+          "maxTokens": 256
+        },
+        "resources": []
+      },
+      "kb": {
+        "id": "kb_50575b6bcf9c40198708cf9d4250115b",
+        "name": "评测-fp16-webgpu-1794118650645",
+        "dtype": "fp16",
+        "dirty": 0,
+        "count": 0,
+        "retrieval": "quality-v2"
+      },
+      "firstImport": {
+        "kb": "kb_50575b6bcf9c40198708cf9d4250115b",
+        "documents": 100,
+        "batchSize": 4,
+        "embeddingMs": 828.6949999779463,
+        "writeMs": 348.72199999995064,
+        "refreshMs": 605.7623999999778,
+        "totalMs": 1956.75,
+        "backend": "webgpu",
+        "dtype": "fp16"
+      },
+      "summary": {
+        "recallAt5": 0.6333333333333333,
+        "ndcgAt5": 0.6052522845018399,
+        "queryEmbeddingMedianMs": 13.730000004172325,
+        "searchMedianMs": 1.9996000000101048,
+        "endToEndMedianMs": 22.07999999821186,
+        "firstQuery": {
+          "repeat": 0,
+          "queryId": "q-index",
+          "query": "刚上传的资料搜不到怎么办？",
+          "queryEmbeddingMs": 13.219999998807907,
+          "searchMs": 5.3334000000031665,
+          "endToEndMs": 25.04000000655651,
+          "ids": [
+            "index-0",
+            "export-2",
+            "export-0",
+            "export-4",
+            "import-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.6062493248765826
+        },
+        "batchComparison": [
+          {
+            "batch": 1,
+            "embeddingMedianMs": 927.6450001001358,
+            "totalMedianMs": 2597.0750000029802
+          },
+          {
+            "batch": 4,
+            "embeddingMedianMs": 744.2149999886751,
+            "totalMedianMs": 1819.2450000047684
+          }
+        ]
+      },
+      "ok": true
+    },
+    {
+      "config": {
+        "dtype": "fp32",
+        "backend": "auto",
+        "disableGpu": true,
+        "expect": "wasm"
+      },
+      "browser": "156.0.8078.80",
+      "unexpectedRequests": [],
+      "pageErrors": [],
+      "queryRuns": [
+        {
+          "repeat": 0,
+          "queryId": "q-index",
+          "query": "刚上传的资料搜不到怎么办？",
+          "queryEmbeddingMs": 11.659999996423721,
+          "searchMs": 5.672099999996135,
+          "endToEndMs": 23.810000002384186,
+          "ids": [
+            "index-0",
+            "export-2",
+            "export-0",
+            "export-4",
+            "import-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.6062493248765826
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-privacy",
+          "query": "我的文字会被发到云端模型处理吗？",
+          "queryEmbeddingMs": 13.344999998807907,
+          "searchMs": 2.0914000000047963,
+          "endToEndMs": 22.20499999821186,
+          "ids": [
+            "privacy-2",
+            "privacy-0",
+            "model-0",
+            "privacy-4",
+            "model-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.6,
+          "ndcg": 0.6716163029634937
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-gpu",
+          "query": "没有可用显卡还能进行文本向量化吗？",
+          "queryEmbeddingMs": 13.29500000178814,
+          "searchMs": 2.0262000000220723,
+          "endToEndMs": 33.87999999523163,
+          "ids": [
+            "import-4",
+            "model-3",
+            "privacy-1",
+            "gpu-2",
+            "privacy-0"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.08703245752405495
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-kb",
+          "query": "切换资料库后怎样避免搜到另一份资料？",
+          "queryEmbeddingMs": 13.175000011920929,
+          "searchMs": 3.988000000012107,
+          "endToEndMs": 23.63000001013279,
+          "ids": [
+            "export-2",
+            "kb-0",
+            "export-4",
+            "backup-4",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.46067715488476185
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-library",
+          "query": "图书到期可以再延长多久？",
+          "queryEmbeddingMs": 11.24499998986721,
+          "searchMs": 1.8975999999966007,
+          "endToEndMs": 19.395000010728836,
+          "ids": [
+            "library-1",
+            "library-0",
+            "library-2",
+            "course-3",
+            "library-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.7638018173230531
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-wifi",
+          "query": "访客连上无线网却不能上网该怎么办？",
+          "queryEmbeddingMs": 13.260000005364418,
+          "searchMs": 2.1055000000051223,
+          "endToEndMs": 30.555000007152557,
+          "ids": [
+            "wifi-2",
+            "wifi-0",
+            "wifi-4",
+            "wifi-3",
+            "wifi-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-room",
+          "query": "预约的会议室迟到多久会被释放？",
+          "queryEmbeddingMs": 12.219999998807907,
+          "searchMs": 2.199800000002142,
+          "endToEndMs": 20.99499998986721,
+          "ids": [
+            "room-2",
+            "room-0",
+            "room-3",
+            "room-1",
+            "room-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-parking",
+          "query": "访客停车收费标准是多少？",
+          "queryEmbeddingMs": 11.239999994635582,
+          "searchMs": 1.7629000000015367,
+          "endToEndMs": 19.259999990463257,
+          "ids": [
+            "parking-0",
+            "parking-4",
+            "parking-2",
+            "parking-3",
+            "parking-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-backup",
+          "query": "完整备份保留多长时间？",
+          "queryEmbeddingMs": 11.225000008940697,
+          "searchMs": 1.8905999999842606,
+          "endToEndMs": 19.41500000655651,
+          "ids": [
+            "backup-1",
+            "backup-2",
+            "backup-3",
+            "backup-0",
+            "backup-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.7698986984637216
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-export",
+          "query": "性能测量的原始记录如何保存？",
+          "queryEmbeddingMs": 12.334999993443489,
+          "searchMs": 2.059099999984028,
+          "endToEndMs": 20.989999994635582,
+          "ids": [
+            "export-1",
+            "export-4",
+            "backup-3",
+            "privacy-0",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.3295833540079424
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-import",
+          "query": "可以上传扫描图片当知识库资料吗？",
+          "queryEmbeddingMs": 13.57999999821186,
+          "searchMs": 2.068700000003446,
+          "endToEndMs": 21.644999995827675,
+          "ids": [
+            "import-2",
+            "export-2",
+            "kb-2",
+            "kb-0",
+            "kb-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.20208310829219417
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-model",
+          "query": "模型文件怎样确认版本和完整性？",
+          "queryEmbeddingMs": 12.980000004172325,
+          "searchMs": 2.2496999999857508,
+          "endToEndMs": 32.11499999463558,
+          "ids": [
+            "model-1",
+            "backup-2",
+            "model-0",
+            "model-2",
+            "model-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.6704166459920575
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-index",
+          "query": "刚上传的资料搜不到怎么办？",
+          "queryEmbeddingMs": 11.620000004768372,
+          "searchMs": 2.0043000000005122,
+          "endToEndMs": 19.844999998807907,
+          "ids": [
+            "index-0",
+            "export-2",
+            "export-0",
+            "export-4",
+            "import-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.6062493248765826
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-privacy",
+          "query": "我的文字会被发到云端模型处理吗？",
+          "queryEmbeddingMs": 12.654999986290932,
+          "searchMs": 2.149700000009034,
+          "endToEndMs": 21.42000000178814,
+          "ids": [
+            "privacy-2",
+            "privacy-0",
+            "model-0",
+            "privacy-4",
+            "model-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.6,
+          "ndcg": 0.6716163029634937
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-gpu",
+          "query": "没有可用显卡还能进行文本向量化吗？",
+          "queryEmbeddingMs": 13.07999999821186,
+          "searchMs": 2.1534999999857973,
+          "endToEndMs": 35.06999999284744,
+          "ids": [
+            "import-4",
+            "model-3",
+            "privacy-1",
+            "gpu-2",
+            "privacy-0"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.08703245752405495
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-kb",
+          "query": "切换资料库后怎样避免搜到另一份资料？",
+          "queryEmbeddingMs": 14.865000009536743,
+          "searchMs": 2.284799999993993,
+          "endToEndMs": 23.16500000655651,
+          "ids": [
+            "export-2",
+            "kb-0",
+            "export-4",
+            "backup-4",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.46067715488476185
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-library",
+          "query": "图书到期可以再延长多久？",
+          "queryEmbeddingMs": 11.964999988675117,
+          "searchMs": 1.8401000000012573,
+          "endToEndMs": 19.82999999821186,
+          "ids": [
+            "library-1",
+            "library-0",
+            "library-2",
+            "course-3",
+            "library-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.7638018173230531
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-wifi",
+          "query": "访客连上无线网却不能上网该怎么办？",
+          "queryEmbeddingMs": 14.304999992251396,
+          "searchMs": 1.9337999999988824,
+          "endToEndMs": 36.01500000059605,
+          "ids": [
+            "wifi-2",
+            "wifi-0",
+            "wifi-4",
+            "wifi-3",
+            "wifi-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-room",
+          "query": "预约的会议室迟到多久会被释放？",
+          "queryEmbeddingMs": 12.689999997615814,
+          "searchMs": 1.8619999999937136,
+          "endToEndMs": 20.71500000357628,
+          "ids": [
+            "room-2",
+            "room-0",
+            "room-3",
+            "room-1",
+            "room-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-parking",
+          "query": "访客停车收费标准是多少？",
+          "queryEmbeddingMs": 11.700000002980232,
+          "searchMs": 1.9892999999865424,
+          "endToEndMs": 20.680000007152557,
+          "ids": [
+            "parking-0",
+            "parking-4",
+            "parking-2",
+            "parking-3",
+            "parking-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-backup",
+          "query": "完整备份保留多长时间？",
+          "queryEmbeddingMs": 11.625,
+          "searchMs": 1.8568999999843072,
+          "endToEndMs": 19.685000002384186,
+          "ids": [
+            "backup-1",
+            "backup-2",
+            "backup-3",
+            "backup-0",
+            "backup-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.7698986984637216
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-export",
+          "query": "性能测量的原始记录如何保存？",
+          "queryEmbeddingMs": 12.344999998807907,
+          "searchMs": 1.9422999999951571,
+          "endToEndMs": 20.70499999821186,
+          "ids": [
+            "export-1",
+            "export-4",
+            "backup-3",
+            "privacy-0",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.3295833540079424
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-import",
+          "query": "可以上传扫描图片当知识库资料吗？",
+          "queryEmbeddingMs": 12.859999999403954,
+          "searchMs": 1.9985999999917112,
+          "endToEndMs": 20.945000007748604,
+          "ids": [
+            "import-2",
+            "export-2",
+            "kb-2",
+            "kb-0",
+            "kb-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.20208310829219417
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-model",
+          "query": "模型文件怎样确认版本和完整性？",
+          "queryEmbeddingMs": 12.724999994039536,
+          "searchMs": 1.9825000000128057,
+          "endToEndMs": 36.84499999880791,
+          "ids": [
+            "model-1",
+            "backup-2",
+            "model-0",
+            "model-2",
+            "model-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.6704166459920575
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-index",
+          "query": "刚上传的资料搜不到怎么办？",
+          "queryEmbeddingMs": 12.019999995827675,
+          "searchMs": 1.876300000003539,
+          "endToEndMs": 21.260000005364418,
+          "ids": [
+            "index-0",
+            "export-2",
+            "export-0",
+            "export-4",
+            "import-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.6062493248765826
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-privacy",
+          "query": "我的文字会被发到云端模型处理吗？",
+          "queryEmbeddingMs": 12.810000002384186,
+          "searchMs": 1.9720999999844935,
+          "endToEndMs": 20.950000002980232,
+          "ids": [
+            "privacy-2",
+            "privacy-0",
+            "model-0",
+            "privacy-4",
+            "model-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.6,
+          "ndcg": 0.6716163029634937
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-gpu",
+          "query": "没有可用显卡还能进行文本向量化吗？",
+          "queryEmbeddingMs": 13.28999999165535,
+          "searchMs": 1.9146999999938998,
+          "endToEndMs": 37.01000000536442,
+          "ids": [
+            "import-4",
+            "model-3",
+            "privacy-1",
+            "gpu-2",
+            "privacy-0"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.08703245752405495
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-kb",
+          "query": "切换资料库后怎样避免搜到另一份资料？",
+          "queryEmbeddingMs": 13.570000007748604,
+          "searchMs": 2.7446000000054482,
+          "endToEndMs": 22.70999999344349,
+          "ids": [
+            "export-2",
+            "kb-0",
+            "export-4",
+            "backup-4",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.46067715488476185
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-library",
+          "query": "图书到期可以再延长多久？",
+          "queryEmbeddingMs": 11.640000000596046,
+          "searchMs": 1.8387000000220723,
+          "endToEndMs": 19.570000007748604,
+          "ids": [
+            "library-1",
+            "library-0",
+            "library-2",
+            "course-3",
+            "library-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.7638018173230531
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-wifi",
+          "query": "访客连上无线网却不能上网该怎么办？",
+          "queryEmbeddingMs": 13.5,
+          "searchMs": 1.9560999999812339,
+          "endToEndMs": 35.41500000655651,
+          "ids": [
+            "wifi-2",
+            "wifi-0",
+            "wifi-4",
+            "wifi-3",
+            "wifi-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-room",
+          "query": "预约的会议室迟到多久会被释放？",
+          "queryEmbeddingMs": 12.669999986886978,
+          "searchMs": 1.9005999999935739,
+          "endToEndMs": 20.75,
+          "ids": [
+            "room-2",
+            "room-0",
+            "room-3",
+            "room-1",
+            "room-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-parking",
+          "query": "访客停车收费标准是多少？",
+          "queryEmbeddingMs": 11.530000001192093,
+          "searchMs": 1.8931999999913387,
+          "endToEndMs": 19.844999998807907,
+          "ids": [
+            "parking-0",
+            "parking-4",
+            "parking-2",
+            "parking-3",
+            "parking-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-backup",
+          "query": "完整备份保留多长时间？",
+          "queryEmbeddingMs": 11.430000007152557,
+          "searchMs": 1.9088000000047032,
+          "endToEndMs": 19.439999997615814,
+          "ids": [
+            "backup-1",
+            "backup-2",
+            "backup-3",
+            "backup-0",
+            "backup-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.7698986984637216
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-export",
+          "query": "性能测量的原始记录如何保存？",
+          "queryEmbeddingMs": 12.49499998986721,
+          "searchMs": 1.8788999999815132,
+          "endToEndMs": 20.580000013113022,
+          "ids": [
+            "export-1",
+            "export-4",
+            "backup-3",
+            "privacy-0",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.3295833540079424
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-import",
+          "query": "可以上传扫描图片当知识库资料吗？",
+          "queryEmbeddingMs": 13.089999988675117,
+          "searchMs": 2.007400000002235,
+          "endToEndMs": 21.555000007152557,
+          "ids": [
+            "import-2",
+            "export-2",
+            "kb-2",
+            "kb-0",
+            "kb-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.20208310829219417
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-model",
+          "query": "模型文件怎样确认版本和完整性？",
+          "queryEmbeddingMs": 12.734999999403954,
+          "searchMs": 1.9153000000223983,
+          "endToEndMs": 21.74500000476837,
+          "ids": [
+            "model-1",
+            "backup-2",
+            "model-0",
+            "model-2",
+            "model-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.6704166459920575
+        }
+      ],
+      "imports": [],
+      "health": {
+        "ok": true,
+        "mode": "server",
+        "version": [
+          {
+            "version": "5.7.25-OceanBase seekdb-v1.4.0.0"
+          }
+        ]
+      },
+      "coldLoad": {
+        "phase": "ready",
+        "backend": "wasm",
+        "dtype": "fp32",
+        "adapter": null,
+        "sessionLoadMs": 525.1800000071526,
+        "warmupMs": 36.58999998867512,
+        "requestedDtype": "fp32",
+        "fallbackReason": "No WebGPU adapter",
+        "readyMs": 562.9950000047684,
+        "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+        "profile": {
+          "repo": "Xenova/bge-small-zh-v1.5",
+          "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+          "dtype": "fp32",
+          "dimension": 512,
+          "pooling": "cls",
+          "normalize": true,
+          "maxTokens": 256
+        },
+        "resources": [
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+            "ms": 2.0150000005960464,
+            "bytes": 439125,
+            "transferBytes": 439425
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+            "ms": 1.5750000029802322,
+            "bytes": 367,
+            "transferBytes": 667
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+            "ms": 1.5250000059604645,
+            "bytes": 716,
+            "transferBytes": 1016
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model.onnx",
+            "ms": 88.22499999403954,
+            "bytes": 94851877,
+            "transferBytes": 94852177
+          }
+        ]
+      },
+      "cachedReload": {
+        "phase": "ready",
+        "backend": "wasm",
+        "dtype": "fp32",
+        "adapter": null,
+        "sessionLoadMs": 173.90000000596046,
+        "warmupMs": 7.254999995231628,
+        "requestedDtype": "fp32",
+        "fallbackReason": "No WebGPU adapter",
+        "readyMs": 182.23999999463558,
+        "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+        "profile": {
+          "repo": "Xenova/bge-small-zh-v1.5",
+          "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+          "dtype": "fp32",
+          "dimension": 512,
+          "pooling": "cls",
+          "normalize": true,
+          "maxTokens": 256
+        },
+        "resources": []
+      },
+      "kb": {
+        "id": "kb_a5c1043bf77a40bd82fb4dfee3db23b5",
+        "name": "评测-fp32-wasm-1794118668377",
+        "dtype": "fp32",
+        "dirty": 0,
+        "count": 0,
+        "retrieval": "quality-v2"
+      },
+      "firstImport": {
+        "kb": "kb_a5c1043bf77a40bd82fb4dfee3db23b5",
+        "documents": 100,
+        "batchSize": 4,
+        "embeddingMs": 982.5600000172853,
+        "writeMs": 348.4022999999579,
+        "refreshMs": 505.0026000000071,
+        "totalMs": 2020.309999987483,
+        "backend": "wasm",
+        "dtype": "fp32"
+      },
+      "summary": {
+        "recallAt5": 0.6333333333333333,
+        "ndcgAt5": 0.6052522845018399,
+        "queryEmbeddingMedianMs": 12.689999997615814,
+        "searchMedianMs": 1.9720999999844935,
+        "endToEndMedianMs": 20.99499998986721,
+        "firstQuery": {
+          "repeat": 0,
+          "queryId": "q-index",
+          "query": "刚上传的资料搜不到怎么办？",
+          "queryEmbeddingMs": 11.659999996423721,
+          "searchMs": 5.672099999996135,
+          "endToEndMs": 23.810000002384186,
+          "ids": [
+            "index-0",
+            "export-2",
+            "export-0",
+            "export-4",
+            "import-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.6062493248765826
+        },
+        "batchComparison": []
+      },
+      "ok": true
+    },
+    {
+      "config": {
+        "dtype": "q8",
+        "backend": "auto",
+        "disableGpu": true,
+        "expect": "wasm"
+      },
+      "browser": "156.0.8078.80",
+      "unexpectedRequests": [],
+      "pageErrors": [],
+      "queryRuns": [
+        {
+          "repeat": 0,
+          "queryId": "q-index",
+          "query": "刚上传的资料搜不到怎么办？",
+          "queryEmbeddingMs": 7.88000001013279,
+          "searchMs": 5.545699999987846,
+          "endToEndMs": 19.974999994039536,
+          "ids": [
+            "index-0",
+            "export-2",
+            "export-0",
+            "export-4",
+            "import-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.6062493248765826
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-privacy",
+          "query": "我的文字会被发到云端模型处理吗？",
+          "queryEmbeddingMs": 8.854999989271164,
+          "searchMs": 2.137699999992037,
+          "endToEndMs": 17.484999999403954,
+          "ids": [
+            "privacy-2",
+            "privacy-0",
+            "model-0",
+            "privacy-4",
+            "model-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.6,
+          "ndcg": 0.6716163029634937
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-gpu",
+          "query": "没有可用显卡还能进行文本向量化吗？",
+          "queryEmbeddingMs": 9.144999995827675,
+          "searchMs": 1.94539999999688,
+          "endToEndMs": 17.444999992847443,
+          "ids": [
+            "import-4",
+            "model-3",
+            "gpu-2",
+            "privacy-1",
+            "privacy-0"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.10104155414609708
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-kb",
+          "query": "切换资料库后怎样避免搜到另一份资料？",
+          "queryEmbeddingMs": 8.844999998807907,
+          "searchMs": 2.512400000006892,
+          "endToEndMs": 17.740000009536743,
+          "ids": [
+            "export-2",
+            "kb-0",
+            "export-4",
+            "backup-4",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.46067715488476185
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-library",
+          "query": "图书到期可以再延长多久？",
+          "queryEmbeddingMs": 7.844999998807907,
+          "searchMs": 1.9745999999868218,
+          "endToEndMs": 16.484999999403954,
+          "ids": [
+            "library-1",
+            "library-0",
+            "library-2",
+            "course-3",
+            "library-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.7638018173230531
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-wifi",
+          "query": "访客连上无线网却不能上网该怎么办？",
+          "queryEmbeddingMs": 8.945000007748604,
+          "searchMs": 2.062899999989895,
+          "endToEndMs": 17.12999999523163,
+          "ids": [
+            "wifi-0",
+            "wifi-2",
+            "wifi-4",
+            "wifi-3",
+            "wifi-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-room",
+          "query": "预约的会议室迟到多久会被释放？",
+          "queryEmbeddingMs": 8.25,
+          "searchMs": 1.9936000000161584,
+          "endToEndMs": 16.549999997019768,
+          "ids": [
+            "room-2",
+            "room-0",
+            "room-3",
+            "room-1",
+            "room-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-parking",
+          "query": "访客停车收费标准是多少？",
+          "queryEmbeddingMs": 7.675000011920929,
+          "searchMs": 2.153200000000652,
+          "endToEndMs": 21.734999999403954,
+          "ids": [
+            "parking-0",
+            "parking-4",
+            "parking-2",
+            "parking-3",
+            "parking-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-backup",
+          "query": "完整备份保留多长时间？",
+          "queryEmbeddingMs": 7.489999994635582,
+          "searchMs": 1.8340000000025611,
+          "endToEndMs": 15.53999999165535,
+          "ids": [
+            "backup-1",
+            "backup-2",
+            "backup-3",
+            "backup-4",
+            "backup-0"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.7521866188906461
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-export",
+          "query": "性能测量的原始记录如何保存？",
+          "queryEmbeddingMs": 8.590000003576279,
+          "searchMs": 1.8700000000244472,
+          "endToEndMs": 16.884999990463257,
+          "ids": [
+            "export-1",
+            "export-4",
+            "backup-3",
+            "privacy-0",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.3295833540079424
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-import",
+          "query": "可以上传扫描图片当知识库资料吗？",
+          "queryEmbeddingMs": 8.615000009536743,
+          "searchMs": 1.876300000003539,
+          "endToEndMs": 16.65999999642372,
+          "ids": [
+            "import-2",
+            "export-2",
+            "kb-2",
+            "kb-0",
+            "kb-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.20208310829219417
+        },
+        {
+          "repeat": 0,
+          "queryId": "q-model",
+          "query": "模型文件怎样确认版本和完整性？",
+          "queryEmbeddingMs": 8.424999997019768,
+          "searchMs": 1.9680999999982305,
+          "endToEndMs": 16.344999998807907,
+          "ids": [
+            "model-1",
+            "backup-2",
+            "model-0",
+            "model-2",
+            "model-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.6704166459920575
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-index",
+          "query": "刚上传的资料搜不到怎么办？",
+          "queryEmbeddingMs": 7.924999997019768,
+          "searchMs": 2.017599999991944,
+          "endToEndMs": 16.185000002384186,
+          "ids": [
+            "index-0",
+            "export-2",
+            "export-0",
+            "export-4",
+            "import-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.6062493248765826
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-privacy",
+          "query": "我的文字会被发到云端模型处理吗？",
+          "queryEmbeddingMs": 8.480000004172325,
+          "searchMs": 2.071800000005169,
+          "endToEndMs": 16.614999994635582,
+          "ids": [
+            "privacy-2",
+            "privacy-0",
+            "model-0",
+            "privacy-4",
+            "model-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.6,
+          "ndcg": 0.6716163029634937
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-gpu",
+          "query": "没有可用显卡还能进行文本向量化吗？",
+          "queryEmbeddingMs": 8.609999999403954,
+          "searchMs": 2.0442999999795575,
+          "endToEndMs": 16.700000002980232,
+          "ids": [
+            "import-4",
+            "model-3",
+            "gpu-2",
+            "privacy-1",
+            "privacy-0"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.10104155414609708
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-kb",
+          "query": "切换资料库后怎样避免搜到另一份资料？",
+          "queryEmbeddingMs": 8.75500001013279,
+          "searchMs": 1.9561999999859836,
+          "endToEndMs": 18.45999999344349,
+          "ids": [
+            "export-2",
+            "kb-0",
+            "export-4",
+            "backup-4",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.46067715488476185
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-library",
+          "query": "图书到期可以再延长多久？",
+          "queryEmbeddingMs": 7.800000011920929,
+          "searchMs": 1.8254000000015367,
+          "endToEndMs": 15.63000001013279,
+          "ids": [
+            "library-1",
+            "library-0",
+            "library-2",
+            "course-3",
+            "library-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.7638018173230531
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-wifi",
+          "query": "访客连上无线网却不能上网该怎么办？",
+          "queryEmbeddingMs": 8.840000003576279,
+          "searchMs": 1.99210000000312,
+          "endToEndMs": 17.024999991059303,
+          "ids": [
+            "wifi-0",
+            "wifi-2",
+            "wifi-4",
+            "wifi-3",
+            "wifi-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-room",
+          "query": "预约的会议室迟到多久会被释放？",
+          "queryEmbeddingMs": 8.669999986886978,
+          "searchMs": 2.209100000007311,
+          "endToEndMs": 17.07999999821186,
+          "ids": [
+            "room-2",
+            "room-0",
+            "room-3",
+            "room-1",
+            "room-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-parking",
+          "query": "访客停车收费标准是多少？",
+          "queryEmbeddingMs": 7.965000003576279,
+          "searchMs": 1.8500000000058208,
+          "endToEndMs": 15.895000010728836,
+          "ids": [
+            "parking-0",
+            "parking-4",
+            "parking-2",
+            "parking-3",
+            "parking-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-backup",
+          "query": "完整备份保留多长时间？",
+          "queryEmbeddingMs": 7.730000004172325,
+          "searchMs": 1.880700000008801,
+          "endToEndMs": 15.594999998807907,
+          "ids": [
+            "backup-1",
+            "backup-2",
+            "backup-3",
+            "backup-4",
+            "backup-0"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.7521866188906461
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-export",
+          "query": "性能测量的原始记录如何保存？",
+          "queryEmbeddingMs": 8.530000001192093,
+          "searchMs": 1.9218999999866355,
+          "endToEndMs": 16.490000009536743,
+          "ids": [
+            "export-1",
+            "export-4",
+            "backup-3",
+            "privacy-0",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.3295833540079424
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-import",
+          "query": "可以上传扫描图片当知识库资料吗？",
+          "queryEmbeddingMs": 8.88000001013279,
+          "searchMs": 2.230199999990873,
+          "endToEndMs": 17.849999994039536,
+          "ids": [
+            "import-2",
+            "export-2",
+            "kb-2",
+            "kb-0",
+            "kb-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.20208310829219417
+        },
+        {
+          "repeat": 1,
+          "queryId": "q-model",
+          "query": "模型文件怎样确认版本和完整性？",
+          "queryEmbeddingMs": 8.324999988079071,
+          "searchMs": 2.050199999997858,
+          "endToEndMs": 21.21500000357628,
+          "ids": [
+            "model-1",
+            "backup-2",
+            "model-0",
+            "model-2",
+            "model-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.6704166459920575
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-index",
+          "query": "刚上传的资料搜不到怎么办？",
+          "queryEmbeddingMs": 8.370000004768372,
+          "searchMs": 1.9543000000121538,
+          "endToEndMs": 16.474999994039536,
+          "ids": [
+            "index-0",
+            "export-2",
+            "export-0",
+            "export-4",
+            "import-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.6062493248765826
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-privacy",
+          "query": "我的文字会被发到云端模型处理吗？",
+          "queryEmbeddingMs": 8.515000000596046,
+          "searchMs": 2.0007000000041444,
+          "endToEndMs": 16.609999999403954,
+          "ids": [
+            "privacy-2",
+            "privacy-0",
+            "model-0",
+            "privacy-4",
+            "model-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.6,
+          "ndcg": 0.6716163029634937
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-gpu",
+          "query": "没有可用显卡还能进行文本向量化吗？",
+          "queryEmbeddingMs": 8.71000000834465,
+          "searchMs": 1.986399999994319,
+          "endToEndMs": 17.00499999523163,
+          "ids": [
+            "import-4",
+            "model-3",
+            "gpu-2",
+            "privacy-1",
+            "privacy-0"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.10104155414609708
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-kb",
+          "query": "切换资料库后怎样避免搜到另一份资料？",
+          "queryEmbeddingMs": 9.075000002980232,
+          "searchMs": 2.0173999999824446,
+          "endToEndMs": 17.094999998807907,
+          "ids": [
+            "export-2",
+            "kb-0",
+            "export-4",
+            "backup-4",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.46067715488476185
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-library",
+          "query": "图书到期可以再延长多久？",
+          "queryEmbeddingMs": 8.129999995231628,
+          "searchMs": 1.9120000000111759,
+          "endToEndMs": 15.959999993443489,
+          "ids": [
+            "library-1",
+            "library-0",
+            "library-2",
+            "course-3",
+            "library-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.7638018173230531
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-wifi",
+          "query": "访客连上无线网却不能上网该怎么办？",
+          "queryEmbeddingMs": 8.560000002384186,
+          "searchMs": 1.9772000000230037,
+          "endToEndMs": 16.765000000596046,
+          "ids": [
+            "wifi-0",
+            "wifi-2",
+            "wifi-4",
+            "wifi-3",
+            "wifi-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-room",
+          "query": "预约的会议室迟到多久会被释放？",
+          "queryEmbeddingMs": 8.169999986886978,
+          "searchMs": 2.0853000000061,
+          "endToEndMs": 16.29500000178814,
+          "ids": [
+            "room-2",
+            "room-0",
+            "room-3",
+            "room-1",
+            "room-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.850834274847108
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-parking",
+          "query": "访客停车收费标准是多少？",
+          "queryEmbeddingMs": 7.590000003576279,
+          "searchMs": 2.0733999999938533,
+          "endToEndMs": 15.439999997615814,
+          "ids": [
+            "parking-0",
+            "parking-4",
+            "parking-2",
+            "parking-3",
+            "parking-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 1
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-backup",
+          "query": "完整备份保留多长时间？",
+          "queryEmbeddingMs": 7.475000008940697,
+          "searchMs": 1.9086999999999534,
+          "endToEndMs": 20.25,
+          "ids": [
+            "backup-1",
+            "backup-2",
+            "backup-3",
+            "backup-4",
+            "backup-0"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 1,
+          "ndcg": 0.7521866188906461
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-export",
+          "query": "性能测量的原始记录如何保存？",
+          "queryEmbeddingMs": 8.105000004172325,
+          "searchMs": 1.8592000000062399,
+          "endToEndMs": 15.939999997615814,
+          "ids": [
+            "export-1",
+            "export-4",
+            "backup-3",
+            "privacy-0",
+            "kb-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.4,
+          "ndcg": 0.3295833540079424
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-import",
+          "query": "可以上传扫描图片当知识库资料吗？",
+          "queryEmbeddingMs": 8.635000005364418,
+          "searchMs": 1.9513999999908265,
+          "endToEndMs": 16.694999992847443,
+          "ids": [
+            "import-2",
+            "export-2",
+            "kb-2",
+            "kb-0",
+            "kb-1"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.20208310829219417
+        },
+        {
+          "repeat": 2,
+          "queryId": "q-model",
+          "query": "模型文件怎样确认版本和完整性？",
+          "queryEmbeddingMs": 8.284999996423721,
+          "searchMs": 1.9205000000074506,
+          "endToEndMs": 16.305000007152557,
+          "ids": [
+            "model-1",
+            "backup-2",
+            "model-0",
+            "model-2",
+            "model-4"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.8,
+          "ndcg": 0.6704166459920575
+        }
+      ],
+      "imports": [],
+      "health": {
+        "ok": true,
+        "mode": "server",
+        "version": [
+          {
+            "version": "5.7.25-OceanBase seekdb-v1.4.0.0"
+          }
+        ]
+      },
+      "coldLoad": {
+        "phase": "ready",
+        "backend": "wasm",
+        "dtype": "q8",
+        "adapter": null,
+        "sessionLoadMs": 348.0949999988079,
+        "warmupMs": 42.57500000298023,
+        "requestedDtype": "q8",
+        "fallbackReason": "No WebGPU adapter",
+        "readyMs": 392.0400000065565,
+        "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+        "profile": {
+          "repo": "Xenova/bge-small-zh-v1.5",
+          "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+          "dtype": "q8",
+          "dimension": 512,
+          "pooling": "cls",
+          "normalize": true,
+          "maxTokens": 256
+        },
+        "resources": [
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+            "ms": 2.0450000017881393,
+            "bytes": 439125,
+            "transferBytes": 439425
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+            "ms": 1.0449999868869781,
+            "bytes": 367,
+            "transferBytes": 667
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+            "ms": 1.5350000113248825,
+            "bytes": 716,
+            "transferBytes": 1016
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model_quantized.onnx",
+            "ms": 47.96500000357628,
+            "bytes": 24010842,
+            "transferBytes": 24011142
+          }
+        ]
+      },
+      "cachedReload": {
+        "phase": "ready",
+        "backend": "wasm",
+        "dtype": "q8",
+        "adapter": null,
+        "sessionLoadMs": 124.45999999344349,
+        "warmupMs": 6.844999998807907,
+        "requestedDtype": "q8",
+        "fallbackReason": "No WebGPU adapter",
+        "readyMs": 132.26000000536442,
+        "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+        "profile": {
+          "repo": "Xenova/bge-small-zh-v1.5",
+          "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+          "dtype": "q8",
+          "dimension": 512,
+          "pooling": "cls",
+          "normalize": true,
+          "maxTokens": 256
+        },
+        "resources": []
+      },
+      "kb": {
+        "id": "kb_549806d7370c4e9b80c898c0f5503baf",
+        "name": "评测-q8-wasm-1794118672473",
+        "dtype": "q8",
+        "dirty": 0,
+        "count": 0,
+        "retrieval": "quality-v2"
+      },
+      "firstImport": {
+        "kb": "kb_549806d7370c4e9b80c898c0f5503baf",
+        "documents": 100,
+        "batchSize": 4,
+        "embeddingMs": 621.3349999636412,
+        "writeMs": 357.8149000000849,
+        "refreshMs": 805.0298999999941,
+        "totalMs": 1967.8349999934435,
+        "backend": "wasm",
+        "dtype": "q8"
+      },
+      "summary": {
+        "recallAt5": 0.6333333333333333,
+        "ndcgAt5": 0.617374179685328,
+        "queryEmbeddingMedianMs": 8.480000004172325,
+        "searchMedianMs": 1.9772000000230037,
+        "endToEndMedianMs": 16.65999999642372,
+        "firstQuery": {
+          "repeat": 0,
+          "queryId": "q-index",
+          "query": "刚上传的资料搜不到怎么办？",
+          "queryEmbeddingMs": 7.88000001013279,
+          "searchMs": 5.545699999987846,
+          "endToEndMs": 19.974999994039536,
+          "ids": [
+            "index-0",
+            "export-2",
+            "export-0",
+            "export-4",
+            "import-2"
+          ],
+          "strategy": "quality-v2",
+          "engine": "seekdb SQL: vector + fulltext → normalized score fusion",
+          "recall": 0.2,
+          "ndcg": 0.6062493248765826
+        },
+        "batchComparison": []
+      },
+      "ok": true
+    }
+  ],
+  "health": {
+    "ok": true,
+    "mode": "server",
+    "version": [
+      {
+        "version": "5.7.25-OceanBase seekdb-v1.4.0.0"
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+name: stepfun-seekdb-lab
+
+services:
+  seekdb:
+    image: oceanbase/seekdb:1.4.0-100000172026082615
+    container_name: stepfun-seekdb-1
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${SEEKDB_HOST_PORT:-12881}:2881"
+    environment:
+      ROOT_PASSWORD: ${SEEKDB_ROOT_PASSWORD:?SEEKDB_ROOT_PASSWORD is required}
+      SEEKDB_DATABASE: stepfun_lab
+      CPU_COUNT: "2"
+      MEMORY_LIMIT: 2G
+      LOG_DISK_SIZE: 2G
+      DATAFILE_SIZE: 2G
+      DATAFILE_NEXT: 1G
+      DATAFILE_MAXSIZE: 10G
+    volumes:
+      - stepfun_seekdb_data:/var/lib/seekdb
+    cpus: 2.0
+    mem_limit: 3g
+    pids_limit: 1024
+    stop_grace_period: 60s
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - MYSQL_PWD="$${ROOT_PASSWORD}" mysql -h127.0.0.1 -P2881 -uroot --connect-timeout=3 -Nse "SELECT 1" | grep -qx 1
+      interval: 5s
+      timeout: 5s
+      retries: 120
+      start_period: 30s
+    logging:
+      driver: local
+      options:
+        max-size: 20m
+        max-file: "3"
+
+volumes:
+  stepfun_seekdb_data:
+    name: stepfun_seekdb_data
