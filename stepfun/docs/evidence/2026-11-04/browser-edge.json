@@ -1,0 +1,110 @@
+{
+  "at": "2026-11-04T14:43:44.227Z",
+  "checks": [
+    "100 real browser embeddings → native seekdb → database hybrid search",
+    "dirty state blocks search; refresh exposes new document",
+    "empty collection isolates results",
+    "selected knowledge base restored on reload",
+    "repeated import upserts stable IDs"
+  ],
+  "unexpectedRequests": [],
+  "pageErrors": [],
+  "browser": "156.0.4314.58",
+  "model": {
+    "phase": "ready",
+    "backend": "webgpu",
+    "dtype": "fp16",
+    "adapter": {
+      "vendor": "intel",
+      "architecture": "gen-12lp",
+      "device": "",
+      "description": ""
+    },
+    "sessionLoadMs": 893.3050000071526,
+    "warmupMs": 458.0450000166893,
+    "requestedDtype": "fp16",
+    "fallbackReason": null,
+    "readyMs": 1464,
+    "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+    "profile": {
+      "repo": "Xenova/bge-small-zh-v1.5",
+      "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+      "dtype": "fp16",
+      "dimension": 512,
+      "pooling": "cls",
+      "normalize": true,
+      "maxTokens": 256
+    },
+    "resources": [
+      {
+        "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+        "ms": 5.474999964237213,
+        "bytes": 439125,
+        "transferBytes": 439425
+      },
+      {
+        "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+        "ms": 3.9950000047683716,
+        "bytes": 367,
+        "transferBytes": 667
+      },
+      {
+        "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+        "ms": 3.9100000262260437,
+        "bytes": 716,
+        "transferBytes": 1016
+      },
+      {
+        "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model_fp16.onnx",
+        "ms": 116.97499996423721,
+        "bytes": 47497427,
+        "transferBytes": 47497727
+      }
+    ]
+  },
+  "import": {
+    "kb": "kb_cd3f7ce1f6864495bff93f0bbf3c4e41",
+    "documents": 100,
+    "batchSize": 4,
+    "embeddingMs": 902.0100003480911,
+    "writeMs": 1407.322100000456,
+    "refreshMs": 302.9513999996707,
+    "totalMs": 2814.1650000214577,
+    "backend": "webgpu",
+    "dtype": "fp16"
+  },
+  "search": {
+    "query": "刚上传的资料搜不到怎么办？",
+    "queryEmbeddingMs": 31.4650000333786,
+    "searchMs": 18.641700000036508,
+    "endToEndMs": 64.01499998569489,
+    "ids": [
+      "index-0",
+      "export-2",
+      "export-0",
+      "export-4",
+      "import-2"
+    ],
+    "strategy": "quality-v2",
+    "engine": "seekdb SQL: vector + fulltext → normalized score fusion"
+  },
+  "incremental": {
+    "rejected": true,
+    "result": {
+      "query": "火星蓝莓计划授权口令",
+      "queryEmbeddingMs": 35.38499999046326,
+      "searchMs": 15.659200000111014,
+      "endToEndMs": 64.68500000238419,
+      "ids": [
+        "incremental-mars",
+        "index-1",
+        "index-0",
+        "privacy-3",
+        "index-4"
+      ],
+      "strategy": "quality-v2",
+      "engine": "seekdb SQL: vector + fulltext → normalized score fusion"
+    }
+  },
+  "ok": true
+}

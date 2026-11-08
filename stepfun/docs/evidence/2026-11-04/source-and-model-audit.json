@@ -1,0 +1,68 @@
+{
+  "assets": [
+    {
+      "file": "app.js",
+      "match": true,
+      "existingSHA": "f452152c1d8891a2e080c1ef81a532a7b4ea6a5fc2f927e03bda3688c6fd10d9",
+      "rebuiltSHA": "f452152c1d8891a2e080c1ef81a532a7b4ea6a5fc2f927e03bda3688c6fd10d9"
+    },
+    {
+      "file": "embed-worker.js",
+      "match": true,
+      "existingSHA": "e9750c59be24c70fc27ca6bcab280d8143ae883cde8e9cb752c0a2dcb8ae764d",
+      "rebuiltSHA": "e9750c59be24c70fc27ca6bcab280d8143ae883cde8e9cb752c0a2dcb8ae764d"
+    }
+  ],
+  "models": [
+    {
+      "file": "README.md",
+      "size": 1057,
+      "ok": true
+    },
+    {
+      "file": "config.json",
+      "size": 716,
+      "ok": true
+    },
+    {
+      "file": "onnx/model.onnx",
+      "size": 94851877,
+      "ok": true
+    },
+    {
+      "file": "onnx/model_fp16.onnx",
+      "size": 47497427,
+      "ok": true
+    },
+    {
+      "file": "onnx/model_quantized.onnx",
+      "size": 24010842,
+      "ok": true
+    },
+    {
+      "file": "quantize_config.json",
+      "size": 674,
+      "ok": true
+    },
+    {
+      "file": "special_tokens_map.json",
+      "size": 125,
+      "ok": true
+    },
+    {
+      "file": "tokenizer.json",
+      "size": 439125,
+      "ok": true
+    },
+    {
+      "file": "tokenizer_config.json",
+      "size": 367,
+      "ok": true
+    },
+    {
+      "file": "vocab.txt",
+      "size": 109540,
+      "ok": true
+    }
+  ]
+}
