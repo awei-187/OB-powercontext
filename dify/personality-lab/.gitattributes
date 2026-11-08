@@ -1,0 +1,3 @@
+# Preserve the exported workflow and historical evidence hashes across platforms.
+workflow/*.yml -text whitespace=cr-at-eol
+evidence/*.json -text whitespace=cr-at-eol

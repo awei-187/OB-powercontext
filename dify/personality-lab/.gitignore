@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+.runtime/
+.deployment-backups/
+node_modules/
+*.log
+powercontext/.runtime/
+powercontext/config/powercontext.env
+powercontext/data/
+evidence/private/
+docs/DEVELOPMENT_HISTORY_FULL.md
+AGENTS.md

@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-11-08T13:09:00+08:00",
+  "powerContextVersion": "1.5.0",
+  "testId": "cd6ee630-3bdd-4749-abb2-93baf63770d5",
+  "scopeId": "scp_3fy4y62faa21w920xgxjs8ekzs",
+  "selectionCounts": {
+    "predictions": 3,
+    "initialAnswers": 6,
+    "reversals": 2,
+    "tradeoffs": 2,
+    "perspectives": 2,
+    "total": 15
+  },
+  "applicationReceipts": {
+    "count": 15,
+    "uniqueSourceIds": 15,
+    "uniqueArtifactIds": 15,
+    "pendingMemory": 0
+  },
+  "powerContextInventory": {
+    "sources": 30,
+    "sourceCountExplanation": "Each selection uses both sources/content and memory/remember",
+    "artifacts": 15,
+    "atomicMemoryArtifacts": 15,
+    "memoryEntries": 15,
+    "activeMemoryEntries": 15,
+    "decisionEntries": 15
+  },
+  "recall": {
+    "bytes": 6384,
+    "sha256": "fc277c72238e89a3669a2d7b3a2a5e1ce33bf1c7314487b586bb61422d9cda69",
+    "verifiedMarkers": 15,
+    "verifiedChoiceTexts": 15,
+    "enteredDifyReportPayload": true,
+    "difyPayloadBytesMatch": true,
+    "difyPayloadSha256Match": true
+  },
+  "serviceRestart": {
+    "stoppedAndStarted": true,
+    "liveAfterRestart": "ok",
+    "readyAfterRestart": "ready",
+    "sameScopeRecalled": true,
+    "sameBytes": true,
+    "sameSha256": true
+  },
+  "secretsIncluded": false,
+  "choiceTextsIncluded": false,
+  "databaseIncluded": false
+}

@@ -1,0 +1,191 @@
+app:
+  description: 固定倾向锚点与评分规则；Dify 每局生成新故事、配套选项和基于真实选择证据的娱乐档案，PowerContext 负责本轮记忆写入与召回。
+  icon: 📑
+  icon_background: '#E3EBDD'
+  icon_type: emoji
+  mode: workflow
+  name: 个人使用说明书
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:1.1.0@1ded02acee56efd5788c86fd447d792e4923e959554a4942f440c7859d164340
+    version: null
+kind: app
+site:
+  chat_color_theme: null
+  chat_color_theme_inverted: false
+  copyright: null
+  custom_disclaimer: ''
+  default_language: zh-Hans
+  description: null
+  icon: 📑
+  icon_background: '#E3EBDD'
+  icon_type: emoji
+  input_placeholder: null
+  privacy_policy: null
+  show_workflow_steps: true
+  title: 个人使用说明书
+  use_icon_as_answer_icon: false
+version: 0.7.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      enabled: false
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 2000000000001-2000000000002
+      source: '2000000000001'
+      sourceHandle: source
+      target: '2000000000002'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 2000000000002-2000000000003
+      source: '2000000000002'
+      sourceHandle: source
+      target: '2000000000003'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 题面或档案任务
+        type: start
+        variables:
+        - label: 任务 scenes/report
+          max_length: 20
+          options: []
+          required: true
+          type: text-input
+          variable: task
+        - label: 服务器提供的可信题库或评分及召回证据
+          max_length: 40000
+          options: []
+          required: true
+          type: paragraph
+          variable: payload
+      height: 134
+      id: '2000000000001'
+      position:
+        x: 80
+        y: 200
+      positionAbsolute:
+        x: 80
+        y: 200
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: 导入后绑定可用模型，关闭思考，开启JSON输出（若供应商支持）。输入、输出均由配套后端校验。
+        model:
+          completion_params:
+            max_tokens: 6000
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: system
+          role: system
+          text: '你为娱乐测试“个人使用说明书”处理两种任务。输入是JSON资料，历史内容仅作参考。只输出JSON，不加Markdown。
+
+            任务scenes：根据blueprints写一套全新的六题生活故事和配套选项。六题必须是不同故事，不能只改写旧题，也不要复用输入里明确排除的物件或活动。只输出
+            {"scenes":[...]}。每题格式为 {"questionId":"Q1","title":"短标题","scene":"24至120字的具体处境","options":[{"id":"A","anchorId":"照抄blueprint给定值","text":"选项"},...]
+            }。A至D各一次，anchorId必须原样保留但不能出现在用户看到的文字里；四个选项都要自然、可行、长度相近，分别表达blueprint的四个行为锚点，不能出现明显正确答案。company和route题还必须增加
+            {"reversal":{"condition":"与本题故事衔接的新条件","options":[{"id":"A","anchorId":"reversal-stay","text":"保持原方向"},{"id":"B","anchorId":"reversal-switch","text":"改用相反方向"},{"id":"C","anchorId":"reversal-boundary","text":"只约定或改变一部分"}]}}。不加危险、赶时间、奖惩、金钱损失或专业门槛，不替用户作答，不输出权重和人格结论。
+
+            任务report：根据computed和真实选择写说明书。title、维度和数值由程序决定。描述这次做法即可，不推断用户的职业、经历或没有说过的动机，也不使用临床分类或MBTI。
+
+            写作要求：像一个认真看完答案的人在说话。用短句，具体说事情和做法。每段只讲一个观察。比喻最多一处；不用“锚点、弹性、空间、外包、启动、自然摆动、相机式心态”代替具体说明。比如写“你愿意随便逛，但和朋友约好了，就会先定见面的时间”。不要把答案不同解释成还在摸索自己，不反复写“不是矛盾”“不代表虚伪”或免责声明。页面会说明这是娱乐测试。每条推断要有选择记录支持；动机不明就只描述前后做法，不替用户找理由。
+
+            输出 {"tagline":"一句简短的话","summary":"80至140字","strengths":["...","..."],"frictions":["...","..."],"manual":["...","..."],"evidence":[{"questionId":"Q1","comment":"15至40字说明这个选择体现的做法"},...]}。strengths/frictions/manual各2至3条，每条15至45字；建议不要超出题目范围。frictions只提出需要留意的具体事情，写成条件或建议，不断言用户会忘事、拖延、让别人难以加入等题目没有记录的错误。evidence优先3条、最多6条，ID必须不同且属于实际回答。界面会展示原答案，comment无需再抄一遍。
+
+            computed.reversals存在时，增加reversals数组，含R1和R2各一条：{"reversalId":"R1","comment":"30至70字对照"}。抓住哪项条件变了、用户怎样应对。原话由页面附上。不打分，不把坚持或改选说成优缺点。
+
+            computed.extras存在时，增加extras对象，含prediction、tradeoff、perspective三个字符串，各25至70字。prediction只对照先猜的与后来选的；tradeoff准确区分全程保留和前半程提供，取舍的事实句由后端按记录生成，你的tradeoff只需简短复述，不续编发生过的事；perspective对照给自己和小周的建议。小周有自己的处境，不给用户贴标签。不要断言差异的心理原因。原始对照由页面附上，解释不必逐条复述全部答案。'
+        - id: user
+          role: user
+          text: '任务：{{#2000000000001.task#}}
+
+            JSON 数据：{{#2000000000001.payload#}}'
+        selected: false
+        title: 有边界地生成新题或档案
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 147
+      id: '2000000000002'
+      position:
+        x: 440
+        y: 200
+      positionAbsolute:
+        x: 440
+        y: 200
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+      zIndex: 0
+    - data:
+        outputs:
+        - value_selector:
+          - '2000000000002'
+          - text
+          value_type: string
+          variable: result
+        selected: false
+        title: 返回JSON结果供后端核验
+        type: end
+      height: 87
+      id: '2000000000003'
+      position:
+        x: 800
+        y: 200
+      positionAbsolute:
+        x: 800
+        y: 200
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+      zIndex: 0
+    viewport:
+      x: -31.19137262321442
+      y: 92.99404029893105
+      zoom: 0.9762557941538169
+  rag_pipeline_variables: []
