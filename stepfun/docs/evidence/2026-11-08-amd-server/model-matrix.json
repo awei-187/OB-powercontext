@@ -1,0 +1,414 @@
+{
+  "at": "2026-11-08T04:55:33.501Z",
+  "runs": [
+    {
+      "config": {
+        "name": "fp32-webgpu",
+        "dtype": "fp32",
+        "backend": "auto",
+        "expectedBackend": "webgpu",
+        "expectedDtype": "fp32"
+      },
+      "browser": "156.0.8078.80",
+      "unexpectedRequests": [],
+      "pageErrors": [],
+      "state": {
+        "phase": "ready",
+        "backend": "webgpu",
+        "dtype": "fp32",
+        "adapter": {
+          "vendor": "amd",
+          "architecture": "rdna-2",
+          "device": "",
+          "description": ""
+        },
+        "sessionLoadMs": 664.1499999910593,
+        "warmupMs": 425.48499999940395,
+        "requestedDtype": "fp32",
+        "fallbackReason": null,
+        "readyMs": 1128.0849999934435,
+        "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+        "profile": {
+          "repo": "Xenova/bge-small-zh-v1.5",
+          "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+          "dtype": "fp32",
+          "dimension": 512,
+          "pooling": "cls",
+          "normalize": true,
+          "maxTokens": 256
+        },
+        "resources": [
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+            "ms": 2.480000004172325,
+            "bytes": 439125,
+            "transferBytes": 439425
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+            "ms": 1.459999993443489,
+            "bytes": 367,
+            "transferBytes": 667
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+            "ms": 1.6799999922513962,
+            "bytes": 716,
+            "transferBytes": 1016
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model.onnx",
+            "ms": 105.01500000059605,
+            "bytes": 94851877,
+            "transferBytes": 94852177
+          }
+        ]
+      },
+      "embeddingMs": 140.97000001370907,
+      "vectorDimensions": [
+        512,
+        512
+      ],
+      "ok": true
+    },
+    {
+      "config": {
+        "name": "fp16-webgpu",
+        "dtype": "fp16",
+        "backend": "auto",
+        "expectedBackend": "webgpu",
+        "expectedDtype": "fp16"
+      },
+      "browser": "156.0.8078.80",
+      "unexpectedRequests": [],
+      "pageErrors": [],
+      "state": {
+        "phase": "ready",
+        "backend": "webgpu",
+        "dtype": "fp16",
+        "adapter": {
+          "vendor": "amd",
+          "architecture": "rdna-2",
+          "device": "",
+          "description": ""
+        },
+        "sessionLoadMs": 477.90000000596046,
+        "warmupMs": 228.59999999403954,
+        "requestedDtype": "fp16",
+        "fallbackReason": null,
+        "readyMs": 753.265000000596,
+        "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+        "profile": {
+          "repo": "Xenova/bge-small-zh-v1.5",
+          "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+          "dtype": "fp16",
+          "dimension": 512,
+          "pooling": "cls",
+          "normalize": true,
+          "maxTokens": 256
+        },
+        "resources": [
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+            "ms": 2.2000000029802322,
+            "bytes": 439125,
+            "transferBytes": 439425
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+            "ms": 1.3199999928474426,
+            "bytes": 367,
+            "transferBytes": 667
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+            "ms": 1.5450000017881393,
+            "bytes": 716,
+            "transferBytes": 1016
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model_fp16.onnx",
+            "ms": 47.90999999642372,
+            "bytes": 47497427,
+            "transferBytes": 47497727
+          }
+        ]
+      },
+      "embeddingMs": 81.76000000536442,
+      "vectorDimensions": [
+        512,
+        512
+      ],
+      "ok": true
+    },
+    {
+      "config": {
+        "name": "fp32-wasm",
+        "dtype": "fp32",
+        "backend": "wasm",
+        "expectedBackend": "wasm",
+        "expectedDtype": "fp32"
+      },
+      "browser": "156.0.8078.80",
+      "unexpectedRequests": [],
+      "pageErrors": [],
+      "state": {
+        "phase": "ready",
+        "backend": "wasm",
+        "dtype": "fp32",
+        "adapter": null,
+        "sessionLoadMs": 519.4949999898672,
+        "warmupMs": 36.49499998986721,
+        "requestedDtype": "fp32",
+        "fallbackReason": "用户选择 WASM / 固定降级验证",
+        "readyMs": 556.0300000011921,
+        "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+        "profile": {
+          "repo": "Xenova/bge-small-zh-v1.5",
+          "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+          "dtype": "fp32",
+          "dimension": 512,
+          "pooling": "cls",
+          "normalize": true,
+          "maxTokens": 256
+        },
+        "resources": [
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+            "ms": 2.125,
+            "bytes": 439125,
+            "transferBytes": 439425
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+            "ms": 1.3599999994039536,
+            "bytes": 367,
+            "transferBytes": 667
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+            "ms": 1.6150000095367432,
+            "bytes": 716,
+            "transferBytes": 1016
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model.onnx",
+            "ms": 80.69000001251698,
+            "bytes": 94851877,
+            "transferBytes": 94852177
+          }
+        ]
+      },
+      "embeddingMs": 10.040000006556511,
+      "vectorDimensions": [
+        512,
+        512
+      ],
+      "ok": true
+    },
+    {
+      "config": {
+        "name": "q8-wasm",
+        "dtype": "q8",
+        "backend": "wasm",
+        "expectedBackend": "wasm",
+        "expectedDtype": "q8"
+      },
+      "browser": "156.0.8078.80",
+      "unexpectedRequests": [],
+      "pageErrors": [],
+      "state": {
+        "phase": "ready",
+        "backend": "wasm",
+        "dtype": "q8",
+        "adapter": null,
+        "sessionLoadMs": 350.6149999946356,
+        "warmupMs": 40.20000000298023,
+        "requestedDtype": "q8",
+        "fallbackReason": "用户选择 WASM / 固定降级验证",
+        "readyMs": 390.85499998927116,
+        "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+        "profile": {
+          "repo": "Xenova/bge-small-zh-v1.5",
+          "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+          "dtype": "q8",
+          "dimension": 512,
+          "pooling": "cls",
+          "normalize": true,
+          "maxTokens": 256
+        },
+        "resources": [
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+            "ms": 2.4300000071525574,
+            "bytes": 439125,
+            "transferBytes": 439425
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+            "ms": 1.5549999922513962,
+            "bytes": 367,
+            "transferBytes": 667
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+            "ms": 1.6950000077486038,
+            "bytes": 716,
+            "transferBytes": 1016
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model_quantized.onnx",
+            "ms": 27.07999999821186,
+            "bytes": 24010842,
+            "transferBytes": 24011142
+          }
+        ]
+      },
+      "embeddingMs": 7.6099999994039536,
+      "vectorDimensions": [
+        512,
+        512
+      ],
+      "ok": true
+    },
+    {
+      "config": {
+        "name": "fp16-no-adapter",
+        "dtype": "fp16",
+        "backend": "auto",
+        "disableGpu": true,
+        "expectedBackend": "wasm",
+        "expectedDtype": "fp32"
+      },
+      "browser": "156.0.8078.80",
+      "unexpectedRequests": [],
+      "pageErrors": [],
+      "state": {
+        "phase": "ready",
+        "backend": "wasm",
+        "dtype": "fp32",
+        "adapter": null,
+        "sessionLoadMs": 524.1049999892712,
+        "warmupMs": 38.76500000059605,
+        "requestedDtype": "fp16",
+        "fallbackReason": "No WebGPU adapter",
+        "readyMs": 860.0600000023842,
+        "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+        "profile": {
+          "repo": "Xenova/bge-small-zh-v1.5",
+          "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+          "dtype": "fp32",
+          "dimension": 512,
+          "pooling": "cls",
+          "normalize": true,
+          "maxTokens": 256
+        },
+        "resources": [
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+            "ms": 2.0750000029802322,
+            "bytes": 439125,
+            "transferBytes": 439425
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+            "ms": 1.074999988079071,
+            "bytes": 367,
+            "transferBytes": 667
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+            "ms": 1.5099999904632568,
+            "bytes": 716,
+            "transferBytes": 1016
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model.onnx",
+            "ms": 81.08000001311302,
+            "bytes": 94851877,
+            "transferBytes": 94852177
+          }
+        ]
+      },
+      "embeddingMs": 9.734999999403954,
+      "vectorDimensions": [
+        512,
+        512
+      ],
+      "ok": true
+    },
+    {
+      "config": {
+        "name": "fp16-fetch-failure",
+        "dtype": "fp16",
+        "backend": "auto",
+        "failFp16": true,
+        "expectedBackend": "wasm",
+        "expectedDtype": "fp32"
+      },
+      "browser": "156.0.8078.80",
+      "unexpectedRequests": [],
+      "pageErrors": [],
+      "state": {
+        "phase": "ready",
+        "backend": "wasm",
+        "dtype": "fp32",
+        "adapter": null,
+        "sessionLoadMs": 528.6899999976158,
+        "warmupMs": 41.775000005960464,
+        "requestedDtype": "fp16",
+        "fallbackReason": "`local_files_only=true` or `env.allowRemoteModels=false` and file was not found locally at \"/models/Xenova/bge-small-zh-v1.5/onnx/model_fp16.onnx\".",
+        "readyMs": 647.1050000041723,
+        "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+        "profile": {
+          "repo": "Xenova/bge-small-zh-v1.5",
+          "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+          "dtype": "fp32",
+          "dimension": 512,
+          "pooling": "cls",
+          "normalize": true,
+          "maxTokens": 256
+        },
+        "resources": [
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+            "ms": 2.655000001192093,
+            "bytes": 439125,
+            "transferBytes": 439425
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+            "ms": 3.060000002384186,
+            "bytes": 367,
+            "transferBytes": 667
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+            "ms": 2.980000004172325,
+            "bytes": 716,
+            "transferBytes": 1016
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model_fp16.onnx",
+            "ms": 1.3800000101327896,
+            "bytes": 0,
+            "transferBytes": 0
+          },
+          {
+            "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model.onnx",
+            "ms": 86.75,
+            "bytes": 94851877,
+            "transferBytes": 94852177
+          }
+        ]
+      },
+      "embeddingMs": 10.899999991059303,
+      "vectorDimensions": [
+        512,
+        512
+      ],
+      "ok": true
+    }
+  ],
+  "ok": true
+}

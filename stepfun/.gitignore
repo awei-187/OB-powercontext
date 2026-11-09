@@ -1,0 +1,11 @@
+node_modules/
+public/models/
+public/runtime/
+public/assets/
+.env
+.env.backup-*
+.cache/
+.data/
+work/
+test-results/
+*.log

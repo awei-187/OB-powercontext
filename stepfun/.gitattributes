@@ -1,0 +1,6 @@
+# Canonical source line endings; preserve fixed corpus and historical evidence bytes.
+* text=auto eol=lf
+*.pdf -text
+data/fixture.json -text whitespace=cr-at-eol
+docs/evidence/**/*.json -text whitespace=cr-at-eol
+docs/evidence/**/README.md -text whitespace=cr-at-eol

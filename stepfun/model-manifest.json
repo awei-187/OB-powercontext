@@ -1,0 +1,61 @@
+{
+  "repo": "Xenova/bge-small-zh-v1.5",
+  "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+  "dimension": 512,
+  "pooling": "cls",
+  "normalize": true,
+  "maxTokens": 256,
+  "queryPrefix": "为这个句子生成表示以用于检索相关文章：",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 1057,
+      "gitBlob": "e26ec7fcc01a7aff66171d44acff0a80fae865e1"
+    },
+    {
+      "path": "config.json",
+      "bytes": 716,
+      "gitBlob": "d590a6643f5dcdd0cfb0477e3c291488c16fc2d7"
+    },
+    {
+      "path": "onnx/model.onnx",
+      "bytes": 94851877,
+      "sha256": "69a0b846f4f116b5e6aabf9546ea6754d02264f3211a13a1bd69b31b8040749a"
+    },
+    {
+      "path": "onnx/model_fp16.onnx",
+      "bytes": 47497427,
+      "sha256": "60d0fe5eb8d4e251d4b24dff010a2625c10a013503f0d09f625e8a9b0311315f"
+    },
+    {
+      "path": "onnx/model_quantized.onnx",
+      "bytes": 24010842,
+      "sha256": "15b717c382bcb518ba457b93ea6850ede7f4f1cd8937454aa06972366cd19bcc"
+    },
+    {
+      "path": "quantize_config.json",
+      "bytes": 674,
+      "gitBlob": "1930f78444c1fa23c7c5dc01e60d98b19c6e2be9"
+    },
+    {
+      "path": "special_tokens_map.json",
+      "bytes": 125,
+      "gitBlob": "a8b3208c2884c4efb86e49300fdd3dc877220cdf"
+    },
+    {
+      "path": "tokenizer.json",
+      "bytes": 439125,
+      "gitBlob": "cdb3043fc938fc918c06e66cf704c2ba58f88747"
+    },
+    {
+      "path": "tokenizer_config.json",
+      "bytes": 367,
+      "gitBlob": "3a59388f0fd1bd22dec2ce7902c1be8e1fb84107"
+    },
+    {
+      "path": "vocab.txt",
+      "bytes": 109540,
+      "gitBlob": "ca4f9781030019ab9b253c6dcb8c7878b6dc87a5"
+    }
+  ]
+}

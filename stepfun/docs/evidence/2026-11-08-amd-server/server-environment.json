@@ -1,0 +1,37 @@
+{
+  "capturedAt": "2026-11-08T05:54:00Z",
+  "endpoint": "127.0.0.1:12881",
+  "database": "stepfun_lab",
+  "applicationUser": "stepfun_app@%",
+  "selectVersion": "5.7.25-OceanBase seekdb-v1.4.0.0",
+  "docker": {
+    "desktopVersion": "4.98.0",
+    "engineVersion": "29.9.2",
+    "composeVersion": "5.6.1",
+    "os": "linux",
+    "architecture": "amd64"
+  },
+  "image": {
+    "tag": "oceanbase/seekdb:1.4.0-100000172026082615",
+    "indexDigest": "sha256:4db4961869d554313520d6081fca29265ba6da6db7313311bd8acbed771a956b",
+    "linuxAmd64ManifestDigest": "sha256:f9e45426cdd6f26db6f967753fa3258829e462e32715211265227f1be5575ce4"
+  },
+  "container": {
+    "name": "stepfun-seekdb-1",
+    "health": "healthy",
+    "publishedPort": "127.0.0.1:12881->2881/tcp",
+    "volume": "stepfun_seekdb_data:/var/lib/seekdb",
+    "cpuLimit": 2,
+    "memoryLimitBytes": 3221225472,
+    "seekdbMemoryLimit": "2G",
+    "pidsLimit": 1024,
+    "restartPolicy": "unless-stopped"
+  },
+  "applicationHealth": {
+    "url": "http://127.0.0.1:4317/api/health",
+    "ok": true,
+    "mode": "server",
+    "version": "5.7.25-OceanBase seekdb-v1.4.0.0"
+  },
+  "secretsIncluded": false
+}

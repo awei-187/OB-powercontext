@@ -1,0 +1,190 @@
+{
+  "chrome": {
+    "ok": true,
+    "error": null,
+    "kb": "kb_5d0c06aa6bcf45f280113fa7c5a69061",
+    "backend": "webgpu",
+    "dtype": "fp16",
+    "adapter": {
+      "vendor": "intel",
+      "architecture": "gen-12lp",
+      "device": "",
+      "description": ""
+    },
+    "externalRequests": 0,
+    "pageErrors": []
+  },
+  "edge": {
+    "ok": true,
+    "error": null,
+    "kb": "kb_cd3f7ce1f6864495bff93f0bbf3c4e41",
+    "backend": "webgpu",
+    "dtype": "fp16",
+    "adapter": {
+      "vendor": "intel",
+      "architecture": "gen-12lp",
+      "device": "",
+      "description": ""
+    },
+    "externalRequests": 0,
+    "pageErrors": []
+  },
+  "fallback": [
+    {
+      "kind": "no-adapter-fp16",
+      "ok": true,
+      "backend": "wasm",
+      "dtype": "fp32",
+      "reason": "No WebGPU adapter"
+    },
+    {
+      "kind": "model-file-failure",
+      "ok": true,
+      "backend": "wasm",
+      "dtype": "fp32",
+      "reason": "`local_files_only=true` or `env.allowRemoteModels=false` and file was not found locally at \"/models/Xenova/bge-small-zh-v1.5/onnx/model_fp16.onnx\"."
+    }
+  ],
+  "quantization": [
+    {
+      "config": {
+        "dtype": "fp32",
+        "backend": "auto",
+        "expect": "webgpu"
+      },
+      "ok": true,
+      "error": null,
+      "recall": 0.6166666666666667,
+      "ndcg": 0.5987375830237133,
+      "embeddingMs": 21.780000030994415,
+      "dbMs": 4.269400000106543,
+      "e2eMs": 46.75999999046326,
+      "batchComparison": []
+    },
+    {
+      "config": {
+        "dtype": "fp16",
+        "backend": "auto",
+        "expect": "webgpu"
+      },
+      "ok": true,
+      "error": null,
+      "recall": 0.6166666666666667,
+      "ndcg": 0.5987375830237133,
+      "embeddingMs": 22.44999998807907,
+      "dbMs": 4.616500000003725,
+      "e2eMs": 47.355000019073486,
+      "batchComparison": [
+        {
+          "batch": 1,
+          "embeddingMedianMs": 2612.7150000333786,
+          "totalMedianMs": 4379.22000002861
+        },
+        {
+          "batch": 4,
+          "embeddingMedianMs": 657.0100001096725,
+          "totalMedianMs": 1593.535000026226
+        }
+      ]
+    },
+    {
+      "config": {
+        "dtype": "fp32",
+        "backend": "auto",
+        "disableGpu": true,
+        "expect": "wasm"
+      },
+      "ok": true,
+      "error": null,
+      "recall": 0.6333333333333333,
+      "ndcg": 0.6052522845018399,
+      "embeddingMs": 16.939999997615814,
+      "dbMs": 3.9830999998375773,
+      "e2eMs": 41.25499999523163,
+      "batchComparison": []
+    },
+    {
+      "config": {
+        "dtype": "q8",
+        "backend": "auto",
+        "disableGpu": true,
+        "expect": "wasm"
+      },
+      "ok": true,
+      "error": null,
+      "recall": 0.6166666666666667,
+      "ndcg": 0.5978300752509487,
+      "embeddingMs": 11.355000019073486,
+      "dbMs": 3.462400000076741,
+      "e2eMs": 33.84500002861023,
+      "batchComparison": []
+    }
+  ],
+  "quality": {
+    "ok": true,
+    "error": null,
+    "freshImport": true,
+    "cases": [
+      {
+        "name": "baseline",
+        "rows": 36,
+        "summary": {
+          "recallAt5": 0.5666666666666667,
+          "ndcgAt5": 0.5678304547974768,
+          "precisionAt1": 0.75,
+          "queryEmbeddingMedianMs": 24.15250000357628,
+          "searchMedianMs": 5.6337000001221895,
+          "endToEndMedianMs": 41.29000002145767
+        }
+      },
+      {
+        "name": "index-only",
+        "rows": 36,
+        "summary": {
+          "recallAt5": 0.6166666666666667,
+          "ndcgAt5": 0.5681085983387101,
+          "precisionAt1": 0.6666666666666666,
+          "queryEmbeddingMedianMs": 24.314999997615814,
+          "searchMedianMs": 5.633750000037253,
+          "endToEndMedianMs": 46.464999973773956
+        }
+      },
+      {
+        "name": "fusion-only",
+        "rows": 36,
+        "summary": {
+          "recallAt5": 0.6,
+          "ndcgAt5": 0.6136028809710808,
+          "precisionAt1": 0.8333333333333334,
+          "queryEmbeddingMedianMs": 23.435000002384186,
+          "searchMedianMs": 3.618399999802932,
+          "endToEndMedianMs": 39.71999999880791
+        }
+      },
+      {
+        "name": "quality-v2",
+        "rows": 36,
+        "summary": {
+          "recallAt5": 0.6333333333333333,
+          "ndcgAt5": 0.6052522845018399,
+          "precisionAt1": 0.8333333333333334,
+          "queryEmbeddingMedianMs": 23.9375,
+          "searchMedianMs": 4.085800000000745,
+          "endToEndMedianMs": 45.13750001788139
+        }
+      },
+      {
+        "name": "recall-priority",
+        "rows": 36,
+        "summary": {
+          "recallAt5": 0.6499999999999999,
+          "ndcgAt5": 0.5946272640255275,
+          "precisionAt1": 0.6666666666666666,
+          "queryEmbeddingMedianMs": 23.24500000476837,
+          "searchMedianMs": 3.9560000002384186,
+          "endToEndMedianMs": 44.224999994039536
+        }
+      }
+    ]
+  }
+}

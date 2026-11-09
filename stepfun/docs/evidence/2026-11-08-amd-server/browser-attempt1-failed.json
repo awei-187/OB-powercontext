@@ -1,0 +1,80 @@
+{
+  "at": "2026-11-08T05:24:52.050Z",
+  "checks": [],
+  "unexpectedRequests": [],
+  "pageErrors": [],
+  "health": {
+    "ok": true,
+    "mode": "server",
+    "version": [
+      {
+        "version": "5.7.25-OceanBase seekdb-v1.4.0.0"
+      }
+    ]
+  },
+  "browser": "156.0.8078.80",
+  "model": {
+    "phase": "ready",
+    "backend": "webgpu",
+    "dtype": "fp16",
+    "adapter": {
+      "vendor": "amd",
+      "architecture": "rdna-2",
+      "device": "",
+      "description": ""
+    },
+    "sessionLoadMs": 435.48499999940395,
+    "warmupMs": 224.02000001072884,
+    "requestedDtype": "fp16",
+    "fallbackReason": null,
+    "readyMs": 703.6700000017881,
+    "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+    "profile": {
+      "repo": "Xenova/bge-small-zh-v1.5",
+      "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+      "dtype": "fp16",
+      "dimension": 512,
+      "pooling": "cls",
+      "normalize": true,
+      "maxTokens": 256
+    },
+    "resources": [
+      {
+        "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+        "ms": 2.239999994635582,
+        "bytes": 439125,
+        "transferBytes": 439425
+      },
+      {
+        "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+        "ms": 1.4900000095367432,
+        "bytes": 367,
+        "transferBytes": 667
+      },
+      {
+        "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+        "ms": 1.4399999976158142,
+        "bytes": 716,
+        "transferBytes": 1016
+      },
+      {
+        "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model_fp16.onnx",
+        "ms": 45.66000001132488,
+        "bytes": 47497427,
+        "transferBytes": 47497727
+      }
+    ]
+  },
+  "import": {
+    "kb": "kb_68fd7ed9161e43deb4644955f07cc625",
+    "documents": 100,
+    "batchSize": 4,
+    "embeddingMs": 823.3250000029802,
+    "writeMs": 431.7745999999461,
+    "refreshMs": 611.6404000000039,
+    "totalMs": 2035.7300000041723,
+    "backend": "webgpu",
+    "dtype": "fp16"
+  },
+  "error": "page.evaluate: Error: Cannot read properties of null (reading 'map')\n    at api (http://127.0.0.1:4317/assets/app.js:28:20)\n    at async Object.query (http://127.0.0.1:4317/assets/app.js:122:14)\n    at async <anonymous>:396:30\n    at D:\\67stepfun\\stepfun-lab-2026-11-08\\stepfun\\tests\\browser.mjs:20:30"
+}

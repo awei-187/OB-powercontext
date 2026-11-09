@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>本地文本知识库 · StepFun</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/style.css"></head>
+<body><main><header><small>OCEANBASE × STEPFUN</small><h1>本地文本知识库</h1><p>文本在你的浏览器中生成向量，seekdb 完成存储与混合检索。</p><p id="dbStatus">正在连接 seekdb…</p></header>
+<section><h2>1 · 模型与推理后端</h2><p>BGE-small-zh-v1.5 · 512 维 · CLS / L2 · 固定修订版 75c43b0</p>
+<label>精度 <select id="dtype"><option value="fp16">FP16（优先 WebGPU）</option><option value="fp32">FP32 基线</option><option value="q8">INT8</option></select></label>
+<label>后端 <select id="backend"><option value="auto">WebGPU 优先，失败自动 WASM</option><option value="wasm">WASM（降级验证）</option></select></label><button id="load">加载并预热模型</button>
+<progress id="progress" max="100" value="0"></progress><pre id="modelStatus">尚未加载。FP16 降级到 WASM 时使用 FP32，页面显示实际精度。</pre></section>
+<section><h2>2 · 知识库与文本导入</h2><label>当前知识库 <select id="kb"></select></label><button id="refresh">刷新索引</button><button id="optimize" class="secondary">优化索引（保留原库）</button><div class="row"><input id="kbName" placeholder="新知识库名称" value="我的知识库" maxlength="100"><button id="create">新建（绑定当前精度）</button></div>
+<textarea id="text" placeholder="粘贴文本；也可以选择多个 UTF-8 .txt / .md 文件。每段最多 220 字，重叠 24 字。" rows="5"></textarea>
+<input id="files" type="file" multiple accept=".txt,.md,text/plain,text/markdown"><label>批大小 <select id="batch"><option>1</option><option selected>4</option><option>8</option></select></label><button id="import">向量化、写入并刷新</button><button id="fixture" class="secondary">导入固定 100 段测试语料</button>
+<p>可连续导入，相同来源与片段内容会更新；切换知识库后需使用对应模型精度。</p></section>
+<section><h2>3 · 混合检索</h2><div class="row"><input id="query" placeholder="例如：新增资料为何还搜不到？" maxlength="300"><button id="search">搜索</button></div><div id="results"></div></section>
+<p id="notice" role="status" aria-live="polite"></p><section><h2>性能记录</h2><button id="export" class="secondary">导出原始 JSON</button><pre id="metrics">操作后显示分阶段计时。</pre></section>
+<footer>不调用云端推理 API · 模型从本机加载 · 数据保存在本机 seekdb</footer></main><script type="module" src="/assets/app.js"></script></body></html>

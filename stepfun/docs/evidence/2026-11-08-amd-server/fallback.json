@@ -1,0 +1,180 @@
+[
+  {
+    "kind": "no-adapter-fp16",
+    "health": {
+      "ok": true,
+      "mode": "server",
+      "version": [
+        {
+          "version": "5.7.25-OceanBase seekdb-v1.4.0.0"
+        }
+      ]
+    },
+    "state": {
+      "phase": "ready",
+      "backend": "wasm",
+      "dtype": "fp32",
+      "adapter": null,
+      "sessionLoadMs": 527.0450000017881,
+      "warmupMs": 36.695000007748604,
+      "requestedDtype": "fp16",
+      "fallbackReason": "No WebGPU adapter",
+      "readyMs": 565.0750000029802,
+      "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+      "profile": {
+        "repo": "Xenova/bge-small-zh-v1.5",
+        "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+        "dtype": "fp32",
+        "dimension": 512,
+        "pooling": "cls",
+        "normalize": true,
+        "maxTokens": 256
+      },
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+          "ms": 1.9650000035762787,
+          "bytes": 439125,
+          "transferBytes": 439425
+        },
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+          "ms": 1.0700000077486038,
+          "bytes": 367,
+          "transferBytes": 667
+        },
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+          "ms": 1.4099999964237213,
+          "bytes": 716,
+          "transferBytes": 1016
+        },
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model.onnx",
+          "ms": 89.5700000077486,
+          "bytes": 94851877,
+          "transferBytes": 94852177
+        }
+      ]
+    },
+    "imported": {
+      "kb": "kb_0d2093e0148c4a3ba3a64f377d321713",
+      "documents": 5,
+      "batchSize": 4,
+      "embeddingMs": 62.29000000655651,
+      "writeMs": 23.02619999999297,
+      "refreshMs": 703.9930999999924,
+      "totalMs": 806.140000000596,
+      "backend": "wasm",
+      "dtype": "fp32"
+    },
+    "result": {
+      "query": "索引刷新",
+      "queryEmbeddingMs": 12.075000002980232,
+      "searchMs": 5.275400000013178,
+      "endToEndMs": 24.230000004172325,
+      "ids": [
+        "index-0",
+        "index-1",
+        "index-2",
+        "index-4",
+        "index-3"
+      ],
+      "strategy": "quality-v2",
+      "engine": "seekdb SQL: vector + fulltext → normalized score fusion"
+    },
+    "ok": true
+  },
+  {
+    "kind": "model-file-failure",
+    "health": {
+      "ok": true,
+      "mode": "server",
+      "version": [
+        {
+          "version": "5.7.25-OceanBase seekdb-v1.4.0.0"
+        }
+      ]
+    },
+    "state": {
+      "phase": "ready",
+      "backend": "wasm",
+      "dtype": "fp32",
+      "adapter": null,
+      "sessionLoadMs": 516.7600000053644,
+      "warmupMs": 36.62999999523163,
+      "requestedDtype": "fp16",
+      "fallbackReason": "`local_files_only=true` or `env.allowRemoteModels=false` and file was not found locally at \"/models/Xenova/bge-small-zh-v1.5/onnx/model_fp16.onnx\".",
+      "readyMs": 613.8950000107288,
+      "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+      "profile": {
+        "repo": "Xenova/bge-small-zh-v1.5",
+        "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+        "dtype": "fp32",
+        "dimension": 512,
+        "pooling": "cls",
+        "normalize": true,
+        "maxTokens": 256
+      },
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+          "ms": 3.5249999910593033,
+          "bytes": 439125,
+          "transferBytes": 439425
+        },
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+          "ms": 2.4849999994039536,
+          "bytes": 367,
+          "transferBytes": 667
+        },
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+          "ms": 2.5049999952316284,
+          "bytes": 716,
+          "transferBytes": 1016
+        },
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model_fp16.onnx",
+          "ms": 1.739999994635582,
+          "bytes": 0,
+          "transferBytes": 0
+        },
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model.onnx",
+          "ms": 86.29500000178814,
+          "bytes": 94851877,
+          "transferBytes": 94852177
+        }
+      ]
+    },
+    "imported": {
+      "kb": "kb_89dc499c62a241ff8f5c2b9fa9a34f13",
+      "documents": 5,
+      "batchSize": 4,
+      "embeddingMs": 59.20499999821186,
+      "writeMs": 21.950800000020536,
+      "refreshMs": 403.53509999997914,
+      "totalMs": 505.565000012517,
+      "backend": "wasm",
+      "dtype": "fp32"
+    },
+    "result": {
+      "query": "索引刷新",
+      "queryEmbeddingMs": 9.724999994039536,
+      "searchMs": 4.373600000020815,
+      "endToEndMs": 25.680000007152557,
+      "ids": [
+        "index-0",
+        "index-1",
+        "index-2",
+        "index-4",
+        "index-3"
+      ],
+      "strategy": "quality-v2",
+      "engine": "seekdb SQL: vector + fulltext → normalized score fusion"
+    },
+    "ok": true
+  }
+]

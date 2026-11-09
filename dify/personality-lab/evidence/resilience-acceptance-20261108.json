@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-11-08T13:09:00+08:00",
+  "mainFinalSession": {
+    "profileMode": "dify",
+    "phase": "complete",
+    "revision": 14,
+    "exitAndReenterSameRound": true,
+    "freshSessionCannotSeeRecord": true,
+    "nodeProcessRestartRecoveredSameRound": true,
+    "reportSource": "dify",
+    "memorySource": "powercontext",
+    "recallVerified": true
+  },
+  "realPowerContextFailureInjection": {
+    "harnessProfileMode": "local",
+    "powerContextVersion": "1.5.0",
+    "powerContextWasActuallyStopped": true,
+    "answerCountDuringFailure": 1,
+    "pendingMemoryDuringFailure": 1,
+    "memoryErrorExposed": true,
+    "answerPreserved": true,
+    "powerContextWasRestarted": true,
+    "explicitSyncRecovered": true,
+    "answerCountAfterRetry": 1,
+    "pendingMemoryAfterRetry": 0,
+    "savedReceiptsAfterRetry": 4
+  },
+  "automatedTests": {
+    "command": "node --test tests/*.test.mjs",
+    "tests": 18,
+    "passed": 18,
+    "failed": 0,
+    "coversTwoSessionScopeIsolation": true,
+    "coversPowerContextFailureWithoutDuplicateAnswer": true
+  },
+  "memorySemantics": {
+    "sameRoundResumeVerified": true,
+    "newRoundUsesPreviousRound": false,
+    "newRoundCrossRoundMemoryImplemented": false
+  },
+  "unresolvedAttempt": {
+    "description": "Optional additional fresh Dify resilience session",
+    "result": "client_timeout_at_120_seconds_before_fault_injection",
+    "countedAsPass": false
+  },
+  "secretsIncluded": false,
+  "cookiesIncluded": false,
+  "userArchiveIncluded": false
+}

@@ -1,0 +1,15 @@
+{
+  "startedAt": "2026-11-08T06:16:38.573Z",
+  "mode": "server",
+  "endpoint": "127.0.0.1:12881",
+  "database": "stepfun_lab",
+  "status": {
+    "ready": 1,
+    "version": "5.7.25-OceanBase seekdb-v1.4.0.0",
+    "database_name": "stepfun_lab",
+    "account_name": "stepfun_app@%"
+  },
+  "tableCount": 15,
+  "ok": true,
+  "finishedAt": "2026-11-08T06:16:38.607Z"
+}

@@ -1,0 +1,40 @@
+{
+  "timestamp": "2026-11-08T12:21:12.4970388+08:00",
+  "environment": {
+    "dify": "1.19.0",
+    "powercontext": "1.5.0",
+    "node": "24.22.1",
+    "profileMode": "dify"
+  },
+  "dify": {
+    "appId": "5e63bb1d-89e2-487a-b422-b26eb97f684b",
+    "publishedVersion": 1,
+    "sceneSource": "dify",
+    "reportSource": "dify"
+  },
+  "session": {
+    "testId": "cd6ee630-3bdd-4749-abb2-93baf63770d5",
+    "scopeId": "scp_3fy4y62faa21w920xgxjs8ekzs",
+    "phase": "complete",
+    "answerCount": 6,
+    "reversalCount": 2,
+    "tradeoffCount": 2,
+    "perspectiveCount": 2
+  },
+  "powercontext": {
+    "memoryRecordCount": 15,
+    "uniqueSourceCount": 15,
+    "uniqueArtifactCount": 15,
+    "pendingMemory": 0,
+    "reportMemorySource": "powercontext",
+    "recalledVerified": true,
+    "recallBytes": 6384,
+    "recallSha256": "fc277c72238e89a3669a2d7b3a2a5e1ce33bf1c7314487b586bb61422d9cda69"
+  },
+  "report": {
+    "validatedEvidenceCount": 3,
+    "hasReversalComparisons": true,
+    "hasPredictionTradeoffPerspective": true
+  },
+  "secretsIncluded": false
+}

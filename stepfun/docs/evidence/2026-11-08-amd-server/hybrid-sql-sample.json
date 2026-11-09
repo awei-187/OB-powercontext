@@ -1,0 +1,16 @@
+{
+  "capturedAt": "2026-11-08T05:32:08.039Z",
+  "serviceVersion": "5.7.25-OceanBase seekdb-v1.4.0.0",
+  "strategy": "quality-v2",
+  "query": "刚上传的资料搜不到怎么办？",
+  "transport": "seekdb-js 1.4.0 server raw query for WITH row result",
+  "sql": "WITH dense AS (\n    SELECT _id,document,metadata,cosine_distance(embedding, ?) AS distance\n    FROM `c$v2$bbfa2d0ddb3511f1a5d09ecd0e40db7d` ORDER BY distance APPROXIMATE LIMIT 50\n  ), lexical AS (\n    SELECT _id,document,metadata,MATCH(document) AGAINST (? IN NATURAL LANGUAGE MODE) AS bm25\n    FROM `c$v2$bbfa2d0ddb3511f1a5d09ecd0e40db7d` WHERE MATCH(document) AGAINST (? IN NATURAL LANGUAGE MODE)\n    ORDER BY bm25 DESC,_id LIMIT 50\n  ), normalized_dense AS (\n    SELECT *,COALESCE((MAX(distance) OVER()-distance)/NULLIF(MAX(distance) OVER()-MIN(distance) OVER(),0),1) AS dense_score FROM dense\n  ), normalized_lexical AS (\n    SELECT *,bm25/NULLIF(MAX(bm25) OVER(),0) AS lexical_score FROM lexical\n  ) SELECT COALESCE(d._id,l._id) AS _id,COALESCE(d.document,l.document) AS document,\n    COALESCE(d.metadata,l.metadata) AS metadata,\n    0.75*COALESCE(d.dense_score,0)+0.25*COALESCE(l.lexical_score,0) AS _score\n  FROM normalized_dense d FULL JOIN normalized_lexical l ON d._id=l._id\n  ORDER BY _score DESC,_id LIMIT ?",
+  "parameters": [
+    "512-dimensional browser-generated query vector (redacted)",
+    "刚上传的资料搜不到怎么办？",
+    "刚上传的资料搜不到怎么办？",
+    5
+  ],
+  "fusionLocation": "seekdb Server",
+  "clientSideFusion": false
+}

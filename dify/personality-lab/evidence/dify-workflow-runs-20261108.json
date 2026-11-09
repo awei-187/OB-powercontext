@@ -1,0 +1,58 @@
+{
+  "generatedAt": "2026-11-08T13:09:00+08:00",
+  "source": "Read-only join of Dify workflow_app_logs and workflow_runs; bodies omitted",
+  "difyVersion": "1.19.0",
+  "profileMode": "dify",
+  "appId": "5e63bb1d-89e2-487a-b422-b26eb97f684b",
+  "publishedWorkflowId": "53015536-407d-403e-9c2f-cf68ede25b6d",
+  "publishedVersionNumber": 1,
+  "runs": [
+    {
+      "task": "scenes",
+      "logId": "b214cc19-01ab-46b6-81ae-17767fec72e8",
+      "runId": "90e5394c-fdd4-4f0a-9b19-9a18588bf651",
+      "status": "succeeded",
+      "startedAt": "2026-11-08T12:10:47.495946+08:00",
+      "finishedAt": "2026-11-08T12:12:10.499923+08:00",
+      "elapsedSeconds": 83.007,
+      "totalTokens": 3705,
+      "totalSteps": 3,
+      "inputBytes": 8680,
+      "inputSha256": "6f8566d862115db1b35aa18ece6345609a36c1d4173c9540d2329a34063f7081",
+      "outputBytes": 13069,
+      "outputSha256": "9456f0360cdf2025cb84551a7afb9fa6725d09a9eece388e6609ac997c5446f3",
+      "hasError": false
+    },
+    {
+      "task": "report",
+      "logId": "a64e5360-c0d1-4a38-a311-fe15fed8535e",
+      "runId": "987b5848-aa9b-4d10-a5f2-0190cb9d86c0",
+      "status": "succeeded",
+      "startedAt": "2026-11-08T12:20:24.682427+08:00",
+      "finishedAt": "2026-11-08T12:21:12.478106+08:00",
+      "elapsedSeconds": 47.797,
+      "totalTokens": 4181,
+      "totalSteps": 3,
+      "inputBytes": 18455,
+      "inputSha256": "9f5b93694acd667cb74e19e2b24ea56107160ee5c3556e7cb152f53d63e4f29d",
+      "outputBytes": 4034,
+      "outputSha256": "9d45d490662949558aaa0eef246a534c83ce4b3728fd233f74ecfbf74a4d1a10",
+      "hasError": false
+    }
+  ],
+  "dslExport": {
+    "method": "Dify AppDslService.export_dsl",
+    "includeSecret": false,
+    "dslVersion": "0.7.0",
+    "bytes": 7972,
+    "sha256": "206b4300935a2ab21e92e3da3ff2eb694f519d12f51e8a13b39b4c4715cb62b3",
+    "nodes": 3,
+    "dependencies": 1
+  },
+  "redaction": {
+    "inputsIncluded": false,
+    "outputsIncluded": false,
+    "apiKeysIncluded": false,
+    "cookiesIncluded": false
+  }
+}

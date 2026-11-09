@@ -1,0 +1,18 @@
+{
+  "name": "stepfun-browser-seekdb", "version": "0.1.0", "private": true, "type": "module",
+  "engines": { "node": ">=24.14.0 <25" },
+  "scripts": {
+    "models:download": "node scripts/download-model.mjs",
+    "db:download": "node scripts/download-bindings.mjs",
+    "build": "node scripts/build.mjs",
+    "start": "node --env-file-if-exists=.env server/index.mjs",
+    "db:check": "node --env-file-if-exists=.env scripts/check-db.mjs",
+    "db:check:server": "node --env-file-if-exists=.env scripts/check-db-server.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "node tests/browser.mjs",
+    "benchmark": "node tests/benchmark.mjs",
+    "benchmark:quality": "node tests/retrieval-quality.mjs"
+  },
+  "dependencies": { "seekdb": "1.4.0", "@huggingface/transformers": "3.8.1" },
+  "devDependencies": { "esbuild": "0.27.2", "playwright-core": "1.64.1" }
+}

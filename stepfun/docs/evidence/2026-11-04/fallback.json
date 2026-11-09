@@ -1,0 +1,168 @@
+[
+  {
+    "kind": "no-adapter-fp16",
+    "state": {
+      "phase": "ready",
+      "backend": "wasm",
+      "dtype": "fp32",
+      "adapter": null,
+      "sessionLoadMs": 1008.4300000071526,
+      "warmupMs": 58.360000014305115,
+      "requestedDtype": "fp16",
+      "fallbackReason": "No WebGPU adapter",
+      "readyMs": 2376.889999985695,
+      "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+      "profile": {
+        "repo": "Xenova/bge-small-zh-v1.5",
+        "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+        "dtype": "fp32",
+        "dimension": 512,
+        "pooling": "cls",
+        "normalize": true,
+        "maxTokens": 256
+      },
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+          "ms": 4.235000014305115,
+          "bytes": 439125,
+          "transferBytes": 439425
+        },
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+          "ms": 2.6149999499320984,
+          "bytes": 367,
+          "transferBytes": 667
+        },
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+          "ms": 2.524999976158142,
+          "bytes": 716,
+          "transferBytes": 1016
+        },
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model.onnx",
+          "ms": 211.23500001430511,
+          "bytes": 94851877,
+          "transferBytes": 94852177
+        }
+      ]
+    },
+    "imported": {
+      "kb": "kb_69784f9dc57a4acea93f2c31ee0fa734",
+      "documents": 5,
+      "batchSize": 4,
+      "embeddingMs": 102.74499994516373,
+      "writeMs": 86.03500000014901,
+      "refreshMs": 404.5909000001848,
+      "totalMs": 610.3950000405312,
+      "backend": "wasm",
+      "dtype": "fp32"
+    },
+    "result": {
+      "query": "索引刷新",
+      "queryEmbeddingMs": 18.97000002861023,
+      "searchMs": 22.71639999980107,
+      "endToEndMs": 51.7950000166893,
+      "ids": [
+        "index-0",
+        "index-1",
+        "index-2",
+        "index-4",
+        "index-3"
+      ],
+      "strategy": "quality-v2",
+      "engine": "seekdb SQL: vector + fulltext → normalized score fusion"
+    },
+    "ok": true
+  },
+  {
+    "kind": "model-file-failure",
+    "state": {
+      "phase": "ready",
+      "backend": "wasm",
+      "dtype": "fp32",
+      "adapter": null,
+      "sessionLoadMs": 1035.0450000166893,
+      "warmupMs": 65.17500001192093,
+      "requestedDtype": "fp16",
+      "fallbackReason": "`local_files_only=true` or `env.allowRemoteModels=false` and file was not found locally at \"/models/Xenova/bge-small-zh-v1.5/onnx/model_fp16.onnx\".",
+      "readyMs": 1373.8999999761581,
+      "runtime": "Transformers.js 3.8.1 / ORT Web 1.22.0-dev.20250409-89f8206ba4",
+      "profile": {
+        "repo": "Xenova/bge-small-zh-v1.5",
+        "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+        "dtype": "fp32",
+        "dimension": 512,
+        "pooling": "cls",
+        "normalize": true,
+        "maxTokens": 256
+      },
+      "resources": [
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+          "ms": 32.19499999284744,
+          "bytes": 439125,
+          "transferBytes": 439425
+        },
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer_config.json",
+          "ms": 8.780000030994415,
+          "bytes": 367,
+          "transferBytes": 667
+        },
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/config.json",
+          "ms": 8.125,
+          "bytes": 716,
+          "transferBytes": 1016
+        },
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model_fp16.onnx",
+          "ms": 3.584999978542328,
+          "bytes": 0,
+          "transferBytes": 0
+        },
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/tokenizer.json",
+          "ms": 9.179999947547913,
+          "bytes": 439125,
+          "transferBytes": 439425
+        },
+        {
+          "url": "http://127.0.0.1:4317/models/Xenova/bge-small-zh-v1.5/onnx/model.onnx",
+          "ms": 181.3149999976158,
+          "bytes": 94851877,
+          "transferBytes": 94852177
+        }
+      ]
+    },
+    "imported": {
+      "kb": "kb_916b7bb65c824bc49ae94204d406b759",
+      "documents": 5,
+      "batchSize": 4,
+      "embeddingMs": 75.08500003814697,
+      "writeMs": 97.33600000012666,
+      "refreshMs": 609.1959999999963,
+      "totalMs": 808.3299999833107,
+      "backend": "wasm",
+      "dtype": "fp32"
+    },
+    "result": {
+      "query": "索引刷新",
+      "queryEmbeddingMs": 10.340000033378601,
+      "searchMs": 16.535900000017136,
+      "endToEndMs": 37.5900000333786,
+      "ids": [
+        "index-0",
+        "index-1",
+        "index-2",
+        "index-4",
+        "index-3"
+      ],
+      "strategy": "quality-v2",
+      "engine": "seekdb SQL: vector + fulltext → normalized score fusion"
+    },
+    "ok": true
+  }
+]
